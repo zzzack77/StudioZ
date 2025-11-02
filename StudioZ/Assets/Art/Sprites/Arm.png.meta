@@ -52,7 +52,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -139,8 +139,8 @@ TextureImporter:
         y: 122
         width: 84
         height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.025406906, y: 0.5026624}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1204,8 +1204,8 @@ TextureImporter:
         y: 122
         width: 80
         height: 29
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.025820732, y: 0.51087797}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
