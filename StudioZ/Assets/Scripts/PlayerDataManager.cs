@@ -26,6 +26,7 @@ public class PlayerDataManager : MonoBehaviour
     private void Start()
     {
         Debug.Log(GetPlayerName());
+        Debug.Log(GetPlayerScore());
     }
 
     // Save player data to a JSON file
