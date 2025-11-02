@@ -9,6 +9,7 @@ public class AttachLimbToHold : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
         if (collision.attachedRigidbody != null)
         {
             GrabHold(collision.attachedRigidbody);
