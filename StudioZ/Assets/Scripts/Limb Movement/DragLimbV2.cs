@@ -4,13 +4,15 @@ using UnityEngine.UIElements;
 
 public class BodyMovManager : MonoBehaviour
 {
+    // LH Left Hand, RH Right Hand
     // LS Left Shoulder, RS Right Shoulder
-    // LH Left Hip, RH Right Hip
-    [SerializeField] private Transform LS;
-    [SerializeField] private Transform RS;
     [SerializeField] private Transform LH;
     [SerializeField] private Transform RH;
+    [SerializeField] private Transform LS;
+    [SerializeField] private Transform RS;
     private Transform currentAnchor;
+
+    [SerializeField] private HingeJoint2D hinge;
 
     private RaycastHit2D hit;
     private Vector3 mousePos;
@@ -18,6 +20,7 @@ public class BodyMovManager : MonoBehaviour
     // Bool to check if the mouse is dragging the limb
     private bool isDragging = false;
 
+    private float armDistance;
     // The arm's and legs max reach
     [SerializeField] private float maxDistance;
 
@@ -43,6 +46,7 @@ public class BodyMovManager : MonoBehaviour
             if (hit.collider != null && hit.collider.CompareTag("Limb"))
             {
                 isDragging = true;
+                hinge.enabled = false;
 
                 // Determine which anchor to use based on limb name
                 switch (hit.collider.name)
@@ -53,12 +57,12 @@ public class BodyMovManager : MonoBehaviour
                     case "RA_Anchor":
                         currentAnchor = RS;
                         break;
-                    case "LL_Anchor":
-                        currentAnchor = LH;
-                        break;
-                    case "RL_Anchor":
-                        currentAnchor = RH;
-                        break;
+                    //case "LL_Anchor":
+                    //    currentAnchor = LH;
+                    //    break;
+                    //case "RL_Anchor":
+                    //    currentAnchor = RH;
+                    //    break;
                     default:
                         currentAnchor = null;
                         break;
@@ -95,13 +99,14 @@ public class BodyMovManager : MonoBehaviour
     }
     void EnableHingeJoint()
     {
-        //if (!hinge.enabled)
-        //{
-        //    distance = Vector2.Distance(root.position, target.position);
-        //    if (distance >= maxDistance && target.position.y < root.position.y && !isDragging)
-        //    {
-        //        if (!hinge.enabled) hinge.enabled = true;
-        //    }
-        //}
+        if (!hinge.enabled)
+        {
+            armDistance = Vector2.Distance(RS.position, RH.position);
+            Debug.Log(armDistance.ToString());
+            if (armDistance >= maxDistance && RH.position.y < RS.position.y && !isDragging)
+            {
+                if (!hinge.enabled) hinge.enabled = true;
+            }
+        }
     }
 }
