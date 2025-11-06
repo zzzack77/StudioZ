@@ -39,6 +39,7 @@ public class JoystickTesting : MonoBehaviour
     // The amount of force applied to rigidbody when moving limbs
     [SerializeField] private float handAcceleration;
     [SerializeField] private float handMaxVelocity;
+    [SerializeField] private bool grippingDisabled;
 
     // For furture use change trigger deadzone so slight pressure doesn't activate grip
     // Higher deadzone means more pressure is needed
@@ -124,11 +125,14 @@ public class JoystickTesting : MonoBehaviour
 
         //Debug.Log($"LeftStick: {leftStick}, RightStick: {rightStick}, LT: {leftTrigger:F2}, RT: {rightTrigger:F2}, LS: {leftShoulder:F2}");
 
-        // Grip logic for left and right hands
-        if (leftTrigger > triggerDeadZone && isLeftHolding) { L_AnchorRB.isKinematic = true; }
-        if (leftTrigger <= triggerDeadZone) { L_AnchorRB.isKinematic = false; }
-        if (rightTrigger > triggerDeadZone && isRightHolding) { R_AnchorRB.isKinematic = true; }
-        if (rightTrigger <= triggerDeadZone) { R_AnchorRB.isKinematic = false; }
+        if (!grippingDisabled)
+        {
+            // Grip logic for left and right hands
+            if (leftTrigger > triggerDeadZone && isLeftHolding) { L_AnchorRB.isKinematic = true; }
+            if (leftTrigger <= triggerDeadZone) { L_AnchorRB.isKinematic = false; }
+            if (rightTrigger > triggerDeadZone && isRightHolding) { R_AnchorRB.isKinematic = true; }
+            if (rightTrigger <= triggerDeadZone) { R_AnchorRB.isKinematic = false; }
+        }
     }
     
     private void ControllerMovement()
