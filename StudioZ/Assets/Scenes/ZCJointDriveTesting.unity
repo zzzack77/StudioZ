@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 292132304}
   - component: {fileID: 292132305}
   m_Layer: 0
-  m_Name: hinge (2)
+  m_Name: RA_Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2452,7 +2452,7 @@ GameObject:
   - component: {fileID: 1168148463}
   - component: {fileID: 1168148464}
   m_Layer: 0
-  m_Name: hinge (3)
+  m_Name: RA_Bicep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2670,7 +2670,7 @@ GameObject:
   - component: {fileID: 1182950401}
   - component: {fileID: 1182950402}
   m_Layer: 0
-  m_Name: hinge
+  m_Name: LA_Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4639,7 +4639,7 @@ GameObject:
   - component: {fileID: 2110758989}
   - component: {fileID: 2110758988}
   m_Layer: 0
-  m_Name: hinge (1)
+  m_Name: LA_Bicep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4894,6 +4894,7 @@ MonoBehaviour:
   RS: {fileID: 0}
   handAcceleration: 147.3
   handMaxVelocity: 30
+  grippingDisabled: 1
   isLeftHolding: 0
   isRightHolding: 0
 --- !u!1660057539 &9223372036854775807
