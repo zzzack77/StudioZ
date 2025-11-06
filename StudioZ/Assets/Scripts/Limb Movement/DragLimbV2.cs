@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.U2D.IK;
 using UnityEngine.UIElements;
@@ -5,19 +7,20 @@ using UnityEngine.UIElements;
 public class BodyMovManager : MonoBehaviour
 {
     // LS Left Shoulder, RS Right Shoulder
-    // LH Left Hip, RH Right Hip
     [SerializeField] private Transform LS;
     [SerializeField] private Transform RS;
-    [SerializeField] private Transform LH;
-    [SerializeField] private Transform RH;
     private Transform currentAnchor;
 
-    private RaycastHit2D hit;
+    [SerializeField] private HingeJoint2D hinge;
+
+    
+    private RaycastHit hit;
     private Vector3 mousePos;
 
     // Bool to check if the mouse is dragging the limb
     private bool isDragging = false;
 
+    private float armDistance;
     // The arm's and legs max reach
     [SerializeField] private float maxDistance;
 
@@ -29,41 +32,21 @@ public class BodyMovManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        EnableHingeJoint();
+        //EnableHingeJoint();
     }
     void MovingLimbs()
     {
         // Raycast from mouse to see if the player has clicked anything
         if (Input.GetMouseButtonDown(0))
         {
-            // Gets the location of the mouse on screen and raycasts from it
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
-            if (hit.collider != null && hit.collider.CompareTag("Limb"))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 100))
             {
                 isDragging = true;
-
-                // Determine which anchor to use based on limb name
-                switch (hit.collider.name)
-                {
-                    case "LA_Anchor":
-                        currentAnchor = LS;
-                        break;
-                    case "RA_Anchor":
-                        currentAnchor = RS;
-                        break;
-                    case "LL_Anchor":
-                        currentAnchor = LH;
-                        break;
-                    case "RL_Anchor":
-                        currentAnchor = RH;
-                        break;
-                    default:
-                        currentAnchor = null;
-                        break;
-                }
-                Debug.Log(currentAnchor.ToString());
+                // Determine which anchor to use based on name
+                currentAnchor = (hit.collider.name == "LA_Anchor") ? 
+                    LS : (hit.collider.name == "RA_Anchor") ? 
+                    RS :null;
             }
         }
 
@@ -74,34 +57,21 @@ public class BodyMovManager : MonoBehaviour
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0f;
 
-            // Calculate the direction and distance from anchor to mouse
-            Vector3 direction = mousePos - currentAnchor.position;
-            float distance = direction.magnitude;
-
-            // Clamp distance to maxDistance
-            if (distance > maxDistance)
+            Vector3 direction = mousePos - hit.transform.position;
+            if (direction.magnitude > 0.3f)
             {
-                direction = direction.normalized * maxDistance;
-                hit.transform.position = currentAnchor.position + direction;
-                hit.rigidbody.AddForce(direction * variableForce);
+                //hit.rigidbody.forc
+                hit.rigidbody.AddForce(direction.normalized * variableForce );
             }
-            else hit.transform.position = mousePos;
+            else
+            {
+                hit.rigidbody.AddForce(direction.normalized * variableForce * direction.magnitude / 2);
+            }
         }
         else if (Input.GetMouseButtonUp(0) && isDragging)
         {
             isDragging = false;
             currentAnchor = null;
         }
-    }
-    void EnableHingeJoint()
-    {
-        //if (!hinge.enabled)
-        //{
-        //    distance = Vector2.Distance(root.position, target.position);
-        //    if (distance >= maxDistance && target.position.y < root.position.y && !isDragging)
-        //    {
-        //        if (!hinge.enabled) hinge.enabled = true;
-        //    }
-        //}
     }
 }
