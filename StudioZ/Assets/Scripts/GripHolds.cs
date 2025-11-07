@@ -11,14 +11,14 @@ public class GripHolds : MonoBehaviour
         {
             if (collider.gameObject.CompareTag("Jug"))
             {
-                joystickTesting.isLeftHolding = true;
+                joystickTesting.canLeftGrip = true;
             }
         }
         if (this.name == "RA_Anchor")
         {
             if (collider.gameObject.CompareTag("Jug"))
             {
-                joystickTesting.isRightHolding = true;
+                joystickTesting.canRightGrip = true;
             }
         }
     }
@@ -28,14 +28,14 @@ public class GripHolds : MonoBehaviour
         {
             if (collider.gameObject.CompareTag("Jug"))
             {
-                joystickTesting.isLeftHolding = false;
+                joystickTesting.canLeftGrip = false;
             }
         }
         if (this.name == "RA_Anchor")
         {
             if (collider.gameObject.CompareTag("Jug"))
             {
-                joystickTesting.isRightHolding = false;
+                joystickTesting.canRightGrip = false;
             }
         }
     }
