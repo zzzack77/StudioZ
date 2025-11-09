@@ -6,22 +6,25 @@ public class JoystickTesting : MonoBehaviour
     [Header("Rigidbodies")]
     // The rigidbodies attached to the right and left hand
     [SerializeField] private Rigidbody L_AnchorRB;
+    [SerializeField] private Rigidbody L_ForearmRB;
+    [SerializeField] private Rigidbody L_UpperarmRB;
     [SerializeField] private Rigidbody R_AnchorRB;
+    [SerializeField] private Rigidbody R_ForearmRB;
+    [SerializeField] private Rigidbody R_UpperarmRB;
     [SerializeField] private Rigidbody bodyRB;
 
     [Header("Joints")]
-    
+    [SerializeField] private ConfigurableJoint L_ElbowCJ;
+    [SerializeField] private ConfigurableJoint R_ElbowCJ;
+     
 
     // LS Left Shoulder, RS Right Shoulder
     [SerializeField] private Transform LS;
     [SerializeField] private Transform RS;
     private Transform currentAnchor;
 
-
     // -------- Muscle Joint Variables --------
     [Header("Muscle Joint Settings")]
-    [SerializeField] private ConfigurableJoint L_ElbowCJ;
-    [SerializeField] private ConfigurableJoint R_ElbowCJ;
     [SerializeField] private float maxContratableAngle;
     [SerializeField] private float contractedAngle = 45f;
     [SerializeField] private float relaxedAngle = 0f;
@@ -62,11 +65,9 @@ public class JoystickTesting : MonoBehaviour
     // Stores the raycast hit data and mouse vector3 position
     private RaycastHit hit;
     private Vector3 mousePos;
-
-    // Bool to check if the mouse is dragging the limb
     private bool isDragging = false;
 
-    // -------- Controller Movement Variables --------
+    // -------- Controller Variables --------
 
     // Joystick values
     private Vector2 leftStick;
@@ -80,16 +81,24 @@ public class JoystickTesting : MonoBehaviour
 
     // -------- Movement Settings --------
     [Header("Movement Settings")]
+    [SerializeField] private bool leftStickIsMoving;
+    [SerializeField] private bool rightStickIsMoving;
     // The amount of force applied to rigidbody when moving limbs
     [SerializeField] private float handAcceleration;
     [SerializeField] private float handMaxVelocity;
     [SerializeField] private float pullUpStrength;
-    [SerializeField] private bool grippingDisabled;
+
+    [Header("Ragdoll Settings")]
+    // the amount of distance on the x axis from the shoulder to the hand before angular damping is applied
+    [SerializeField] private float xDistanceAmountForAngularDamping; 
+    [SerializeField] private float handAngularDamping; // Normal angular damping for the hand
+    [SerializeField] private float ragdollHandAngularDamping; // Damping applied when not gripping and not moving
 
     // For furture use change trigger deadzone so slight pressure doesn't activate grip
     // Higher deadzone means more pressure is needed
     private float triggerDeadZone = 0.01f;
     [Header("Debugging Variables")]
+    [SerializeField] private bool grippingDisabled;
     [SerializeField] private bool leftIsGripping = false;
     [SerializeField] private bool rightIsGripping = false;
 
@@ -97,14 +106,21 @@ public class JoystickTesting : MonoBehaviour
     // Used by GripHolds.cs
     public bool canLeftGrip { get; set; }
     public bool canRightGrip { get; set; }
+    private void Start()
+    {
+        handAngularDamping = R_AnchorRB.angularDamping;
+    }
     void Update()
     {
-        InitializeGamePad();
-        MovingLimbsWMouse();
+        InitializeGamePad(); // Gets controller and its buttons
+        MovingLimbsWMouse(); // Mouse logic
+        
     }
     private void FixedUpdate()
     {
         ControllerMovement();
+        MovementArmLogicRB(); // RB settings for arm movement while in use
+        RagdollArmLogicRB(); // RB settings for arm movement while not in use
     }
     private void MovingLimbsWMouse()
     {
@@ -181,11 +197,15 @@ public class JoystickTesting : MonoBehaviour
             if (rightTrigger > triggerDeadZone && canRightGrip) { R_AnchorRB.isKinematic = true; rightIsGripping = true; }
             if (rightTrigger <= triggerDeadZone) { R_AnchorRB.isKinematic = false; rightIsGripping = false; }
         }
+        if (leftStick != Vector2.zero) leftStickIsMoving = true;
+        else leftStickIsMoving = false;
+        if (rightStick != Vector2.zero) rightStickIsMoving = true;
+        else rightStickIsMoving = false;
     }
     
     private void ControllerMovement()
     {
-        if (leftStick != Vector2.zero)
+        if (leftStickIsMoving)
         {
             if (leftIsGripping)
             {
@@ -211,12 +231,46 @@ public class JoystickTesting : MonoBehaviour
                 }
             } 
         }
-        if (rightStick != Vector2.zero)
+        if (rightStickIsMoving)
         {
             R_AnchorRB.AddForce(rightStick * handAcceleration);
             if (R_AnchorRB.linearVelocity.magnitude > handMaxVelocity)
             {
                 R_AnchorRB.linearVelocity = R_AnchorRB.linearVelocity.normalized * handMaxVelocity;
+            }
+        }
+    }
+    private void MovementArmLogicRB()
+    {
+        if (leftStickIsMoving)
+        {
+            L_AnchorRB.angularDamping = handAngularDamping;
+        }
+        if (rightStickIsMoving)
+        {
+            R_AnchorRB.angularDamping = handAngularDamping;
+        }
+    }
+    private void RagdollArmLogicRB()
+    {
+        if (!leftIsGripping && !leftStickIsMoving)
+        {
+            if (L_AnchorRB.transform.position.x < L_UpperarmRB.transform.position.x + xDistanceAmountForAngularDamping &&
+                L_AnchorRB.transform.position.x > L_UpperarmRB.transform.position.x - xDistanceAmountForAngularDamping &&
+                L_AnchorRB.transform.position.y < L_UpperarmRB.transform.position.y)
+            {
+                L_AnchorRB.angularDamping = ragdollHandAngularDamping;
+            }
+        }
+        // Right Arm Logic
+        if (!rightIsGripping && !rightStickIsMoving)
+        {
+            Debug.Log("1");
+            if (R_AnchorRB.transform.position.x < R_UpperarmRB.transform.position.x + xDistanceAmountForAngularDamping &&
+                R_AnchorRB.transform.position.x > R_UpperarmRB.transform.position.x - xDistanceAmountForAngularDamping &&
+                R_AnchorRB.transform.position.y < R_UpperarmRB.transform.position.y)
+            {
+                R_AnchorRB.angularDamping = ragdollHandAngularDamping;
             }
         }
     }

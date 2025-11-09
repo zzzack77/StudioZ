@@ -4,17 +4,16 @@ using UnityEngine;
 public class GripHolds : MonoBehaviour
 {
     [SerializeField] private JoystickTesting joystickTesting;
-
     private void OnTriggerEnter(Collider collider)
     {
-        if (this.name == "LA_Anchor")
+        if (this.name == "L_Hand")
         {
             if (collider.gameObject.CompareTag("Jug"))
             {
                 joystickTesting.canLeftGrip = true;
             }
         }
-        if (this.name == "RA_Anchor")
+        if (this.name == "R_Hand")
         {
             if (collider.gameObject.CompareTag("Jug"))
             {
@@ -22,16 +21,17 @@ public class GripHolds : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerExit(Collider collider)
     {
-        if (this.name == "LA_Anchor")
+        if (this.name == "L_Hand")
         {
             if (collider.gameObject.CompareTag("Jug"))
             {
                 joystickTesting.canLeftGrip = false;
             }
         }
-        if (this.name == "RA_Anchor")
+        if (this.name == "R_Hand")
         {
             if (collider.gameObject.CompareTag("Jug"))
             {
