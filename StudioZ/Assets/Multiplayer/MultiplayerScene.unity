@@ -1718,9 +1718,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0ac7feefe1a8d4b88d0da618f8d02a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joinCodeText: {fileID: 0}
-  joinCodeInput: {fileID: 0}
-  inputUI: {fileID: 0}
+  joinCodeText: {fileID: 1294222190}
+  joinCodeInput: {fileID: 9023827}
+  inputUI: {fileID: 1854094135}
 --- !u!4 &1462594207
 Transform:
   m_ObjectHideFlags: 0
