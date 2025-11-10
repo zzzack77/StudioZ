@@ -200,8 +200,8 @@ TextureImporter:
         y: 742
         width: 161
         height: 358
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.6820326, y: 0.16510487}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -262,12 +262,12 @@ TextureImporter:
       name: RShoulder
       rect:
         serializedVersion: 2
-        x: 731
-        y: 368
+        x: 732
+        y: 369
         width: 213
         height: 265
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.1310038, y: 0.16319534}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
