@@ -1,8 +1,14 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class JoystickTesting : MonoBehaviour
 {
+    [Header("Controller Stick Positions")]
+    [SerializeField] private Transform leftControllerPoint;
+    [SerializeField] private Transform rightControllerPoint;
+    [SerializeField] private float maxReach;
+
     [Header("Rigidbodies")]
     // The rigidbodies attached to the right and left hand
     [SerializeField] private Rigidbody L_AnchorRB;
@@ -26,13 +32,17 @@ public class JoystickTesting : MonoBehaviour
     // -------- Muscle Joint Variables --------
     [Header("Muscle Joint Settings")]
     [SerializeField] private float maxContratableAngle;
-    [SerializeField] private float contractedAngle = 45f;
+    [SerializeField] private float L_ContractedAngle;
+    [SerializeField] private float R_ContractedAngle;
     [SerializeField] private float relaxedAngle = 0f;
-
-    [SerializeField] private float contractionSpringForce = 30f;
-    [SerializeField] private float relaxationSpringForce = 100f;
+    // Contraction settings used for when the muscle is contracting
+    [SerializeField] private float contractionSpringForce = 0f;
     [SerializeField] private float springDamper = 10f;
     [SerializeField] private float muscleStrength = 100f;
+    // Relaxation settings used for when the muscle is not contracting
+    private float relaxationSpringForce = 0;
+    private float relaxationSpringDamper = 0;
+    private float relaxationMuscleStrength = 0;
 
     public JointDrive ContractionDrive
     {
@@ -54,8 +64,8 @@ public class JoystickTesting : MonoBehaviour
             return new JointDrive
             {
                 positionSpring = relaxationSpringForce,
-                positionDamper = springDamper,
-                maximumForce = muscleStrength
+                positionDamper = relaxationSpringDamper,
+                maximumForce = relaxationMuscleStrength
             };
         }
     }
@@ -85,19 +95,27 @@ public class JoystickTesting : MonoBehaviour
     [SerializeField] private bool rightStickIsMoving;
     // The amount of force applied to rigidbody when moving limbs
     [SerializeField] private float handAcceleration;
+    [SerializeField] private float minimumHandAcceleration;
     [SerializeField] private float handMaxVelocity;
-    [SerializeField] private float pullUpStrength;
+    private float pullUpStrength;
 
     [Header("Ragdoll Settings")]
     // the amount of distance on the x axis from the shoulder to the hand before angular damping is applied
-    [SerializeField] private float xDistanceAmountForAngularDamping; 
-    [SerializeField] private float handAngularDamping; // Normal angular damping for the hand
+    [SerializeField] private float xDistanceAmountForAngularDamping;
+    [SerializeField] private float controllingHandLinearDamping; // Normal linear damping for the hand
+    [SerializeField] private float ragdollHandLinearDamping; // Ragdoll linear damping applied when not moving
+    [SerializeField] private float controllingHandAngularDamping; // Normal angular damping for the hand
     [SerializeField] private float ragdollHandAngularDamping; // Damping applied when not gripping and not moving
 
     // For furture use change trigger deadzone so slight pressure doesn't activate grip
     // Higher deadzone means more pressure is needed
     private float triggerDeadZone = 0.01f;
     [Header("Debugging Variables")]
+    //Vector3 L_HandGripedPos;
+    //Vector3 R_HandGripedPos;
+    //private bool hasLeftBeenSet = false;
+    //private bool hasRightBeenSet = false;
+
     [SerializeField] private bool grippingDisabled;
     [SerializeField] private bool leftIsGripping = false;
     [SerializeField] private bool rightIsGripping = false;
@@ -108,19 +126,27 @@ public class JoystickTesting : MonoBehaviour
     public bool canRightGrip { get; set; }
     private void Start()
     {
-        handAngularDamping = R_AnchorRB.angularDamping;
+        controllingHandAngularDamping = L_AnchorRB.angularDamping;
     }
     void Update()
     {
-        InitializeGamePad(); // Gets controller and its buttons
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Time.timeScale += 0.1f;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Time.timeScale -= 0.1f;
+        }
+        GamePadInputsGrippingLogic(); // Gets controller and its buttons
         MovingLimbsWMouse(); // Mouse logic
         
     }
     private void FixedUpdate()
     {
-        ControllerMovement();
-        MovementArmLogicRB(); // RB settings for arm movement while in use
-        RagdollArmLogicRB(); // RB settings for arm movement while not in use
+        JoystickHandMovement();
+        ActiveRBHandLogic(); // RB settings for arm movement while in use
+        RagdollRBHandLogic(); // RB settings for arm movement while not in use
     }
     private void MovingLimbsWMouse()
     {
@@ -162,7 +188,7 @@ public class JoystickTesting : MonoBehaviour
             currentAnchor = null;
         }
     }
-    private void InitializeGamePad()
+    private void GamePadInputsGrippingLogic()
     {
         // Get the current gamepad
         var gamepad = Gamepad.current;
@@ -192,10 +218,27 @@ public class JoystickTesting : MonoBehaviour
         if (!grippingDisabled)
         {
             // Grip logic for left and right hands
-            if (leftTrigger > triggerDeadZone && canLeftGrip) { L_AnchorRB.isKinematic = true; leftIsGripping = true; }
-            if (leftTrigger <= triggerDeadZone) { L_AnchorRB.isKinematic = false; leftIsGripping = false; }
-            if (rightTrigger > triggerDeadZone && canRightGrip) { R_AnchorRB.isKinematic = true; rightIsGripping = true; }
-            if (rightTrigger <= triggerDeadZone) { R_AnchorRB.isKinematic = false; rightIsGripping = false; }
+            if (leftTrigger > triggerDeadZone && canLeftGrip) 
+            {
+                leftIsGripping = true;
+                L_AnchorRB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
+            }
+            if (leftTrigger <= triggerDeadZone) 
+            { 
+                leftIsGripping = false; 
+                L_AnchorRB.constraints = RigidbodyConstraints.None;
+            }
+
+            if (rightTrigger > triggerDeadZone && canRightGrip) 
+            { 
+                rightIsGripping = true;
+                R_AnchorRB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
+            }
+            if (rightTrigger <= triggerDeadZone) 
+            { 
+                rightIsGripping = false; 
+                R_AnchorRB.constraints = RigidbodyConstraints.None; 
+            }
         }
         if (leftStick != Vector2.zero) leftStickIsMoving = true;
         else leftStickIsMoving = false;
@@ -203,86 +246,132 @@ public class JoystickTesting : MonoBehaviour
         else rightStickIsMoving = false;
     }
     
-    private void ControllerMovement()
+    private void JoystickHandMovement()
     {
-        if (leftStickIsMoving)
+        // Calculate hand target positions based on joystick input
+        Vector3 L_WorldOffset = new Vector3(
+            Mathf.Clamp(leftStick.x, -1, 1) * maxReach,
+            Mathf.Clamp(leftStick.y, -1, 1) * maxReach,
+            0f);
+        Vector3 R_WorldOffset = new Vector3(
+            Mathf.Clamp(rightStick.x, -1, 1) * maxReach,
+            Mathf.Clamp(rightStick.y, -1, 1) * maxReach,
+            0f);
+
+        leftControllerPoint.localPosition = leftControllerPoint.parent.InverseTransformDirection(L_WorldOffset);
+        rightControllerPoint.localPosition = rightControllerPoint.parent.InverseTransformDirection(R_WorldOffset);
+
+        // Left Arm Movement Logic
+        if (leftStickIsMoving && !leftIsGripping)
         {
-            if (leftIsGripping)
-            {
-                Vector2 distanceFromBodyToHand = new Vector2(
-                    L_AnchorRB.position.x - bodyRB.position.x,
-                    L_AnchorRB.position.y - bodyRB.position.y);
+            Vector3 force = ((leftControllerPoint.position - L_AnchorRB.transform.position) * handAcceleration);
+            if (force.magnitude > minimumHandAcceleration) L_AnchorRB.AddForce(force);
+            else L_AnchorRB.AddForce((leftControllerPoint.position - L_AnchorRB.transform.position).normalized * minimumHandAcceleration);
 
-                Debug.Log(leftStick.y);
-                
-                //bodyRB.AddForce(distanceFromBodyToHand.normalized * pullUpStrength);
-                contractedAngle = Mathf.Lerp(0, maxContratableAngle, leftStick.y);
-                ContractMuscle(L_ElbowCJ);
+            // Limit maximum velocity
+            if (L_AnchorRB.linearVelocity.magnitude > handMaxVelocity)
+            {
+                L_AnchorRB.linearVelocity = L_AnchorRB.linearVelocity.normalized * handMaxVelocity;
             }
-            else
-            {
-                RelaxMuscle(L_ElbowCJ);
-                L_AnchorRB.AddForce(leftStick * handAcceleration);
-
-                Debug.Log(L_AnchorRB.linearVelocity.magnitude);
-                if (L_AnchorRB.linearVelocity.magnitude > handMaxVelocity)
-                {
-                    L_AnchorRB.linearVelocity = L_AnchorRB.linearVelocity.normalized * handMaxVelocity;
-                }
-            } 
         }
+
+        // Right Arm Movement Logic
         if (rightStickIsMoving)
         {
-            R_AnchorRB.AddForce(rightStick * handAcceleration);
+            Vector3 force = ((rightControllerPoint.position - R_AnchorRB.transform.position) * handAcceleration);
+            if (force.magnitude > minimumHandAcceleration) R_AnchorRB.AddForce(force);
+            else R_AnchorRB.AddForce((rightControllerPoint.position - R_AnchorRB.transform.position).normalized * minimumHandAcceleration);
+
+            // Limit maximum velocity
             if (R_AnchorRB.linearVelocity.magnitude > handMaxVelocity)
             {
                 R_AnchorRB.linearVelocity = R_AnchorRB.linearVelocity.normalized * handMaxVelocity;
             }
         }
+        // Left Arm Muscle Contraction Logic
+        if (leftIsGripping && leftStickIsMoving)
+        {
+            Vector2 handToShoulder = (bodyRB.position - L_AnchorRB.position).normalized;
+            Vector2 inputDir = leftStick.normalized;
+            float inputMagnitude = Mathf.Clamp01(leftStick.magnitude);
+            float alignment = Vector2.Dot(inputDir, handToShoulder);
+            float contractionInput = Mathf.Max(0f, alignment) * inputMagnitude;
+            L_ContractedAngle = Mathf.Lerp(0f, maxContratableAngle, contractionInput);
+
+            L_ContractMuscle();
+        }
+        else { RelaxMuscle(L_ElbowCJ); }
+
+        // Right Arm Muscle Contraction Logic
+        if (rightIsGripping && rightStickIsMoving)
+        {
+            Vector2 handToShoulder = (bodyRB.position - R_AnchorRB.position).normalized;
+            Vector2 inputDir = rightStick.normalized;
+            float inputMagnitude = Mathf.Clamp01(rightStick.magnitude);
+            float alignment = Vector2.Dot(inputDir, handToShoulder);
+            float contractionInput = Mathf.Max(0f, alignment) * inputMagnitude;
+            R_ContractedAngle = Mathf.Lerp(0f, maxContratableAngle * -1, contractionInput);
+
+            R_ContractMuscle();
+        }
+        else { RelaxMuscle(R_ElbowCJ); }
+
     }
-    private void MovementArmLogicRB()
+    // Applies rigidbody logic to arms when in use
+    private void ActiveRBHandLogic()
     {
         if (leftStickIsMoving)
         {
-            L_AnchorRB.angularDamping = handAngularDamping;
+            L_AnchorRB.linearDamping = controllingHandLinearDamping;
+            L_AnchorRB.angularDamping = controllingHandAngularDamping;
         }
         if (rightStickIsMoving)
         {
-            R_AnchorRB.angularDamping = handAngularDamping;
+            R_AnchorRB.linearDamping = controllingHandLinearDamping;
+            R_AnchorRB.angularDamping = controllingHandAngularDamping;
         }
     }
-    private void RagdollArmLogicRB()
+    // Applies ragdoll logic to arms when not in use
+    private void RagdollRBHandLogic()
     {
         if (!leftIsGripping && !leftStickIsMoving)
         {
+            L_AnchorRB.linearDamping = ragdollHandLinearDamping;
+
             if (L_AnchorRB.transform.position.x < L_UpperarmRB.transform.position.x + xDistanceAmountForAngularDamping &&
                 L_AnchorRB.transform.position.x > L_UpperarmRB.transform.position.x - xDistanceAmountForAngularDamping &&
-                L_AnchorRB.transform.position.y < L_UpperarmRB.transform.position.y)
+                L_AnchorRB.transform.position.y < L_ForearmRB.transform.position.y)
             {
                 L_AnchorRB.angularDamping = ragdollHandAngularDamping;
             }
         }
-        // Right Arm Logic
         if (!rightIsGripping && !rightStickIsMoving)
         {
-            Debug.Log("1");
+            R_AnchorRB.linearDamping = ragdollHandLinearDamping;
+
             if (R_AnchorRB.transform.position.x < R_UpperarmRB.transform.position.x + xDistanceAmountForAngularDamping &&
                 R_AnchorRB.transform.position.x > R_UpperarmRB.transform.position.x - xDistanceAmountForAngularDamping &&
-                R_AnchorRB.transform.position.y < R_UpperarmRB.transform.position.y)
+                R_AnchorRB.transform.position.y < R_ForearmRB.transform.position.y)
             {
                 R_AnchorRB.angularDamping = ragdollHandAngularDamping;
             }
         }
     }
-    private void ContractMuscle(ConfigurableJoint joint)
+    // Unused at the moment but the idea is to have muscle contraction and relaxation functions
+    private void L_ContractMuscle()
     {
-        joint.angularXDrive = ContractionDrive;
-        joint.targetRotation = Quaternion.Euler(contractedAngle, 0, 0);
+        L_ElbowCJ.angularXDrive = ContractionDrive;
+        L_ElbowCJ.targetRotation = Quaternion.Euler(L_ContractedAngle, 0, 0);
+    }
+    private void R_ContractMuscle()
+    {
+        R_ElbowCJ.angularXDrive = ContractionDrive;
+        R_ElbowCJ.targetRotation = Quaternion.Euler(R_ContractedAngle, 0, 0);
     }
 
     private void RelaxMuscle(ConfigurableJoint joint)
     {
-        joint.angularYZDrive = RelaxationDrive;
+        joint.angularXDrive = RelaxationDrive;
         joint.targetRotation = Quaternion.Euler(0, 0, 0);
     }
 }
