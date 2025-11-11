@@ -111,10 +111,10 @@ public class JoystickTesting : MonoBehaviour
     // Higher deadzone means more pressure is needed
     private float triggerDeadZone = 0.01f;
     [Header("Debugging Variables")]
-    Vector3 L_HandGripedPos;
-    Vector3 R_HandGripedPos;
-    private bool hasLeftBeenSet = false;
-    private bool hasRightBeenSet = false;
+    //Vector3 L_HandGripedPos;
+    //Vector3 R_HandGripedPos;
+    //private bool hasLeftBeenSet = false;
+    //private bool hasRightBeenSet = false;
 
     [SerializeField] private bool grippingDisabled;
     [SerializeField] private bool leftIsGripping = false;
@@ -138,15 +138,15 @@ public class JoystickTesting : MonoBehaviour
         {
             Time.timeScale -= 0.1f;
         }
-        InitializeGamePad(); // Gets controller and its buttons
+        GamePadInputsGrippingLogic(); // Gets controller and its buttons
         MovingLimbsWMouse(); // Mouse logic
         
     }
     private void FixedUpdate()
     {
-        ControllerMovement();
-        MovementArmLogicRB(); // RB settings for arm movement while in use
-        RagdollArmLogicRB(); // RB settings for arm movement while not in use
+        JoystickHandMovement();
+        ActiveRBHandLogic(); // RB settings for arm movement while in use
+        RagdollRBHandLogic(); // RB settings for arm movement while not in use
     }
     private void MovingLimbsWMouse()
     {
@@ -188,7 +188,7 @@ public class JoystickTesting : MonoBehaviour
             currentAnchor = null;
         }
     }
-    private void InitializeGamePad()
+    private void GamePadInputsGrippingLogic()
     {
         // Get the current gamepad
         var gamepad = Gamepad.current;
@@ -217,32 +217,28 @@ public class JoystickTesting : MonoBehaviour
 
         if (!grippingDisabled)
         {
-            // Grip logic for left and right hands  && canLeftGrip  && canRightGrip
-            if (leftTrigger > triggerDeadZone) 
-            { 
-                if (!hasLeftBeenSet)
-                {
-                    L_HandGripedPos = L_AnchorRB.transform.position;
-                    hasLeftBeenSet = true;
-                }
-                L_AnchorRB.transform.position = L_HandGripedPos;
-                //L_AnchorRB.isKinematic = true; 
-                leftIsGripping = true; 
+            // Grip logic for left and right hands
+            if (leftTrigger > triggerDeadZone && canLeftGrip) 
+            {
+                leftIsGripping = true;
+                L_AnchorRB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
             }
-            if (leftTrigger <= triggerDeadZone) { L_AnchorRB.isKinematic = false; leftIsGripping = false; hasLeftBeenSet = false; }
+            if (leftTrigger <= triggerDeadZone) 
+            { 
+                leftIsGripping = false; 
+                L_AnchorRB.constraints = RigidbodyConstraints.None;
+            }
 
-            if (rightTrigger > triggerDeadZone) 
+            if (rightTrigger > triggerDeadZone && canRightGrip) 
             { 
-                if (!hasRightBeenSet)
-                {
-                    R_HandGripedPos = R_AnchorRB.transform.position;
-                    rightIsGripping = true;
-                }
-                R_AnchorRB.transform.position = R_HandGripedPos;
-                 
                 rightIsGripping = true;
+                R_AnchorRB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
             }
-            if (rightTrigger <= triggerDeadZone) { R_AnchorRB.isKinematic = false; rightIsGripping = false; hasRightBeenSet = false; }
+            if (rightTrigger <= triggerDeadZone) 
+            { 
+                rightIsGripping = false; 
+                R_AnchorRB.constraints = RigidbodyConstraints.None; 
+            }
         }
         if (leftStick != Vector2.zero) leftStickIsMoving = true;
         else leftStickIsMoving = false;
@@ -250,7 +246,7 @@ public class JoystickTesting : MonoBehaviour
         else rightStickIsMoving = false;
     }
     
-    private void ControllerMovement()
+    private void JoystickHandMovement()
     {
         // Calculate hand target positions based on joystick input
         Vector3 L_WorldOffset = new Vector3(
@@ -322,7 +318,7 @@ public class JoystickTesting : MonoBehaviour
 
     }
     // Applies rigidbody logic to arms when in use
-    private void MovementArmLogicRB()
+    private void ActiveRBHandLogic()
     {
         if (leftStickIsMoving)
         {
@@ -336,7 +332,7 @@ public class JoystickTesting : MonoBehaviour
         }
     }
     // Applies ragdoll logic to arms when not in use
-    private void RagdollArmLogicRB()
+    private void RagdollRBHandLogic()
     {
         if (!leftIsGripping && !leftStickIsMoving)
         {
