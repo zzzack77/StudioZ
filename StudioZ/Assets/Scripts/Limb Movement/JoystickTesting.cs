@@ -262,7 +262,7 @@ public class JoystickTesting : MonoBehaviour
         rightControllerPoint.localPosition = rightControllerPoint.parent.InverseTransformDirection(R_WorldOffset);
 
         // Left Arm Movement Logic
-        if (leftStickIsMoving && !leftIsGripping)
+        if (leftStickIsMoving && !leftIsGripping && (leftIsGripping || rightIsGripping))
         {
             Vector3 force = ((leftControllerPoint.position - L_AnchorRB.transform.position) * handAcceleration);
             if (force.magnitude > minimumHandAcceleration) L_AnchorRB.AddForce(force);
@@ -276,7 +276,7 @@ public class JoystickTesting : MonoBehaviour
         }
 
         // Right Arm Movement Logic
-        if (rightStickIsMoving)
+        if (rightStickIsMoving && (leftIsGripping || rightIsGripping))
         {
             Vector3 force = ((rightControllerPoint.position - R_AnchorRB.transform.position) * handAcceleration);
             if (force.magnitude > minimumHandAcceleration) R_AnchorRB.AddForce(force);
@@ -320,12 +320,12 @@ public class JoystickTesting : MonoBehaviour
     // Applies rigidbody logic to arms when in use
     private void ActiveRBHandLogic()
     {
-        if (leftStickIsMoving)
+        if (leftStickIsMoving && (!leftIsGripping || rightIsGripping))
         {
             L_AnchorRB.linearDamping = controllingHandLinearDamping;
             L_AnchorRB.angularDamping = controllingHandAngularDamping;
         }
-        if (rightStickIsMoving)
+        if (rightStickIsMoving && (leftIsGripping || rightIsGripping))
         {
             R_AnchorRB.linearDamping = controllingHandLinearDamping;
             R_AnchorRB.angularDamping = controllingHandAngularDamping;
@@ -334,7 +334,7 @@ public class JoystickTesting : MonoBehaviour
     // Applies ragdoll logic to arms when not in use
     private void RagdollRBHandLogic()
     {
-        if (!leftIsGripping && !leftStickIsMoving)
+        if ((!leftIsGripping && !leftStickIsMoving) || (!leftIsGripping || !rightIsGripping))
         {
             L_AnchorRB.linearDamping = ragdollHandLinearDamping;
 
@@ -345,7 +345,7 @@ public class JoystickTesting : MonoBehaviour
                 L_AnchorRB.angularDamping = ragdollHandAngularDamping;
             }
         }
-        if (!rightIsGripping && !rightStickIsMoving)
+        if ((!rightIsGripping && !rightStickIsMoving) || (!leftIsGripping || !rightIsGripping))
         {
             R_AnchorRB.linearDamping = ragdollHandLinearDamping;
 
