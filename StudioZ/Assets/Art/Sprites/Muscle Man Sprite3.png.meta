@@ -1,0 +1,351 @@
+fileFormatVersion: 2
+guid: a567f7ab66ce2194aba0705b1bd9526b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7993154348068534831
+    second: Muscle Man Sprite3_0
+  - first:
+      213: -1452480242151569317
+    second: Muscle Man Sprite3_1
+  - first:
+      213: 7184888165631496676
+    second: Muscle Man Sprite3_2
+  - first:
+      213: 7307264407985433155
+    second: Muscle Man Sprite3_3
+  - first:
+      213: 6519403595901517602
+    second: Muscle Man Sprite3_4
+  - first:
+      213: 7967362623121022321
+    second: Muscle Man Sprite3_5
+  - first:
+      213: -3402543580579113434
+    second: Muscle Man Sprite3_6
+  - first:
+      213: -6183312004083132852
+    second: Muscle Man Sprite3_7
+  - first:
+      213: 4373842808869373795
+    second: Muscle Man Sprite3_8
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 663
+        width: 126
+        height: 365
+      alignment: 9
+      pivot: {x: 0.5308639, y: 0.14484997}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d58180587c921190800000000000000
+      internalID: -7993154348068534831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_1
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 839
+        width: 197
+        height: 246
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5848435ae0c7dbe0800000000000000
+      internalID: -1452480242151569317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_2
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 669
+        width: 126
+        height: 365
+      alignment: 9
+      pivot: {x: 0.44855803, y: 0.091576144}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e19f5f28b9d5b360800000000000000
+      internalID: 7184888165631496676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_3
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 367
+        width: 256
+        height: 252
+      alignment: 9
+      pivot: {x: 0.7126735, y: 0.32510293}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34aa3d5734e986560800000000000000
+      internalID: 7307264407985433155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_4
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 504
+        width: 312
+        height: 324
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22f3d197703997a50800000000000000
+      internalID: 6519403595901517602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_5
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 373
+        width: 256
+        height: 252
+      alignment: 9
+      pivot: {x: 0.30950022, y: 0.330024}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17d5ad3c712c19e60800000000000000
+      internalID: 7967362623121022321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_6
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 359
+        width: 216
+        height: 121
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 626dbc214acb7c0d0800000000000000
+      internalID: -3402543580579113434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_7
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 0
+        width: 111
+        height: 312
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c46573d2e76703aa0800000000000000
+      internalID: -6183312004083132852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle Man Sprite3_8
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 0
+        width: 111
+        height: 312
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3674e0e6cd203bc30800000000000000
+      internalID: 4373842808869373795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5c9583444eede8346aa82c9caaed63d0
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Muscle Man Sprite3_0: -7993154348068534831
+      Muscle Man Sprite3_1: -1452480242151569317
+      Muscle Man Sprite3_2: 7184888165631496676
+      Muscle Man Sprite3_3: 7307264407985433155
+      Muscle Man Sprite3_4: 6519403595901517602
+      Muscle Man Sprite3_5: 7967362623121022321
+      Muscle Man Sprite3_6: -3402543580579113434
+      Muscle Man Sprite3_7: -6183312004083132852
+      Muscle Man Sprite3_8: 4373842808869373795
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
