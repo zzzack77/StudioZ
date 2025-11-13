@@ -8,9 +8,20 @@ public interface IPlayerInput
     float GripLValue { get; }
     float GripRValue { get; }
 
-    //bool JugInput();
+    float GripDeadZone { get; }
 
-    //bool PocketInput();
+    bool GripLPressed();
 
-    //bool CrimpInput();
+    bool GripRPressed();
+
+    bool GripLNotPressed();
+
+    bool GripRNotPressed();
+    
+
+    bool JugInput();
+
+    bool PocketInput();
+
+    bool CrimpInput();
 }

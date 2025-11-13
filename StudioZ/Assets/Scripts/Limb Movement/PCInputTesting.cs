@@ -57,10 +57,10 @@ public class PCInputTesting : MonoBehaviour
         {
             L_Anchor.AddForce(input.MoveL * variableForce);
         }
-        if (input.GripRValue > triggerDeadZone) { R_Anchor.isKinematic = true; }
-        if (input.GripRValue <= triggerDeadZone) { R_Anchor.isKinematic = false; }
-        if (input.GripLValue > triggerDeadZone) { L_Anchor.isKinematic = true; }
-        if (input.GripLValue <= triggerDeadZone) { L_Anchor.isKinematic = false; }
+        if (input.GripRPressed()) { R_Anchor.isKinematic = true; }
+        if (input.GripRNotPressed()) { R_Anchor.isKinematic = false; }
+        if (input.GripLPressed()) { L_Anchor.isKinematic = true; }
+        if (input.GripLNotPressed()) { L_Anchor.isKinematic = false; }
     }
 }
 
