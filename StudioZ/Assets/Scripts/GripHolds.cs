@@ -1,41 +1,75 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GripHolds : MonoBehaviour
 {
     [SerializeField] private JoystickTesting joystickTesting;
+    [SerializeField] private HandAndBodyMovement handAndBodyMovement; 
     private void OnTriggerEnter(Collider collider)
     {
-        if (this.name == "L_Hand")
+        if (joystickTesting != null)
         {
-            if (collider.gameObject.CompareTag("Jug"))
+            if (this.name == "L_Hand")
             {
-                joystickTesting.canLeftGrip = true;
+                if (collider.gameObject.CompareTag("Jug"))
+                {
+                    joystickTesting.canLeftGrip = true;
+                }
+            }
+            if (this.name == "R_Hand")
+            {
+                if (collider.gameObject.CompareTag("Jug"))
+                {
+                    joystickTesting.canRightGrip = true;
+                }
             }
         }
-        if (this.name == "R_Hand")
+        
+
+        // New system
+        if (handAndBodyMovement != null)
         {
-            if (collider.gameObject.CompareTag("Jug"))
+            if (this.name == "L Joystick Pos")
             {
-                joystickTesting.canRightGrip = true;
+                if (collider.gameObject.CompareTag("Jug"))
+                {
+                    handAndBodyMovement.canGrip = true;
+                }
             }
         }
+        
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        if (this.name == "L_Hand")
+        if (joystickTesting != null)
         {
-            if (collider.gameObject.CompareTag("Jug"))
+            if (this.name == "L_Hand")
             {
-                joystickTesting.canLeftGrip = false;
+                if (collider.gameObject.CompareTag("Jug"))
+                {
+                    joystickTesting.canLeftGrip = false;
+                }
+            }
+            if (this.name == "R_Hand")
+            {
+                if (collider.gameObject.CompareTag("Jug"))
+                {
+                    joystickTesting.canRightGrip = false;
+                }
             }
         }
-        if (this.name == "R_Hand")
+
+        // New system
+        if (handAndBodyMovement != null)
         {
-            if (collider.gameObject.CompareTag("Jug"))
+            if (this.name == "L Joystick Pos")
             {
-                joystickTesting.canRightGrip = false;
+                if (collider.gameObject.CompareTag("Jug"))
+                {
+                    handAndBodyMovement.canGrip = false;
+                }
             }
         }
     }

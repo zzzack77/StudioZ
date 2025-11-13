@@ -4,45 +4,42 @@ using UnityEngine.InputSystem;
 
 public class HandAndBodyMovement : MonoBehaviour
 {
-    [Header("Rigid Bodys")]
-    public Rigidbody bodyRB;
-    public Rigidbody handRB;
+    [Header("Rigidbodys")]
+    [SerializeField] private Rigidbody bodyRB;
+    [SerializeField] private Rigidbody handRB;
 
+
+    [Header("Arm and joint settings")]
     private ConfigurableJoint currentJoint;
+    [SerializeField] private float armLength = 2f;             // Max distance before joint connects
+    [SerializeField] private float jointSpring = 500f;         // How stiff the joint tries to stay at the target
+    [SerializeField] private float jointDamper = 50f;
 
-    [Header("Arm Settings")]
-    public float armLength = 2f;             // Max distance before joint connects
-    public float jointSpring = 500f;         // How stiff the joint tries to stay at the target
-    public float jointDamper = 50f;
+    [Header("Grip Settings")]
+    public bool canGrip { get; set; }
+    [SerializeField] private bool LIsGripping = false;
 
-    [Header("Controller Stick Positions")]
-    [SerializeField] private Transform leftControllerPoint;
-    [SerializeField] private Transform rightControllerPoint;
-    [SerializeField] private Transform bodyPoint;
-    [SerializeField] private float maxReach;
-
+    // Trigger values
     private float leftTrigger;
+    private float rightTrigger;
     // Joystick values
     private Vector2 leftStick;
     private Vector2 rightStick;
 
+
     // Dead zones
     private float triggerDeadZone = 0.1f;
-    public float joystickDeadZone = 0.2f;
+    private float joystickDeadZone = 0.2f;
 
+    [Header("Joystick Flicking Settings")]
     [SerializeField] private bool hasFlicked = false;
-
-    public Rigidbody rb;
-    public float forceMultiplier = 10f;  // How strong the flick force is
-    public float flickThreshold = 0.7f;  // How "fast" the stick must move to count as a flick
-
+    [SerializeField] private float forceMultiplier;  // How strong the flick force is
+    [SerializeField] private float flickThreshold;  // How "fast" the stick must move to count as a flick
+    [SerializeField] private float maxForce;
+    // For calculating flick speed
     private Vector2 lastStick;
     private float lastTime;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    
 
     // Update is called once per frame
     void Update()
@@ -70,14 +67,25 @@ public class HandAndBodyMovement : MonoBehaviour
         rightStick = gamepad.rightStick.ReadValue();
 
         leftTrigger = gamepad.leftTrigger.ReadValue();
+
     }
     private void TestingFlick()
     {
+        if (!LIsGripping)
+        {
+            return;
+        }
         float currentTime = Time.time;
 
         // Calculate how fast the stick moved (change in magnitude over time)
         float deltaMagnitude = (leftStick.magnitude - lastStick.magnitude);
         float deltaTime = currentTime - lastTime;
+
+        // Calculate joystick speed (distance moved since last frame)
+        Vector2 delta = leftStick - lastStick;
+        float speed = delta.magnitude / Time.deltaTime;
+
+        Debug.Log($"Joystick Speed: {speed:F3}");
 
         if (deltaTime > 0f)
         {
@@ -87,12 +95,22 @@ public class HandAndBodyMovement : MonoBehaviour
             if (!hasFlicked && flickSpeed > flickThreshold && leftStick.magnitude > 0.5f)
             {
                 Vector3 flickDirection = new Vector3(leftStick.x, leftStick.y, 0).normalized;
-                rb.AddForce(flickDirection * flickSpeed * forceMultiplier, ForceMode.Impulse);
-                Debug.Log((flickDirection * flickSpeed * forceMultiplier).magnitude);
+                if ((flickDirection * flickSpeed * forceMultiplier).magnitude > maxForce)
+                {
+                    bodyRB.AddForce(-flickDirection * maxForce, ForceMode.Impulse);
+                    Debug.Log((-flickDirection * maxForce).magnitude);
 
+                }
+                else
+                {
+                    bodyRB.AddForce(-flickDirection * flickSpeed * forceMultiplier, ForceMode.Impulse);
+                    //Debug.Log((-flickDirection * flickSpeed * forceMultiplier).magnitude);
+                }
                 hasFlicked = true; // prevent multiple triggers
             }
 
+
+            //Debug.Log(flickSpeed);
             // Reset flick once the joystick returns near center
             if (hasFlicked && leftStick.magnitude < joystickDeadZone)
             {
@@ -106,69 +124,58 @@ public class HandAndBodyMovement : MonoBehaviour
     }
     private void ControllerMovement()
     {
-        if (leftTrigger < triggerDeadZone)
+        if (leftTrigger < triggerDeadZone || !canGrip)
         {
+            LIsGripping = false;
+            handRB.constraints = RigidbodyConstraints.None;
+
             Vector3 L_WorldOffset = new Vector3(
-                Mathf.Clamp(leftStick.x, -1, 1) * maxReach,
-                Mathf.Clamp(leftStick.y, -1, 1) * maxReach,
+                Mathf.Clamp(leftStick.x, -1, 1) * armLength,
+                Mathf.Clamp(leftStick.y, -1, 1) * armLength,
                 0f);
             Vector3 R_WorldOffset = new Vector3(
-                Mathf.Clamp(rightStick.x, -1, 1) * maxReach,
-                Mathf.Clamp(rightStick.y, -1, 1) * maxReach,
+                Mathf.Clamp(rightStick.x, -1, 1) * armLength,
+                Mathf.Clamp(rightStick.y, -1, 1) * armLength,
                 0f);
 
-            leftControllerPoint.transform.position = L_WorldOffset + bodyPoint.transform.position;
+            handRB.transform.position = L_WorldOffset + bodyRB.transform.position;
         }
 
-        if (leftTrigger > triggerDeadZone)
+        if (leftTrigger >= triggerDeadZone && canGrip)
         {
-            // Calculate hand target positions based on joystick input
-            Vector3 L_WorldOffset = new Vector3(
-                -Mathf.Clamp(leftStick.x, -1, 1) * maxReach,
-                -Mathf.Clamp(leftStick.y, -1, 1) * maxReach,
-                0f);
-            Vector3 R_WorldOffset = new Vector3(
-                Mathf.Clamp(rightStick.x, -1, 1) * maxReach,
-                Mathf.Clamp(rightStick.y, -1, 1) * maxReach,
-                0f);
-
-            //bodyPoint.transform.position = leftControllerPoint.InverseTransformDirection(L_WorldOffset);
-            bodyPoint.transform.position = L_WorldOffset + leftControllerPoint.transform.position;
+            LIsGripping = true;
+            handRB.constraints = RigidbodyConstraints.FreezeAll;
         }
-        else
-        {
-            // Calculate hand target positions based on joystick input
-            Vector3 L_WorldOffset = new Vector3(
-                Mathf.Clamp(leftStick.x, -1, 1) * maxReach,
-                Mathf.Clamp(leftStick.y, -1, 1) * maxReach,
-                0f);
-            Vector3 R_WorldOffset = new Vector3(
-                Mathf.Clamp(rightStick.x, -1, 1) * maxReach,
-                Mathf.Clamp(rightStick.y, -1, 1) * maxReach,
-                0f);
-
-            leftControllerPoint.transform.position = L_WorldOffset + bodyPoint.transform.position;
-            //rightControllerPoint.localPosition = rightControllerPoint.parent.InverseTransformDirection(R_WorldOffset);
-        }
-
-
+        
     }
     private void JointChecking()
     {
-        float distance = Vector3.Distance(bodyRB.position, handRB.position);
-
-        // When hand is beyond arm length and no joint exists create joint
-        if (currentJoint == null && distance >= armLength)
+        if (LIsGripping)
         {
-            CreateJoint();
-        }
+            float distance = Vector3.Distance(bodyRB.position, handRB.position);
 
-        // When hand comes back within range remove joint
-        if (currentJoint != null && distance < armLength * 0.9f)
-        {
-            Destroy(currentJoint);
-            currentJoint = null;
+            // When hand is beyond arm length and no joint exists create joint
+            if (currentJoint == null && distance >= armLength)
+            {
+                CreateJoint();
+            }
+
+            // When hand comes back within range remove joint
+            if (currentJoint != null && distance < armLength * 0.9f)
+            {
+                Destroy(currentJoint);
+                currentJoint = null;
+            }
         }
+        else
+        {
+            if (currentJoint != null)
+            {
+                Destroy(currentJoint);
+                currentJoint = null;
+            }
+        }
+        
     }
     void CreateJoint()
     {
