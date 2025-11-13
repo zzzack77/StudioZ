@@ -16,12 +16,15 @@ public class HandAndBodyMovement : MonoBehaviour
     [SerializeField] private float jointDamper = 50f;
 
     [Header("Grip Settings")]
-    public bool canGrip { get; set; }
+    public bool canGripJug { get; set; }
+    public bool canGripCrimp { get; set; }
     [SerializeField] private bool LIsGripping = false;
 
     // Trigger values
     private float leftTrigger;
     private float rightTrigger;
+    // Shoulder values
+    private float leftShoulder;
     // Joystick values
     private Vector2 leftStick;
     private Vector2 rightStick;
@@ -65,6 +68,8 @@ public class HandAndBodyMovement : MonoBehaviour
         // Read joystick values
         leftStick = gamepad.leftStick.ReadValue();
         rightStick = gamepad.rightStick.ReadValue();
+
+        leftShoulder = gamepad.leftShoulder.ReadValue();
 
         leftTrigger = gamepad.leftTrigger.ReadValue();
 
@@ -124,10 +129,8 @@ public class HandAndBodyMovement : MonoBehaviour
     }
     private void ControllerMovement()
     {
-        if (leftTrigger < triggerDeadZone || !canGrip)
+        if (!LIsGripping)
         {
-            LIsGripping = false;
-            handRB.constraints = RigidbodyConstraints.None;
 
             Vector3 L_WorldOffset = new Vector3(
                 Mathf.Clamp(leftStick.x, -1, 1) * armLength,
@@ -141,10 +144,21 @@ public class HandAndBodyMovement : MonoBehaviour
             handRB.transform.position = L_WorldOffset + bodyRB.transform.position;
         }
 
-        if (leftTrigger >= triggerDeadZone && canGrip)
+        if (leftShoulder > 0.1f && canGripCrimp)
         {
             LIsGripping = true;
             handRB.constraints = RigidbodyConstraints.FreezeAll;
+        }
+
+        else if (leftTrigger >= triggerDeadZone  && canGripJug)
+        {
+            LIsGripping = true;
+            handRB.constraints = RigidbodyConstraints.FreezeAll;
+        }
+        else
+        {
+            LIsGripping = false;
+            handRB.constraints = RigidbodyConstraints.None;
         }
         
     }
