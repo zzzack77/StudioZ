@@ -34,7 +34,11 @@ public class GripHolds : MonoBehaviour
             {
                 if (collider.gameObject.CompareTag("Jug"))
                 {
-                    handAndBodyMovement.canGrip = true;
+                    handAndBodyMovement.canGripJug = true;
+                }
+                if (collider.gameObject.CompareTag("Crimp"))
+                {
+                    handAndBodyMovement.canGripCrimp = true;
                 }
             }
         }
@@ -68,7 +72,11 @@ public class GripHolds : MonoBehaviour
             {
                 if (collider.gameObject.CompareTag("Jug"))
                 {
-                    handAndBodyMovement.canGrip = false;
+                    handAndBodyMovement.canGripJug = false;
+                }
+                if (collider.gameObject.CompareTag("Crimp"))
+                {
+                    handAndBodyMovement.canGripCrimp = false;
                 }
             }
         }
