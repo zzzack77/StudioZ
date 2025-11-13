@@ -40,6 +40,10 @@ public class GripHolds : MonoBehaviour
                 {
                     handAndBodyMovement.canGripCrimp = true;
                 }
+                if (collider.gameObject.CompareTag("Pocket"))
+                {
+                    handAndBodyMovement.canGripPocket = true;
+                }
             }
         }
         
@@ -77,6 +81,10 @@ public class GripHolds : MonoBehaviour
                 if (collider.gameObject.CompareTag("Crimp"))
                 {
                     handAndBodyMovement.canGripCrimp = false;
+                }
+                if (collider.gameObject.CompareTag("Pocket"))
+                {
+                    handAndBodyMovement.canGripPocket = false;
                 }
             }
         }
