@@ -79,6 +79,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
         InitializeGamepad();
         LGrippedHandMovement();
         RGrippedHandMovement();
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            bodyRB.position = Vector3.zero;
+        }
     }
     private void FixedUpdate()
     {
