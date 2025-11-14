@@ -57,7 +57,8 @@ public class HandAndBodyMovement : MonoBehaviour
     [SerializeField] private bool L_hasFlicked = false;
     [SerializeField] private bool R_hasFlicked = false;
     [SerializeField] private float flickCooldown = 0.2f;
-    [SerializeField] private float forceMultiplier;  // How strong the flick force is
+    [SerializeField] private float forceMultiplier; // How strong the swigning force is
+    [SerializeField] private float flickMultiplier; // How strong the flick force is
     [SerializeField] private float flickThreshold;  // How "fast" the stick must move to count as a flick
     [SerializeField] private float maxForce;
     // For calculating flick speed
@@ -109,7 +110,9 @@ public class HandAndBodyMovement : MonoBehaviour
         if (!L_isGripping) return;
 
         Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0).normalized;
-        bodyRB.AddForce(-controllerDirection * 1);
+
+        //float forceApplied = Mathf.Min((- controllerDirection.normalized * forceMultiplier).magnitude, maxForce);
+        bodyRB.AddForce(-controllerDirection * forceMultiplier);
 
 
         float currentTime = Time.time;
@@ -129,7 +132,7 @@ public class HandAndBodyMovement : MonoBehaviour
             if (canFlick && flickSpeed > flickThreshold && leftStick.magnitude > 0.5f)
             {
                 Vector3 flickDirection = new Vector3(leftStick.x, leftStick.y, 0).normalized;
-                float flickForce = Mathf.Min(flickSpeed * forceMultiplier, maxForce);
+                float flickForce = Mathf.Min(flickSpeed * flickMultiplier, maxForce);
 
                 bodyRB.AddForce(-flickDirection * flickForce, ForceMode.Impulse);
 
@@ -151,7 +154,7 @@ public class HandAndBodyMovement : MonoBehaviour
         if (!R_isGripping) return;
 
         Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0).normalized;
-        bodyRB.AddForce(-controllerDirection * 1);
+        bodyRB.AddForce(-controllerDirection * forceMultiplier);
 
 
         float currentTime = Time.time;
@@ -171,7 +174,7 @@ public class HandAndBodyMovement : MonoBehaviour
             if (canFlick && flickSpeed > flickThreshold && rightStick.magnitude > 0.5f)
             {
                 Vector3 flickDirection = new Vector3(rightStick.x, rightStick.y, 0).normalized;
-                float flickForce = Mathf.Min(flickSpeed * forceMultiplier, maxForce);
+                float flickForce = Mathf.Min(flickSpeed * flickMultiplier, maxForce);
 
                 bodyRB.AddForce(-flickDirection * flickForce, ForceMode.Impulse);
 
