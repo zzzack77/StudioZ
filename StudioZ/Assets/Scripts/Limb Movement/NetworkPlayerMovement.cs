@@ -71,7 +71,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private float R_lastTime;
     private float R_lastFlickTime = -1f;
 
-
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsOwner) enabled = false;
+    }
     // Update is called once per frame
     void Update()
     {
