@@ -38,15 +38,30 @@ public class GripHolds : MonoBehaviour
                 //}
                 if (collider.gameObject.CompareTag("Jug"))
                 {
-                    handAndBodyMovement.canGripJug = true;
+                    handAndBodyMovement.L_canGripJug = true;
                 }
                 if (collider.gameObject.CompareTag("Crimp"))
                 {
-                    handAndBodyMovement.canGripCrimp = true;
+                    handAndBodyMovement.L_canGripCrimp = true;
                 }
                 if (collider.gameObject.CompareTag("Pocket"))
                 {
-                    handAndBodyMovement.canGripPocket = true;
+                    handAndBodyMovement.L_canGripPocket = true;
+                }
+            }
+            if (this.name == "R Joystick Pos")
+            {
+                if (collider.gameObject.CompareTag("Jug"))
+                {
+                    handAndBodyMovement.R_canGripJug = true;
+                }
+                if (collider.gameObject.CompareTag("Crimp"))
+                {
+                    handAndBodyMovement.R_canGripCrimp = true;
+                }
+                if (collider.gameObject.CompareTag("Pocket"))
+                {
+                    handAndBodyMovement.R_canGripPocket = true;
                 }
             }
         }
@@ -80,15 +95,30 @@ public class GripHolds : MonoBehaviour
             {
                 if (collider.gameObject.CompareTag("Jug"))
                 {
-                    handAndBodyMovement.canGripJug = false;
+                    handAndBodyMovement.L_canGripJug = false;
                 }
                 if (collider.gameObject.CompareTag("Crimp"))
                 {
-                    handAndBodyMovement.canGripCrimp = false;
+                    handAndBodyMovement.L_canGripCrimp = false;
                 }
                 if (collider.gameObject.CompareTag("Pocket"))
                 {
-                    handAndBodyMovement.canGripPocket = false;
+                    handAndBodyMovement.L_canGripPocket = false;
+                }
+            }
+            if (this.name == "R Joystick Pos")
+            {
+                if (collider.gameObject.CompareTag("Jug"))
+                {
+                    handAndBodyMovement.R_canGripJug = false;
+                }
+                if (collider.gameObject.CompareTag("Crimp"))
+                {
+                    handAndBodyMovement.R_canGripCrimp = false;
+                }
+                if (collider.gameObject.CompareTag("Pocket"))
+                {
+                    handAndBodyMovement.R_canGripPocket = false;
                 }
             }
         }
