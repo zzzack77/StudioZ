@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6959897393486084542}
   - component: {fileID: 1149492567508658557}
   - component: {fileID: 766306367707682103}
-  - component: {fileID: 4989872091929332257}
   - component: {fileID: 8291863726761038552}
+  - component: {fileID: 7400407476444609095}
   - component: {fileID: 2614581624468360092}
   m_Layer: 0
   m_Name: L Joystick Pos
@@ -118,20 +118,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
---- !u!114 &4989872091929332257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 440592626971280736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dd0d3fdda594d545b144b08bb2e532d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  joystickTesting: {fileID: 0}
-  handAndBodyMovement: {fileID: 0}
 --- !u!135 &8291863726761038552
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -153,6 +139,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7400407476444609095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440592626971280736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd593325cdaecff44888fdcefbc38fac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  networkPlayerMovement: {fileID: 4736109426978950846}
 --- !u!114 &2614581624468360092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 702134417312212853}
   - component: {fileID: 1034334292987201062}
   - component: {fileID: 5375496430398545004}
-  - component: {fileID: 163281888676044443}
+  - component: {fileID: 3001168132666084696}
   - component: {fileID: 4186585368967150693}
   - component: {fileID: 5732471897105309420}
   m_Layer: 0
@@ -623,7 +623,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
---- !u!114 &163281888676044443
+--- !u!114 &3001168132666084696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -632,11 +632,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3332109939462773745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dd0d3fdda594d545b144b08bb2e532d, type: 3}
+  m_Script: {fileID: 11500000, guid: bd593325cdaecff44888fdcefbc38fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystickTesting: {fileID: 0}
-  handAndBodyMovement: {fileID: 0}
+  ShowTopMostFoldoutHeaderGroup: 1
+  networkPlayerMovement: {fileID: 4736109426978950846}
 --- !u!135 &4186585368967150693
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1079,7 +1079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1184873917
+  GlobalObjectIdHash: 1531420698
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1631,7 +1631,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12.33
+  orthographic size: 34.22
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
