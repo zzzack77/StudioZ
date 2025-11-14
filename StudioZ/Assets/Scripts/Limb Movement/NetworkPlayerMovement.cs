@@ -26,6 +26,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool canGripAny { get; set; }
     public bool canGripCheckPoint { get; set; }
     public bool canGripFinish { get; set; }
+    
+    [Header("Camera")]
+    public GameObject playerCamera; 
 
     // Left Grips
     public bool L_canGripJug { get; set; }
@@ -74,7 +77,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (!IsOwner) enabled = false;
+        if (!IsOwner) enabled = false;  playerCamera.SetActive(false);
     }
     // Update is called once per frame
     void Update()
