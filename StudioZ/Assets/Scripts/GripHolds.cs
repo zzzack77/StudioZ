@@ -32,6 +32,10 @@ public class GripHolds : MonoBehaviour
         {
             if (this.name == "L Joystick Pos")
             {
+                //if (collider.gameObject.CompareTag("Any"))
+                //{
+                //    handAndBodyMovement.canGripJug = true;
+                //}
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     handAndBodyMovement.canGripJug = true;

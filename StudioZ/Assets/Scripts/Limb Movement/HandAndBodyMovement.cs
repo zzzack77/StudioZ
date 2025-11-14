@@ -16,6 +16,9 @@ public class HandAndBodyMovement : MonoBehaviour
     [SerializeField] private float jointDamper = 50f;
 
     [Header("Grip Settings")]
+    public bool canGripAny { get; set; }
+    public bool canGripCheckPoint { get; set; }
+    public bool canGripFinish { get; set; }
     public bool canGripJug { get; set; }
     public bool canGripCrimp { get; set; }
     public bool canGripPocket { get; set; }
@@ -94,7 +97,6 @@ public class HandAndBodyMovement : MonoBehaviour
         {
             float flickSpeed = deltaMagnitude / deltaTime;
             bool canFlick = !hasFlicked && (currentTime - lastFlickTime) > flickCooldown;
-
             // Check if flick conditions are met
             if (canFlick && flickSpeed > flickThreshold && leftStick.magnitude > 0.5f)
             {
@@ -102,7 +104,6 @@ public class HandAndBodyMovement : MonoBehaviour
                 float flickForce = Mathf.Min(flickSpeed * forceMultiplier, maxForce);
 
                 bodyRB.AddForce(-flickDirection * flickForce, ForceMode.Impulse);
-                Debug.Log($"Flick Force: {flickForce}");
 
                 hasFlicked = true;
                 lastFlickTime = currentTime; // start cooldown
@@ -144,7 +145,7 @@ public class HandAndBodyMovement : MonoBehaviour
             handRB.constraints = RigidbodyConstraints.FreezeAll;
         }
 
-        else if (leftTrigger >= triggerDeadZone && leftTrigger >= triggerDeadZone && canGripPocket)
+        else if (leftTrigger >= triggerDeadZone && leftShoulder >= triggerDeadZone && canGripPocket)
         {
             LIsGripping = true;
             handRB.constraints = RigidbodyConstraints.FreezeAll;
