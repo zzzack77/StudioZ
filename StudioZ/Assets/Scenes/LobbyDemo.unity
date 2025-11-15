@@ -11059,6 +11059,10 @@ PrefabInstance:
       propertyPath: handAndBodyMovement
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 647810756912893867, guid: 68f238f11ec800547b6f421e547c52a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 988624509679097442, guid: 68f238f11ec800547b6f421e547c52a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.74
@@ -11099,9 +11103,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2637694918280791878, guid: 68f238f11ec800547b6f421e547c52a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4989872091929332257, guid: 68f238f11ec800547b6f421e547c52a6, type: 3}
       propertyPath: handAndBodyMovement
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5189487588504173541, guid: 68f238f11ec800547b6f421e547c52a6, type: 3}
+      propertyPath: orthographic size
+      value: 24.2
       objectReference: {fileID: 0}
     - target: {fileID: 5334838283628257679, guid: 68f238f11ec800547b6f421e547c52a6, type: 3}
       propertyPath: m_Name
