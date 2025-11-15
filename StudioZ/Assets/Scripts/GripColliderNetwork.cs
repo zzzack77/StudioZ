@@ -7,6 +7,11 @@ using UnityEngine.InputSystem;
 public class GripColliderNetwork : NetworkBehaviour
 {
     [SerializeField] private NetworkPlayerMovement networkPlayerMovement;
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsOwner) enabled = false;
+    }
     private void OnTriggerEnter(Collider collider)
     {
         // New system

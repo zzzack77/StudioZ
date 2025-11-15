@@ -20,6 +20,7 @@ public class HandAndBodyMovement : MonoBehaviour
     [SerializeField] private float armLength = 2f;             // Max distance before joint connects
     [SerializeField] private float jointSpring = 500f;         // How stiff the joint tries to stay at the target
     [SerializeField] private float jointDamper = 50f;
+    [SerializeField] private float jointBreakingSensitivity = 0.9f; // Percentage of arm length before joint breaks
 
     [Header("Grip Settings")]
     public bool canGripAny { get; set; }
@@ -70,14 +71,15 @@ public class HandAndBodyMovement : MonoBehaviour
     private float R_lastTime;
     private float R_lastFlickTime = -1f;
 
-
+    [SerializeField] private bool oneStick;
     // Update is called once per frame
     void Update()
     {
         JointChecking();
         InitializeGamepad();
-        LGrippedHandMovement();
-        RGrippedHandMovement();
+        LGrippedHandMovementTest();
+        if (!oneStick) RGrippedHandMovementTest();
+        //RGrippedHandMovement();
     }
     private void FixedUpdate()
     {
@@ -104,6 +106,19 @@ public class HandAndBodyMovement : MonoBehaviour
         rightShoulder = gamepad.rightShoulder.ReadValue();
 
 
+    }
+    private void LGrippedHandMovementTest()
+    {
+        if (!L_isGripping) return;
+
+        Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0);
+        bodyRB.AddForce(-controllerDirection * forceMultiplier);
+    }
+    private void RGrippedHandMovementTest()
+    {
+        if (!R_isGripping) return;
+        Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0);
+        bodyRB.AddForce(-controllerDirection * forceMultiplier);
     }
     private void LGrippedHandMovement()
     {
@@ -266,7 +281,7 @@ public class HandAndBodyMovement : MonoBehaviour
     {
         if (L_isGripping)
         {
-            float distance = Vector3.Distance(bodyRB.position, L_handRB.position);
+            float distance = Vector3.Distance(L_shoulderPoint.position, L_handRB.position);
 
             // When hand is beyond arm length and no joint exists create joint
             if (L_currentJoint == null && distance >= armLength)
@@ -275,7 +290,7 @@ public class HandAndBodyMovement : MonoBehaviour
             }
 
             // When hand comes back within range remove joint
-            if (L_currentJoint != null && distance < armLength * 0.9f)
+            if (L_currentJoint != null && distance < armLength * jointBreakingSensitivity)
             {
                 Destroy(L_currentJoint);
                 L_currentJoint = null;
@@ -291,14 +306,14 @@ public class HandAndBodyMovement : MonoBehaviour
         }
         if (R_isGripping)
         {
-            float distance = Vector3.Distance(bodyRB.position, R_handRB.position);
+            float distance = Vector3.Distance(R_shoulderPoint.position, R_handRB.position);
             // When hand is beyond arm length and no joint exists create joint
             if (R_currentJoint == null && distance >= armLength)
             {
                 CreateRightJoint();
             }
             // When hand comes back within range remove joint
-            if (R_currentJoint != null && distance < armLength * 0.9f)
+            if (R_currentJoint != null && distance < armLength * jointBreakingSensitivity)
             {
                 Destroy(R_currentJoint);
                 R_currentJoint = null;
@@ -321,7 +336,8 @@ public class HandAndBodyMovement : MonoBehaviour
 
         // Prevent Unity from auto adjusting anchor positions
         L_currentJoint.autoConfigureConnectedAnchor = false;
-        L_currentJoint.anchor = Vector3.zero;
+        // L_shoulderPoint.position
+        L_currentJoint.anchor = L_shoulderPoint.localPosition;
         L_currentJoint.connectedAnchor = Vector3.zero;
 
         // Limit motion to simulate a rope/arm constraint
@@ -339,7 +355,7 @@ public class HandAndBodyMovement : MonoBehaviour
         R_currentJoint.connectedBody = R_handRB;
         // Prevent Unity from auto adjusting anchor positions
         R_currentJoint.autoConfigureConnectedAnchor = false;
-        R_currentJoint.anchor = Vector3.zero;
+        R_currentJoint.anchor = R_shoulderPoint.localPosition;
         R_currentJoint.connectedAnchor = Vector3.zero;
         // Limit motion to simulate a rope/arm constraint
         R_currentJoint.xMotion = ConfigurableJointMotion.Limited;
