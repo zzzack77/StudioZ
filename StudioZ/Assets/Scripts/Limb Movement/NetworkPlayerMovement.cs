@@ -18,17 +18,15 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [Header("Arm and joint settings")]
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
-    [SerializeField] private float armLength = 2f;             // Max distance before joint connects
+    [SerializeField] private float armLength = 4.2f;             // Max distance before joint connects
     [SerializeField] private float jointSpring = 500f;         // How stiff the joint tries to stay at the target
     [SerializeField] private float jointDamper = 50f;
+    [SerializeField] private float jointBreakingSensitivity = 0.99f;
 
     [Header("Grip Settings")]
     public bool canGripAny { get; set; }
     public bool canGripCheckPoint { get; set; }
     public bool canGripFinish { get; set; }
-    
-    [Header("Camera")]
-    public GameObject playerCamera; 
 
     // Left Grips
     public bool L_canGripJug { get; set; }
@@ -60,11 +58,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [Header("Joystick Flicking Settings")]
     [SerializeField] private bool L_hasFlicked = false;
     [SerializeField] private bool R_hasFlicked = false;
-    [SerializeField] private float flickCooldown = 0.2f;
-    [SerializeField] private float forceMultiplier; // How strong the swigning force is
-    [SerializeField] private float flickMultiplier; // How strong the flick force is
-    [SerializeField] private float flickThreshold;  // How "fast" the stick must move to count as a flick
-    [SerializeField] private float maxForce;
+    [SerializeField] private float flickCooldown = 0.01f;
+    [SerializeField] private float forceMultiplier = 5; // How strong the swigning force is
+    [SerializeField] private float flickMultiplier = 0.1f; // How strong the flick force is
+    [SerializeField] private float flickThreshold = 150;  // How "fast" the stick must move to count as a flick
+    [SerializeField] private float maxForce = 60;
     // For calculating flick speed
     private Vector2 L_lastStick;
     private float L_lastTime;
@@ -77,7 +75,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (!IsOwner) enabled = false;  playerCamera.SetActive(false);
+        if (!IsOwner) enabled = false;
     }
     // Update is called once per frame
     void Update()
@@ -87,9 +85,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
         LGrippedHandMovement();
         RGrippedHandMovement();
 
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            bodyRB.position = Vector3.zero;
+            bodyRB.transform.position = Vector3.zero;
+            bodyRB.linearVelocity = Vector3.zero;
         }
     }
     private void FixedUpdate()
@@ -122,87 +121,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
     {
         if (!L_isGripping) return;
 
-        Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0).normalized;
-
-        //float forceApplied = Mathf.Min((- controllerDirection.normalized * forceMultiplier).magnitude, maxForce);
+        Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0);
         bodyRB.AddForce(-controllerDirection * forceMultiplier);
-
-
-        float currentTime = Time.time;
-
-        // Calculate flick speed
-        float deltaMagnitude = (leftStick.magnitude - L_lastStick.magnitude);
-        float deltaTime = currentTime - L_lastTime;
-        Vector2 delta = leftStick - L_lastStick;
-        float speed = delta.magnitude / Time.deltaTime;
-
-        // Only proceed if time has passed
-        if (deltaTime > 0f)
-        {
-            float flickSpeed = deltaMagnitude / deltaTime;
-            bool canFlick = !L_hasFlicked && (currentTime - L_lastFlickTime) > flickCooldown;
-            // Check if flick conditions are met
-            if (canFlick && flickSpeed > flickThreshold && leftStick.magnitude > 0.5f)
-            {
-                Vector3 flickDirection = new Vector3(leftStick.x, leftStick.y, 0).normalized;
-                float flickForce = Mathf.Min(flickSpeed * flickMultiplier, maxForce);
-
-                bodyRB.AddForce(-flickDirection * flickForce, ForceMode.Impulse);
-
-                L_hasFlicked = true;
-                L_lastFlickTime = currentTime; // start cooldown
-            }
-            if (L_hasFlicked && (currentTime - L_lastFlickTime) > flickCooldown)
-            {
-                L_hasFlicked = false;
-            }
-        }
-
-        // Update for next frame
-        L_lastStick = leftStick;
-        L_lastTime = currentTime;
     }
     private void RGrippedHandMovement()
     {
         if (!R_isGripping) return;
-
-        Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0).normalized;
+        Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0);
         bodyRB.AddForce(-controllerDirection * forceMultiplier);
-
-
-        float currentTime = Time.time;
-
-        // Calculate flick speed
-        float deltaMagnitude = (rightStick.magnitude - R_lastStick.magnitude);
-        float deltaTime = currentTime - R_lastTime;
-        Vector2 delta = rightStick - R_lastStick;
-        float speed = delta.magnitude / Time.deltaTime;
-
-        // Only proceed if time has passed
-        if (deltaTime > 0f)
-        {
-            float flickSpeed = deltaMagnitude / deltaTime;
-            bool canFlick = !R_hasFlicked && (currentTime - R_lastFlickTime) > flickCooldown;
-            // Check if flick conditions are met
-            if (canFlick && flickSpeed > flickThreshold && rightStick.magnitude > 0.5f)
-            {
-                Vector3 flickDirection = new Vector3(rightStick.x, rightStick.y, 0).normalized;
-                float flickForce = Mathf.Min(flickSpeed * flickMultiplier, maxForce);
-
-                bodyRB.AddForce(-flickDirection * flickForce, ForceMode.Impulse);
-
-                R_hasFlicked = true;
-                R_lastFlickTime = currentTime; // start cooldown
-            }
-            if (R_hasFlicked && (currentTime - R_lastFlickTime) > flickCooldown)
-            {
-                R_hasFlicked = false;
-            }
-        }
-
-        // Update for next frame
-        R_lastStick = leftStick;
-        R_lastTime = currentTime;
     }
     // Move hand based on joystick input and handle gripping
     private void ControllerMovement()
@@ -288,7 +214,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
             }
 
             // When hand comes back within range remove joint
-            if (L_currentJoint != null && distance < armLength * 0.9f)
+            if (L_currentJoint != null && distance < armLength * jointBreakingSensitivity)
             {
                 Destroy(L_currentJoint);
                 L_currentJoint = null;
@@ -311,7 +237,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 CreateRightJoint();
             }
             // When hand comes back within range remove joint
-            if (R_currentJoint != null && distance < armLength * 0.9f)
+            if (R_currentJoint != null && distance < armLength * jointBreakingSensitivity)
             {
                 Destroy(R_currentJoint);
                 R_currentJoint = null;
@@ -334,7 +260,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         // Prevent Unity from auto adjusting anchor positions
         L_currentJoint.autoConfigureConnectedAnchor = false;
-        L_currentJoint.anchor = Vector3.zero;
+        // L_shoulderPoint.position
+        L_currentJoint.anchor = L_shoulderPoint.localPosition;
         L_currentJoint.connectedAnchor = Vector3.zero;
 
         // Limit motion to simulate a rope/arm constraint
@@ -352,7 +279,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         R_currentJoint.connectedBody = R_handRB;
         // Prevent Unity from auto adjusting anchor positions
         R_currentJoint.autoConfigureConnectedAnchor = false;
-        R_currentJoint.anchor = Vector3.zero;
+        R_currentJoint.anchor = R_shoulderPoint.localPosition;
         R_currentJoint.connectedAnchor = Vector3.zero;
         // Limit motion to simulate a rope/arm constraint
         R_currentJoint.xMotion = ConfigurableJointMotion.Limited;
