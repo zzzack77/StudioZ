@@ -27,7 +27,7 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.instance != null)
+        if (GameManager.instance != null && GameManager.instance.playerGameObjects.Count != 0)
         {
             addedPlayerPositions = Vector3.zero;
             playerVectors = new List<Vector3>();
@@ -51,8 +51,6 @@ public class CameraMovement : MonoBehaviour
                     {
                         float dist = Vector3.Distance(playerVectors[i], playerVectors[j]);
 
-                        Debug.Log(dist);
-
                         
                         if (dist > largestDistance)
                         {
@@ -65,9 +63,8 @@ public class CameraMovement : MonoBehaviour
                 cameraRef.orthographicSize = Mathf.Min(defaultCameraSize + largestDistance * zoomRate, maxDistance);
             }
             
-
-            Vector3 midPoint = new Vector3(addedPlayerPositions.x / GameManager.instance.playerGameObjects.Count, 
-                                            addedPlayerPositions.y / GameManager.instance.playerGameObjects.Count, -10);
+            Vector3 midPoint = addedPlayerPositions / GameManager.instance.playerGameObjects.Count;
+            midPoint.z = -10f;
 
             transform.position = Vector3.Lerp(transform.position, midPoint, cameraSpeed * Time.deltaTime);
         }
