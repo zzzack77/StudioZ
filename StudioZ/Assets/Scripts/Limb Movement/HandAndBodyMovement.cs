@@ -79,6 +79,12 @@ public class HandAndBodyMovement : MonoBehaviour
         InitializeGamepad();
         LGrippedHandMovementTest();
         if (!oneStick) RGrippedHandMovementTest();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            bodyRB.transform.position = Vector3.zero;
+            bodyRB.linearVelocity = Vector3.zero;
+        }
         //RGrippedHandMovement();
     }
     private void FixedUpdate()
