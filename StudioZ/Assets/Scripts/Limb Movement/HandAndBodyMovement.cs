@@ -13,7 +13,6 @@ public class HandAndBodyMovement : MonoBehaviour
     [SerializeField] private Transform L_shoulderPoint;
     [SerializeField] private Transform R_shoulderPoint;
 
-
     [Header("Arm and joint settings")]
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
@@ -77,8 +76,8 @@ public class HandAndBodyMovement : MonoBehaviour
     {
         JointChecking();
         InitializeGamepad();
-        LGrippedHandMovementTest();
-        if (!oneStick) RGrippedHandMovementTest();
+        LGrippedHandMovement();
+        if (!oneStick) RGrippedHandMovement();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -113,104 +112,18 @@ public class HandAndBodyMovement : MonoBehaviour
 
 
     }
-    private void LGrippedHandMovementTest()
+    private void LGrippedHandMovement()
     {
         if (!L_isGripping) return;
 
         Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0);
         bodyRB.AddForce(-controllerDirection * forceMultiplier);
     }
-    private void RGrippedHandMovementTest()
+    private void RGrippedHandMovement()
     {
         if (!R_isGripping) return;
         Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0);
         bodyRB.AddForce(-controllerDirection * forceMultiplier);
-    }
-    private void LGrippedHandMovement()
-    {
-        if (!L_isGripping) return;
-
-        Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0).normalized;
-
-        //float forceApplied = Mathf.Min((- controllerDirection.normalized * forceMultiplier).magnitude, maxForce);
-        bodyRB.AddForce(-controllerDirection * forceMultiplier);
-
-
-        float currentTime = Time.time;
-
-        // Calculate flick speed
-        float deltaMagnitude = (leftStick.magnitude - L_lastStick.magnitude);
-        float deltaTime = currentTime - L_lastTime;
-        Vector2 delta = leftStick - L_lastStick;
-        float speed = delta.magnitude / Time.deltaTime;
-
-        // Only proceed if time has passed
-        if (deltaTime > 0f)
-        {
-            float flickSpeed = deltaMagnitude / deltaTime;
-            bool canFlick = !L_hasFlicked && (currentTime - L_lastFlickTime) > flickCooldown;
-            // Check if flick conditions are met
-            if (canFlick && flickSpeed > flickThreshold && leftStick.magnitude > 0.5f)
-            {
-                Vector3 flickDirection = new Vector3(leftStick.x, leftStick.y, 0).normalized;
-                float flickForce = Mathf.Min(flickSpeed * flickMultiplier, maxForce);
-
-                bodyRB.AddForce(-flickDirection * flickForce, ForceMode.Impulse);
-
-                L_hasFlicked = true;
-                L_lastFlickTime = currentTime; // start cooldown
-            }
-            if (L_hasFlicked && (currentTime - L_lastFlickTime) > flickCooldown)
-            {
-                L_hasFlicked = false;
-            }
-        }
-
-        // Update for next frame
-        L_lastStick = leftStick;
-        L_lastTime = currentTime;
-    }
-    private void RGrippedHandMovement()
-    {
-        if (!R_isGripping) return;
-
-        Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0).normalized;
-        bodyRB.AddForce(-controllerDirection * forceMultiplier);
-
-
-        float currentTime = Time.time;
-
-        // Calculate flick speed
-        float deltaMagnitude = (rightStick.magnitude - R_lastStick.magnitude);
-        float deltaTime = currentTime - R_lastTime;
-        Vector2 delta = rightStick - R_lastStick;
-        float speed = delta.magnitude / Time.deltaTime;
-
-        // Only proceed if time has passed
-        if (deltaTime > 0f)
-        {
-            float flickSpeed = deltaMagnitude / deltaTime;
-            bool canFlick = !R_hasFlicked && (currentTime - R_lastFlickTime) > flickCooldown;
-            // Check if flick conditions are met
-            if (canFlick && flickSpeed > flickThreshold && rightStick.magnitude > 0.5f)
-            {
-                Vector3 flickDirection = new Vector3(rightStick.x, rightStick.y, 0).normalized;
-                float flickForce = Mathf.Min(flickSpeed * flickMultiplier, maxForce);
-
-                bodyRB.AddForce(-flickDirection * flickForce, ForceMode.Impulse);
-
-                R_hasFlicked = true;
-                R_lastFlickTime = currentTime; // start cooldown
-            }
-            if (R_hasFlicked && (currentTime - R_lastFlickTime) > flickCooldown)
-            {
-                R_hasFlicked = false;
-            }
-        }
-
-        // Update for next frame
-        R_lastStick = leftStick;
-        R_lastTime = currentTime;
     }
     // Move hand based on joystick input and handle gripping
     private void ControllerMovement()
