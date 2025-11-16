@@ -1,8 +1,9 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+public class CameraMovement : NetworkBehaviour
 {
     //[SerializeField] private List<GameObject> playerGameObjects = new List<GameObject>();
 
