@@ -7,8 +7,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
 {
     [Header("Rigidbodys")]
     [SerializeField] private Rigidbody bodyRB;
-    [SerializeField] private Rigidbody L_handRB;
-    [SerializeField] private Rigidbody R_handRB;
+    [SerializeField] public Rigidbody L_handRB;
+    [SerializeField] public Rigidbody R_handRB;
 
     [Header("Shoulder Points")]
     [SerializeField] private Transform L_shoulderPoint;
