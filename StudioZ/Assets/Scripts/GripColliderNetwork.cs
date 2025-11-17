@@ -23,9 +23,10 @@ public class GripColliderNetwork : NetworkBehaviour
                 {
                     networkPlayerMovement.L_canGripFinish = true;
                 }
-                if (collider.gameObject.CompareTag("CheckPoint"))
+                if (collider.gameObject.CompareTag("Checkpoint"))
                 {
-                    networkPlayerMovement.L_canGripCheckPoint = true;
+                    networkPlayerMovement.L_canGripCheckpoint = true;
+                    networkPlayerMovement.PotentialCheckpoint = collider.transform.position;
                 }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
@@ -46,9 +47,10 @@ public class GripColliderNetwork : NetworkBehaviour
                 {
                     networkPlayerMovement.R_canGripFinish = true;
                 }
-                if (collider.gameObject.CompareTag("CheckPoint"))
+                if (collider.gameObject.CompareTag("Checkpoint"))
                 {
-                    networkPlayerMovement.R_canGripCheckPoint = true;
+                    networkPlayerMovement.R_canGripCheckpoint = true;
+                    networkPlayerMovement.PotentialCheckpoint = collider.transform.position;
                 }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
@@ -78,9 +80,9 @@ public class GripColliderNetwork : NetworkBehaviour
                 {
                     networkPlayerMovement.L_canGripFinish = false;
                 }
-                if (collider.gameObject.CompareTag("CheckPoint"))
+                if (collider.gameObject.CompareTag("Checkpoint"))
                 {
-                    networkPlayerMovement.L_canGripCheckPoint = false;
+                    networkPlayerMovement.L_canGripCheckpoint = false;
                 }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
@@ -101,9 +103,9 @@ public class GripColliderNetwork : NetworkBehaviour
                 {
                     networkPlayerMovement.R_canGripFinish = false;
                 }
-                if (collider.gameObject.CompareTag("CheckPoint"))
+                if (collider.gameObject.CompareTag("Checkpoint"))
                 {
-                    networkPlayerMovement.R_canGripCheckPoint = false;
+                    networkPlayerMovement.R_canGripCheckpoint = false;
                 }
                 if (collider.gameObject.CompareTag("Jug"))
                 {

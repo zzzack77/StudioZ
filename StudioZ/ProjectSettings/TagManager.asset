@@ -8,7 +8,7 @@ TagManager:
   - Jug
   - Crimp
   - Pocket
-  - CheckPoint
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
