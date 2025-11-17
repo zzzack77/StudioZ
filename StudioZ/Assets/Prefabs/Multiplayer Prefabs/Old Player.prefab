@@ -955,7 +955,6 @@ GameObject:
   - component: {fileID: 988624509679097442}
   - component: {fileID: 5577093107105042949}
   - component: {fileID: 4736109426978950846}
-  - component: {fileID: 3895220048599143883}
   m_Layer: 0
   m_Name: Old Player
   m_TagString: Untagged
@@ -1038,19 +1037,6 @@ MonoBehaviour:
   flickMultiplier: 0.1
   flickThreshold: 150
   maxForce: 60
---- !u!114 &3895220048599143883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5334838283628257679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 896c0010d16e4f144acaf9626e72eaef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6011741683816748286
 GameObject:
   m_ObjectHideFlags: 0
