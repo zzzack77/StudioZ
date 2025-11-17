@@ -1024,19 +1024,11 @@ MonoBehaviour:
   L_shoulderPoint: {fileID: 4709813746622957810}
   R_shoulderPoint: {fileID: 5767027807498401312}
   armLength: 4.2
-  jointSpring: 500
-  jointDamper: 50
   jointBreakingSensitivity: 0.99
-  R_canGripJug: 0
+  currentCheckpoint: {x: 0, y: 0}
   L_isGripping: 0
   R_isGripping: 0
-  L_hasFlicked: 0
-  R_hasFlicked: 0
-  flickCooldown: 0.5
-  forceMultiplier: 7
-  flickMultiplier: 0.1
-  flickThreshold: 150
-  maxForce: 60
+  forceMultiplier: 55
 --- !u!1 &6011741683816748286
 GameObject:
   m_ObjectHideFlags: 0

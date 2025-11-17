@@ -19,10 +19,15 @@ public class GripColliderNetwork : NetworkBehaviour
         {
             if (this.name == "L Joystick Pos")
             {
-                //if (collider.gameObject.CompareTag("Any"))
-                //{
-                //    handAndBodyMovement.canGripJug = true;
-                //}
+                if (collider.gameObject.CompareTag("Finish"))
+                {
+                    networkPlayerMovement.L_canGripFinish = true;
+                }
+                if (collider.gameObject.CompareTag("Checkpoint"))
+                {
+                    networkPlayerMovement.L_canGripCheckpoint = true;
+                    networkPlayerMovement.PotentialCheckpoint = collider.transform.position;
+                }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.L_canGripJug = true;
@@ -38,6 +43,15 @@ public class GripColliderNetwork : NetworkBehaviour
             }
             if (this.name == "R Joystick Pos")
             {
+                if (collider.gameObject.CompareTag("Finish"))
+                {
+                    networkPlayerMovement.R_canGripFinish = true;
+                }
+                if (collider.gameObject.CompareTag("Checkpoint"))
+                {
+                    networkPlayerMovement.R_canGripCheckpoint = true;
+                    networkPlayerMovement.PotentialCheckpoint = collider.transform.position;
+                }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.R_canGripJug = true;
@@ -62,6 +76,14 @@ public class GripColliderNetwork : NetworkBehaviour
         {
             if (this.name == "L Joystick Pos")
             {
+                if (collider.gameObject.CompareTag("Finish"))
+                {
+                    networkPlayerMovement.L_canGripFinish = false;
+                }
+                if (collider.gameObject.CompareTag("Checkpoint"))
+                {
+                    networkPlayerMovement.L_canGripCheckpoint = false;
+                }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.L_canGripJug = false;
@@ -77,6 +99,14 @@ public class GripColliderNetwork : NetworkBehaviour
             }
             if (this.name == "R Joystick Pos")
             {
+                if (collider.gameObject.CompareTag("Finish"))
+                {
+                    networkPlayerMovement.R_canGripFinish = false;
+                }
+                if (collider.gameObject.CompareTag("Checkpoint"))
+                {
+                    networkPlayerMovement.R_canGripCheckpoint = false;
+                }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.R_canGripJug = false;
