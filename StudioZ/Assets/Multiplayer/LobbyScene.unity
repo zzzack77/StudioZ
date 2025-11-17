@@ -8980,8 +8980,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   cameraSpeed: 5
   defaultCameraSize: 13
-  zoomRate: 0.1
-  maxDistance: 50
+  zoomRate: 0.2
+  maxDistance: 100
 --- !u!114 &519420035
 MonoBehaviour:
   m_ObjectHideFlags: 0
