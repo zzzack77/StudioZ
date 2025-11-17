@@ -18,27 +18,56 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [Header("Arm and joint settings")]
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
-    [SerializeField] private float armLength = 4.2f;             // Max distance before joint connects
-    [SerializeField] private float jointSpring = 500f;         // How stiff the joint tries to stay at the target
-    [SerializeField] private float jointDamper = 50f;
+    [SerializeField] private float armLength = 4.2f;
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
 
-    [Header("Grip Settings")]
-    public bool canGripAny { get; set; }
-    public bool canGripCheckPoint { get; set; }
-    public bool canGripFinish { get; set; }
-
+    private bool isRespawning;
+    private Vector2 spawnPoint;
+    public Vector2 SpawnPoint
+    {
+        get => spawnPoint;
+        set
+        {
+            if (spawnPoint != value)
+            {
+                spawnPoint = value;
+                currentCheckpoint = Vector2.zero;
+                SpawnPlayer();
+            }
+        }
+    }
+    private Vector2 potentialCheckPoint;
+    public Vector2 PotentialCheckpoint
+    {
+        get => potentialCheckPoint;
+        set
+        {
+            if (potentialCheckPoint != value)
+            {
+                potentialCheckPoint = value;
+                Debug.Log(potentialCheckPoint);
+            }
+        }
+    }
+    [SerializeField] private Vector2 currentCheckpoint;
     // Left Grips
+    public bool L_canGripFinish { get; set; }
+    public bool L_canGripCheckpoint { get; set; }
     public bool L_canGripJug { get; set; }
     public bool L_canGripCrimp { get; set; }
     public bool L_canGripPocket { get; set; }
     // Right Grips
-    public bool R_canGripJug;
+    public bool R_canGripFinish { get; set; }
+    public bool R_canGripCheckpoint { get; set; }
+    public bool R_canGripJug { get; set; }
     public bool R_canGripCrimp { get; set; }
     public bool R_canGripPocket { get; set; }
 
+    [Header("Grip Settings")]
     [SerializeField] private bool L_isGripping = false;
     [SerializeField] private bool R_isGripping = false;
+
+    // ---- Gamepad Input Values ----
 
     // Trigger values
     private float leftTrigger;
@@ -49,51 +78,57 @@ public class NetworkPlayerMovement : NetworkBehaviour
     // Joystick values
     private Vector2 leftStick;
     private Vector2 rightStick;
-
-
     // Dead zones
     private float triggerDeadZone = 0.1f;
     private float joystickDeadZone = 0.2f;
 
     [Header("Joystick Flicking Settings")]
-    [SerializeField] private bool L_hasFlicked = false;
-    [SerializeField] private bool R_hasFlicked = false;
-    [SerializeField] private float flickCooldown = 0.01f;
     [SerializeField] private float forceMultiplier = 5; // How strong the swigning force is
-    [SerializeField] private float flickMultiplier = 0.1f; // How strong the flick force is
-    [SerializeField] private float flickThreshold = 150;  // How "fast" the stick must move to count as a flick
-    [SerializeField] private float maxForce = 60;
-    // For calculating flick speed
-    private Vector2 L_lastStick;
-    private float L_lastTime;
-    private float L_lastFlickTime = -1f;
-
-    private Vector2 R_lastStick;
-    private float R_lastTime;
-    private float R_lastFlickTime = -1f;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         if (!IsOwner) enabled = false;
+        SpawnPlayer();
     }
+    private void Start()
+    {
+        SpawnPlayer();
+    }
+    private void SpawnPlayer()
+    {
+        isRespawning = true;
+        bodyRB.linearVelocity = Vector3.zero;
+        bodyRB.constraints = RigidbodyConstraints.FreezeAll;
+        if (spawnPoint != Vector2.zero && currentCheckpoint == Vector2.zero)
+        {
+            bodyRB.transform.position = new Vector2(spawnPoint.x, spawnPoint.y - armLength);
+        }
+        else
+        {
+            bodyRB.transform.position = new Vector2(currentCheckpoint.x, currentCheckpoint.y - armLength);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        JointChecking();
-        InitializeGamepad();
-        LGrippedHandMovement();
-        RGrippedHandMovement();
+        JointChecking(); // Check if joints need to be created or destroyed
+        InitializeGamepad(); // Read gamepad inputs
+        ControllerMovement(); // Move hands based on joystick input
+        GrippingLogic(); // Handle gripping logic
+
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            bodyRB.transform.position = Vector3.zero;
-            bodyRB.linearVelocity = Vector3.zero;
+            spawnPoint = new Vector2(0, 20);
         }
     }
     private void FixedUpdate()
     {
-        ControllerMovement();
+        // Apply swinging forces based on joystick input when gripping
+        LGrippedHandMovement();
+        RGrippedHandMovement();
     }
     private void InitializeGamepad()
     {
@@ -115,7 +150,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
         leftShoulder = gamepad.leftShoulder.ReadValue();
         rightShoulder = gamepad.rightShoulder.ReadValue();
 
-
+        if (gamepad.buttonNorth.wasPressedThisFrame)
+        {
+            SpawnPlayer();
+        }
     }
     private void LGrippedHandMovement()
     {
@@ -150,55 +188,150 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 0f);
             R_handRB.transform.position = R_WorldOffset + R_shoulderPoint.transform.position;
         }
-        // Left Hand Grip Checks
-        if (leftTrigger >= triggerDeadZone && leftShoulder < triggerDeadZone && L_canGripJug)
+        
+    }
+    private void GrippingLogic()
+    {
+        bool leftTriggerPressed = leftTrigger >= triggerDeadZone;
+        bool leftShoulderPressed = leftShoulder >= triggerDeadZone;
+        bool rightTriggerPressed = rightTrigger >= triggerDeadZone;
+        bool rightShoulderPressed = rightShoulder >= triggerDeadZone;
+
+        // If any grip button is pressed, remove body constraints
+        //if (leftTriggerPressed || leftShoulderPressed || rightTriggerPressed || rightShoulderPressed)
+        //{
+        //    bodyRB.constraints = RigidbodyConstraints.None;
+        //    bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
+        //    bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
+        //}
+
+        // Left Hand Grip Logic
+        if (leftTriggerPressed)
         {
-            OnLGrip();
+            if (L_canGripFinish)
+            {
+                OnLGrip();
+                Finish();
+            }
+            else if (L_canGripCheckpoint)
+            {
+                OnLGrip();
+                SetCheckPoint();
+            }
+            else if (L_canGripJug && !leftShoulderPressed) OnLGrip();
+            else if (L_canGripPocket && leftShoulderPressed) OnLGrip();
+            else
+            {
+                L_isGripping = false;
+                L_handRB.constraints = RigidbodyConstraints.None;
+            }
         }
-        else if (leftShoulder >= triggerDeadZone && leftTrigger < triggerDeadZone && L_canGripCrimp)
+        else if (leftShoulderPressed)
         {
-            OnLGrip();
-        }
-        else if (leftTrigger >= triggerDeadZone && leftShoulder >= triggerDeadZone && L_canGripPocket)
-        {
-            OnLGrip();
+            if (L_canGripFinish)
+            {
+                OnLGrip();
+                Finish();
+            }
+            else if (L_canGripCheckpoint)
+            {
+                OnLGrip();
+                SetCheckPoint();
+            }
+            else if (L_canGripCrimp && !leftTriggerPressed) OnLGrip();
+            else
+            {
+                L_isGripping = false;
+                L_handRB.constraints = RigidbodyConstraints.None;
+            }
         }
         else
         {
             L_isGripping = false;
             L_handRB.constraints = RigidbodyConstraints.None;
-            L_hasFlicked = false;
         }
-        // Right Hand Grip Checks
-        if (rightTrigger >= triggerDeadZone && rightShoulder < triggerDeadZone && R_canGripJug)
+        // Right Hand Grip Logic
+        if (rightTriggerPressed)
         {
-            OnRGrip();
+            if (R_canGripFinish)
+            {
+                OnRGrip();
+                Finish();
+            }
+            else if (R_canGripCheckpoint)
+            {
+                OnRGrip();
+                SetCheckPoint();
+            }
+            else if (R_canGripJug && !rightShoulderPressed) OnRGrip();
+            else if (R_canGripPocket && rightShoulderPressed) OnRGrip();
+            else
+            {
+                R_isGripping = false;
+                R_handRB.constraints = RigidbodyConstraints.None;
+            }
         }
-        else if (rightShoulder >= triggerDeadZone && rightTrigger < triggerDeadZone && R_canGripCrimp)
+        else if (rightShoulderPressed)
         {
-            OnRGrip();
-        }
-        else if (rightTrigger >= triggerDeadZone && rightShoulder >= triggerDeadZone && R_canGripPocket)
-        {
-            OnRGrip();
+            if (R_canGripFinish)
+            {
+                OnRGrip();
+                Finish();
+            }
+            else if (R_canGripCheckpoint)
+            {
+                OnRGrip();
+                SetCheckPoint();
+            }
+            else if (R_canGripCrimp && !rightTriggerPressed) OnRGrip();
+            else
+            {
+                R_isGripping = false;
+                R_handRB.constraints = RigidbodyConstraints.None;
+            }
         }
         else
         {
             R_isGripping = false;
             R_handRB.constraints = RigidbodyConstraints.None;
-            R_hasFlicked = false;
         }
     }
 
     private void OnLGrip()
     {
+        if (isRespawning)
+        {
+            isRespawning = false;
+            bodyRB.constraints = RigidbodyConstraints.None;
+            bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
+            bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
+        }
         L_isGripping = true;
         L_handRB.constraints = RigidbodyConstraints.FreezeAll;
     }
     private void OnRGrip()
     {
+        if (isRespawning) 
+        {
+            isRespawning = false;
+            bodyRB.constraints = RigidbodyConstraints.None;
+            bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
+            bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
+        }
         R_isGripping = true;
         R_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    }
+    private void Finish()
+    {
+        Debug.Log("Finish Reached!");
+    }
+    private void SetCheckPoint()
+    {
+        if (currentCheckpoint != potentialCheckPoint)
+        {
+            currentCheckpoint = potentialCheckPoint;
+            Debug.Log("Checkpoint Reached!");
+        }
     }
     // Check distance between hand and body to create/destroy joint
     private void JointChecking()
