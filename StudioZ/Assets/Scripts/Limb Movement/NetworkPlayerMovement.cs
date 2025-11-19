@@ -20,7 +20,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private ConfigurableJoint R_currentJoint;
     [SerializeField] private float armLength = 4.2f;
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
+    private bool shouldersInLine = false;
+    private Vector2 shoulderPosition;
 
+
+    
     private bool isRespawning;
     private Vector2 spawnPoint;
     public Vector2 SpawnPoint
@@ -82,8 +86,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private float triggerDeadZone = 0.1f;
     private float joystickDeadZone = 0.2f;
 
-    [Header("Joystick Flicking Settings")]
-    [SerializeField] private float forceMultiplier = 5; // How strong the swigning force is
+    [Header("Joystick Gripping Settings")]
+    [SerializeField] float forceMultiplier = 55f;
+    [SerializeField] float horizontalDamping = 0.4f;     // Lower = less swing while climbing
+    [SerializeField] float upwardBoost = 1.25f;          // More = faster speed climbing
+    [SerializeField] float downThreshold = -0.7f;     // Stick must be this upward to apply boost
+    [SerializeField] float swingDampening = 0.85f;        // Velocity x damp when gripping
 
     public override void OnNetworkSpawn()
     {
@@ -93,6 +101,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void Start()
     {
+        shoulderPosition = L_shoulderPoint.position;
         SpawnPlayer();
     }
     private void SpawnPlayer()
@@ -121,7 +130,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            spawnPoint = new Vector2(0, 20);
+            
         }
     }
     private void FixedUpdate()
@@ -154,19 +163,58 @@ public class NetworkPlayerMovement : NetworkBehaviour
         {
             SpawnPlayer();
         }
+        if (gamepad.buttonEast.wasPressedThisFrame)
+        {
+            if (shouldersInLine)
+            {
+                L_shoulderPoint.localPosition = new Vector2(shoulderPosition.x, shoulderPosition.y);
+                R_shoulderPoint.localPosition = new Vector2(-shoulderPosition.x, shoulderPosition.y);
+            }
+            else
+            {
+                L_shoulderPoint.localPosition = new Vector2(0, shoulderPosition.y);
+                R_shoulderPoint.localPosition = new Vector2(0, shoulderPosition.y);
+            }
+                
+        }
+        if (gamepad.buttonEast.wasReleasedThisFrame)
+        {
+            shouldersInLine = !shouldersInLine;
+        }
     }
     private void LGrippedHandMovement()
     {
         if (!L_isGripping) return;
 
-        Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0);
-        bodyRB.AddForce(-controllerDirection * forceMultiplier);
+        GrippedBodyMovement(leftStick);
     }
+
     private void RGrippedHandMovement()
     {
         if (!R_isGripping) return;
-        Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0);
-        bodyRB.AddForce(-controllerDirection * forceMultiplier);
+
+        GrippedBodyMovement(rightStick);
+    }
+    private void GrippedBodyMovement(Vector2 stick)
+    {
+        // Raw input direction
+        Vector3 input = new Vector3(stick.x, stick.y, 0);
+        Debug.Log(stick.y);
+        // If stick is pushed mostly upward, apply speed-climber behaviour
+        if (input.y < downThreshold)
+        {
+            Debug.Log("below threshold");
+            input.x *= horizontalDamping;     // removes accidental sideways sway
+            input.y *= upwardBoost;           // faster, cleaner upward movement
+
+            // Gradually kill sideways swinging so it never gets out of control
+            Vector3 v = bodyRB.linearVelocity;
+            v.x *= swingDampening;
+            bodyRB.linearVelocity = v;
+        }
+
+        // Apply force in opposite direction (like pulling yourself)
+        bodyRB.AddForce(-input * forceMultiplier, ForceMode.Acceleration);
     }
     // Move hand based on joystick input and handle gripping
     private void ControllerMovement()
@@ -188,7 +236,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 0f);
             R_handRB.transform.position = R_WorldOffset + R_shoulderPoint.transform.position;
         }
-        
     }
     private void GrippingLogic()
     {
