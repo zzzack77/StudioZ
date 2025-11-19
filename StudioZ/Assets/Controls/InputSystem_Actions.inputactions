@@ -104,6 +104,60 @@
                     "processors": "Normalize(max=1)",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "CrimpL",
+                    "type": "Button",
+                    "id": "1504ddaa-aeb2-45ec-b19f-88742b7b12b8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CrimpR",
+                    "type": "Button",
+                    "id": "67600fb1-99aa-4000-a9c2-574c840c4800",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ButtonSouth",
+                    "type": "Button",
+                    "id": "37dff852-0b98-4820-84a5-df06436ac5ec",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ButtonEast",
+                    "type": "Button",
+                    "id": "dbf05ecc-4981-4ffd-9bf0-c0a9321a168f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ButtonNorth",
+                    "type": "Button",
+                    "id": "2a166693-6b6c-49ab-bd8b-93291125be37",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ButtonWest",
+                    "type": "Button",
+                    "id": "961ac990-a388-47b7-9069-578f6f7d0f09",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -588,6 +642,72 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "GripR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "be6e2ce2-cd6a-4a6b-b1e0-f7a6b89ce629",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "CrimpL",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ea4e945e-4d1d-4abc-9df8-1957e6d44874",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "CrimpR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03a85a8e-e7cb-4b38-b9f3-6c559413e973",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ButtonSouth",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cb08279d-40b4-45aa-9db5-5963c14eb15d",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ButtonEast",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ab520e1-05a4-47b3-bd6b-a68d7b279b6f",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ButtonNorth",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b30f006-f2a6-413b-9b9b-cb4ec1af24e8",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ButtonWest",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
