@@ -204,7 +204,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         //    bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
         //    bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
         //}
-
+        
         // Left Hand Grip Logic
         if (leftTriggerPressed)
         {

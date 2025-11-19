@@ -10,18 +10,22 @@ public interface IPlayerInput
 
     float GripDeadZone { get; }
 
+    // Triggers or click
     bool GripLPressed();
 
     bool GripRPressed();
 
-    bool GripLNotPressed();
+    // Shoulder buttons
+    bool CrimpLPressed();
 
-    bool GripRNotPressed();
-    
+    bool CrimpRPressed();
 
-    bool JugInput();
+    // A, B, Y, X
+    bool ButtonSouthPressed();
 
-    bool PocketInput();
+    bool ButtonEastPressed();
 
-    bool CrimpInput();
+    bool ButtonNorthPressed();
+
+    bool ButtonWestPressed();
 }

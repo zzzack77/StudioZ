@@ -9,6 +9,9 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     public float GripLValue { get; private set; }
     public float GripRValue { get; private set; }
 
+    public float CrimpLValue { get; private set; }
+    public float CrimpRValue { get; private set; }
+
     [SerializeField] private float gripDeadZone = 0.01f;
     public float GripDeadZone
     {
@@ -24,12 +27,24 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     // Input action asset (drag this in from controls folder)
     [SerializeField] private InputActionAsset inputActions;
 
-    // Seting up the Input Actions for moving and gripping
+    // Seting up the Input Actions 
+    // Moving left and right arms
     private InputAction moveLAction;
     private InputAction moveRAction;
 
+    // Gripping
     private InputAction gripLAction;
     private InputAction gripRAction;
+
+    // Crimp grip
+    private InputAction crimpLAction;
+    private InputAction crimpRAction;
+
+    // Action buttons
+    private InputAction buttonSouthAction;
+    private InputAction buttonEastAction;
+    private InputAction buttonNorthAction;
+    private InputAction buttonWestAction;
 
     private void OnEnable()
     {
@@ -52,6 +67,15 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 
         gripLAction = InputSystem.actions.FindAction("GripL");
         gripRAction = InputSystem.actions.FindAction("GripR");
+
+        crimpLAction = InputSystem.actions.FindAction("CrimpL");
+        crimpRAction = InputSystem.actions.FindAction("CrimpR");
+
+        buttonSouthAction = InputSystem.actions.FindAction("ButtonSouth");
+        buttonEastAction = InputSystem.actions.FindAction("ButtonEast");
+        buttonNorthAction = InputSystem.actions.FindAction("ButtonNorth");
+        buttonWestAction = InputSystem.actions.FindAction("ButtonWest");
+
     }
 
     private void Update()
@@ -76,29 +100,34 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
         return GripRValue > gripDeadZone;
     }
 
-    public bool GripLNotPressed()
+    
+    public bool CrimpLPressed()
     {
-        // Checks if the amount of grip input on the mouse click or trigger is below the deadzone
-        return GripLValue <= gripDeadZone;
+        return crimpLAction.ReadValue<float>() == 1;
     }
 
-    public bool GripRNotPressed()
+    public bool CrimpRPressed()
     {
-        return GripRValue <= gripDeadZone;
+        return crimpRAction.ReadValue<float>() == 1;
     }
 
-    public bool JugInput()
+    public bool ButtonSouthPressed()
     {
-        return false;
+        return buttonSouthAction.ReadValue<float>() == 1;
     }
 
-    public bool PocketInput()
+    public bool ButtonEastPressed()
     {
-        return false;
+        return buttonEastAction.ReadValue<float>() == 1;
     }
 
-    public bool CrimpInput()
+    public bool ButtonNorthPressed()
     {
-        return false;
+        return buttonNorthAction.ReadValue<float>() == 1;
+    }
+
+    public bool ButtonWestPressed()
+    {
+        return buttonWestAction.ReadValue<float>() == 1;
     }
 }

@@ -2120,6 +2120,7 @@ GameObject:
   - component: {fileID: 2116861629}
   - component: {fileID: 2116861630}
   - component: {fileID: 2116861631}
+  - component: {fileID: 2116861632}
   m_Layer: 0
   m_Name: Click Manager
   m_TagString: Untagged
@@ -2154,12 +2155,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16631edf4a4e84d498f0581fc095a27d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  R_Anchor: {fileID: 1496935326}
-  L_Anchor: {fileID: 981874863}
+  leftControllerPoint: {fileID: 0}
+  rightControllerPoint: {fileID: 0}
+  maxReach: 0
+  L_AnchorRB: {fileID: 0}
+  L_ForearmRB: {fileID: 0}
+  L_UpperarmRB: {fileID: 0}
+  R_AnchorRB: {fileID: 0}
+  R_ForearmRB: {fileID: 0}
+  R_UpperarmRB: {fileID: 0}
+  bodyRB: {fileID: 0}
+  L_ElbowCJ: {fileID: 0}
+  R_ElbowCJ: {fileID: 0}
   LS: {fileID: 0}
   RS: {fileID: 0}
-  hinge: {fileID: 0}
-  variableForce: 6
+  maxContratableAngle: 0
+  L_ContractedAngle: 0
+  R_ContractedAngle: 0
+  relaxedAngle: 0
+  contractionSpringForce: 0
+  springDamper: 10
+  muscleStrength: 100
+  leftStickIsMoving: 0
+  rightStickIsMoving: 0
+  handAcceleration: 0
+  minimumHandAcceleration: 0
+  handMaxVelocity: 0
+  xDistanceAmountForAngularDamping: 0
+  controllingHandLinearDamping: 0
+  ragdollHandLinearDamping: 0
+  controllingHandAngularDamping: 0
+  ragdollHandAngularDamping: 0
+  grippingDisabled: 0
+  leftIsGripping: 0
+  rightIsGripping: 0
 --- !u!114 &2116861631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2172,13 +2201,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 270f04a181f4318448a14566c83eec2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   R_Anchor: {fileID: 1496935326}
   L_Anchor: {fileID: 981874863}
   LS: {fileID: 0}
   RS: {fileID: 0}
   hinge: {fileID: 0}
   variableForce: 6
+--- !u!114 &2116861632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116861628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf9f97177e20d754b99ec795015ce72b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gripDeadZone: 0.01
+  inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -41,6 +41,15 @@ public class PCInputTesting : MonoBehaviour
         // Ensure the PlayerInputProvider script is on a game object (preferably the thing thats moving)
         input = GetComponent<IPlayerInput>();
 
+        if (input == null)
+        {
+            Debug.LogError(
+                $"{nameof(PCInputTesting)} requires a component that implements IPlayerInput.\n" +
+                $"Add PlayerInputProvider to the same GameObject.",
+                this
+            );
+        }
+
     }
     void Update()
     {
@@ -58,9 +67,17 @@ public class PCInputTesting : MonoBehaviour
             L_Anchor.AddForce(input.MoveL * variableForce);
         }
         if (input.GripRPressed()) { R_Anchor.isKinematic = true; }
-        if (input.GripRNotPressed()) { R_Anchor.isKinematic = false; }
+        if (!input.GripRPressed()) { R_Anchor.isKinematic = false; }
         if (input.GripLPressed()) { L_Anchor.isKinematic = true; }
-        if (input.GripLNotPressed()) { L_Anchor.isKinematic = false; }
+        if (!input.GripLPressed()) { L_Anchor.isKinematic = false; }
+
+        if (input.ButtonSouthPressed()) Debug.Log("A was pressed");
+        if (input.ButtonEastPressed()) Debug.Log("B was pressed");
+        if (input.ButtonNorthPressed()) Debug.Log("Y was pressed");
+        if (input.ButtonWestPressed()) Debug.Log("X was pressed");
+
+        if (input.CrimpLPressed()) Debug.Log("Left Shoulder was pressed");
+        if (input.CrimpRPressed()) Debug.Log("Right Shoulder was pressed");
     }
 }
 
