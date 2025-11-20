@@ -21,6 +21,13 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float armLength = 4.2f;
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
 
+    [Header("Player Settings")]
+    [SerializeField] private bool shouldersInLine = false;
+    private Vector2 shoulderPosition;
+    [SerializeField] private bool invertGrippingInput = true;
+
+
+    // Spawning and checkpoints
     private bool isRespawning;
     private Vector2 spawnPoint;
     public Vector2 SpawnPoint
@@ -82,9 +89,13 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private float triggerDeadZone = 0.1f;
     private float joystickDeadZone = 0.2f;
 
-    [Header("Joystick Flicking Settings")]
-    [SerializeField] private float forceMultiplier = 5; // How strong the swigning force is
-
+    [Header("Joystick Gripping Settings")]
+    [SerializeField] float forceMultiplier = 15f;
+    [SerializeField] float downThreshold = -0.85f;        // Stick must be this downward to apply following settings
+    [SerializeField] float singleHandUpwardBoost = 1.25f; // Force multiplier on y axis when going straight up
+    [SerializeField] float doubleHandedUpwardBoost = 1;
+    [SerializeField] float horizontalDamping = 0.4f;      // Force dampener on x axis when going straight up
+    [SerializeField] float swingDampening = 0.98f;        // The rate which the x axis linear velocity multiplies by on fixed update
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -93,6 +104,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void Start()
     {
+        shoulderPosition = L_shoulderPoint.position;
         SpawnPlayer();
     }
     private void SpawnPlayer()
@@ -121,7 +133,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            spawnPoint = new Vector2(0, 20);
+            
         }
     }
     private void FixedUpdate()
@@ -154,19 +166,58 @@ public class NetworkPlayerMovement : NetworkBehaviour
         {
             SpawnPlayer();
         }
+        if (gamepad.buttonEast.wasPressedThisFrame)
+        {
+            if (shouldersInLine)
+            {
+                L_shoulderPoint.localPosition = new Vector2(shoulderPosition.x, shoulderPosition.y);
+                R_shoulderPoint.localPosition = new Vector2(-shoulderPosition.x, shoulderPosition.y);
+            }
+            else
+            {
+                L_shoulderPoint.localPosition = new Vector2(0, shoulderPosition.y);
+                R_shoulderPoint.localPosition = new Vector2(0, shoulderPosition.y);
+            }
+                
+        }
+        if (gamepad.buttonEast.wasReleasedThisFrame)
+        {
+            shouldersInLine = !shouldersInLine;
+        }
     }
     private void LGrippedHandMovement()
     {
         if (!L_isGripping) return;
 
-        Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0);
-        bodyRB.AddForce(-controllerDirection * forceMultiplier);
+        GrippedBodyMovement(leftStick);
     }
+
     private void RGrippedHandMovement()
     {
         if (!R_isGripping) return;
-        Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0);
-        bodyRB.AddForce(-controllerDirection * forceMultiplier);
+
+        GrippedBodyMovement(rightStick);
+    }
+    private void GrippedBodyMovement(Vector2 joyStick)
+    {
+        // If stick is pushed downward
+        if ((invertGrippingInput && joyStick.y < downThreshold) || (!invertGrippingInput && joyStick.y > -downThreshold))
+        {
+            Debug.Log("power");
+            // apply bias for double handed or single handed grip types
+            if (R_isGripping && L_isGripping) joyStick.y *= doubleHandedUpwardBoost;
+            else joyStick.y *= singleHandUpwardBoost; 
+            joyStick.x *= horizontalDamping;
+
+            // Gradually dampen swinging
+            Vector3 bodyVelocity = bodyRB.linearVelocity;
+            bodyVelocity.x *= swingDampening;
+            bodyRB.linearVelocity = bodyVelocity;
+        }
+
+        // Apply force
+        if (invertGrippingInput) bodyRB.AddForce(-joyStick * forceMultiplier, ForceMode.Acceleration);
+        else bodyRB.AddForce(joyStick * forceMultiplier, ForceMode.Acceleration);
     }
     // Move hand based on joystick input and handle gripping
     private void ControllerMovement()
@@ -188,7 +239,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 0f);
             R_handRB.transform.position = R_WorldOffset + R_shoulderPoint.transform.position;
         }
-        
     }
     private void GrippingLogic()
     {
