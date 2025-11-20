@@ -92,7 +92,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [Header("Joystick Gripping Settings")]
     [SerializeField] float forceMultiplier = 15f;
     [SerializeField] float downThreshold = -0.85f;        // Stick must be this downward to apply following settings
-    [SerializeField] float singleHandUpwardBoost = 1.25f; // Force multiplier on y axis when going straight up
+    [SerializeField] float singleHandUpwardBoost = 1.6f; // Force multiplier on y axis when going straight up
     [SerializeField] float doubleHandedUpwardBoost = 1;
     [SerializeField] float horizontalDamping = 0.4f;      // Force dampener on x axis when going straight up
     [SerializeField] float swingDampening = 0.98f;        // The rate which the x axis linear velocity multiplies by on fixed update
