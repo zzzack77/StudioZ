@@ -20,11 +20,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private ConfigurableJoint R_currentJoint;
     [SerializeField] private float armLength = 4.2f;
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
-    private bool shouldersInLine = false;
+
+    [Header("Player Settings")]
+    [SerializeField] private bool shouldersInLine = false;
     private Vector2 shoulderPosition;
+    [SerializeField] private bool invertGrippingInput = true;
 
 
-    
+    // Spawning and checkpoints
     private bool isRespawning;
     private Vector2 spawnPoint;
     public Vector2 SpawnPoint
@@ -87,12 +90,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private float joystickDeadZone = 0.2f;
 
     [Header("Joystick Gripping Settings")]
-    [SerializeField] float forceMultiplier = 55f;
-    [SerializeField] float horizontalDamping = 0.4f;     // Lower = less swing while climbing
-    [SerializeField] float upwardBoost = 1.25f;          // More = faster speed climbing
-    [SerializeField] float downThreshold = -0.7f;     // Stick must be this upward to apply boost
-    [SerializeField] float swingDampening = 0.85f;        // Velocity x damp when gripping
-
+    [SerializeField] float forceMultiplier = 15f;
+    [SerializeField] float downThreshold = -0.85f;        // Stick must be this downward to apply following settings
+    [SerializeField] float singleHandUpwardBoost = 1.25f; // Force multiplier on y axis when going straight up
+    [SerializeField] float doubleHandedUpwardBoost = 1;
+    [SerializeField] float horizontalDamping = 0.4f;      // Force dampener on x axis when going straight up
+    [SerializeField] float swingDampening = 0.98f;        // The rate which the x axis linear velocity multiplies by on fixed update
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -195,26 +198,26 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         GrippedBodyMovement(rightStick);
     }
-    private void GrippedBodyMovement(Vector2 stick)
+    private void GrippedBodyMovement(Vector2 joyStick)
     {
-        // Raw input direction
-        Vector3 input = new Vector3(stick.x, stick.y, 0);
-        Debug.Log(stick.y);
-        // If stick is pushed mostly upward, apply speed-climber behaviour
-        if (input.y < downThreshold)
+        // If stick is pushed downward
+        if ((invertGrippingInput && joyStick.y < downThreshold) || (!invertGrippingInput && joyStick.y > -downThreshold))
         {
-            Debug.Log("below threshold");
-            input.x *= horizontalDamping;     // removes accidental sideways sway
-            input.y *= upwardBoost;           // faster, cleaner upward movement
+            Debug.Log("power");
+            // apply bias for double handed or single handed grip types
+            if (R_isGripping && L_isGripping) joyStick.y *= doubleHandedUpwardBoost;
+            else joyStick.y *= singleHandUpwardBoost; 
+            joyStick.x *= horizontalDamping;
 
-            // Gradually kill sideways swinging so it never gets out of control
-            Vector3 v = bodyRB.linearVelocity;
-            v.x *= swingDampening;
-            bodyRB.linearVelocity = v;
+            // Gradually dampen swinging
+            Vector3 bodyVelocity = bodyRB.linearVelocity;
+            bodyVelocity.x *= swingDampening;
+            bodyRB.linearVelocity = bodyVelocity;
         }
 
-        // Apply force in opposite direction (like pulling yourself)
-        bodyRB.AddForce(-input * forceMultiplier, ForceMode.Acceleration);
+        // Apply force
+        if (invertGrippingInput) bodyRB.AddForce(-joyStick * forceMultiplier, ForceMode.Acceleration);
+        else bodyRB.AddForce(joyStick * forceMultiplier, ForceMode.Acceleration);
     }
     // Move hand based on joystick input and handle gripping
     private void ControllerMovement()
