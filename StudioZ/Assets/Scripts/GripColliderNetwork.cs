@@ -28,6 +28,11 @@ public class GripColliderNetwork : NetworkBehaviour
                     networkPlayerMovement.L_canGripCheckpoint = true;
                     networkPlayerMovement.PotentialCheckpoint = collider.transform.position;
                 }
+                if (collider.gameObject.CompareTag("Player"))
+                {
+                    networkPlayerMovement.L_canGripPlayer = true;
+                    networkPlayerMovement.L_playerGrippedGameObject = collider.gameObject;
+                }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.L_canGripJug = true;
@@ -51,6 +56,11 @@ public class GripColliderNetwork : NetworkBehaviour
                 {
                     networkPlayerMovement.R_canGripCheckpoint = true;
                     networkPlayerMovement.PotentialCheckpoint = collider.transform.position;
+                }
+                if (collider.gameObject.CompareTag("Player"))
+                {
+                    networkPlayerMovement.R_canGripPlayer = true;
+                    networkPlayerMovement.R_playerGrippedGameObject = collider.gameObject;
                 }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
@@ -84,6 +94,11 @@ public class GripColliderNetwork : NetworkBehaviour
                 {
                     networkPlayerMovement.L_canGripCheckpoint = false;
                 }
+                if (collider.gameObject.CompareTag("Player"))
+                {
+                    networkPlayerMovement.L_canGripPlayer = false;
+                    networkPlayerMovement.L_playerGrippedGameObject = null;
+                }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.L_canGripJug = false;
@@ -106,6 +121,11 @@ public class GripColliderNetwork : NetworkBehaviour
                 if (collider.gameObject.CompareTag("Checkpoint"))
                 {
                     networkPlayerMovement.R_canGripCheckpoint = false;
+                }
+                if (collider.gameObject.CompareTag("Player"))
+                {
+                    networkPlayerMovement.R_canGripPlayer = false;
+                    networkPlayerMovement.R_playerGrippedGameObject = null;
                 }
                 if (collider.gameObject.CompareTag("Jug"))
                 {
