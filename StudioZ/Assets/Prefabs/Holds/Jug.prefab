@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4947525654090667215}
   - component: {fileID: 2707746001221939998}
-  - component: {fileID: 6725886961756279623}
+  - component: {fileID: 3690262399473298339}
   m_Layer: 0
   m_Name: Jug
   m_TagString: Jug
@@ -77,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: 76640c66278d9574797c7595b0c8147e, type: 3}
-  m_Color: {r: 0, g: 0.9150943, b: 0.060145963, a: 1}
+  m_Sprite: {fileID: 7110650684944622350, guid: 7f85ee2e88f4bfc42b3ff3cc90ef3e30, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!135 &6725886961756279623
+--- !u!135 &3690262399473298339
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,5 +107,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 1.2643199
+  m_Center: {x: 0.0038306713, y: 0.03830552, z: 0}
