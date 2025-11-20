@@ -11249,6 +11249,10 @@ GameObject:
   - component: {fileID: 1853498998}
   - component: {fileID: 1853498997}
   - component: {fileID: 1853498996}
+  - component: {fileID: 1853499003}
+  - component: {fileID: 1853499002}
+  - component: {fileID: 1853499001}
+  - component: {fileID: 1853499000}
   - component: {fileID: 1853498999}
   m_Layer: 0
   m_Name: Player
@@ -11313,7 +11317,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 5982046060555643278, guid: 51f0777967dce2441bece4eae966d865, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11333,7 +11337,7 @@ Transform:
   m_GameObject: {fileID: 1853498995}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5000783, y: 2.9275625, z: 0}
+  m_LocalPosition: {x: 1.23, y: 7.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11358,8 +11362,100 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.0256877, y: 4.1661763, z: 0.2}
+  m_Center: {x: -0.07550335, y: -0.5155723, z: 0}
+--- !u!136 &1853499000
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853498995}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.19932169
+  m_Height: 2.6037192
+  m_Direction: 1
+  m_Center: {x: -0.8491915, y: -3.74139, z: 0}
+--- !u!136 &1853499001
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853498995}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.19932169
+  m_Height: 2.6037192
+  m_Direction: 1
+  m_Center: {x: 0.8, y: -3.74139, z: 0}
+--- !u!136 &1853499002
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853498995}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.28031397
+  m_Height: 1.1162815
+  m_Direction: 0
+  m_Center: {x: 1.09, y: -5.352122, z: 0}
+--- !u!136 &1853499003
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853498995}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.28031397
+  m_Height: 1.1162815
+  m_Direction: 0
+  m_Center: {x: -1.1542907, y: -5.352122, z: 0}
 --- !u!1 &1887962941
 GameObject:
   m_ObjectHideFlags: 0
@@ -13406,14 +13502,12 @@ MonoBehaviour:
   shouldersInLine: 0
   invertGrippingInput: 1
   currentCheckpoint: {x: 0, y: 0}
-  L_playerGrippedGameObject: {fileID: 0}
-  R_playerGrippedGameObject: {fileID: 0}
   L_isGripping: 0
   R_isGripping: 0
   forceMultiplier: 15
   downThreshold: -0.85
-  singleHandUpwardBoost: 1.6
-  doubleHandedUpwardBoost: 1
+  singleHandUpwardBoost: 1.8
+  doubleHandedUpwardBoost: 1.4
   horizontalDamping: 0.5
   swingDampening: 0.98
 --- !u!1 &4243855609301059555
