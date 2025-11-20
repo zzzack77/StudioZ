@@ -57,15 +57,23 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
     }
     [SerializeField] private Vector2 currentCheckpoint;
+    public GameObject L_playerGrippedGameObject { get; set; }
+    private Vector3 L_distanceFromHandToGrippedObject { get; set; }
+    private bool L_isGrippingPlayer;
+    public GameObject R_playerGrippedGameObject { get; set; }
+    private Vector3 R_distanceFromHandToGrippedObject { get; set; }
+    private bool R_isGrippingPlayer;
     // Left Grips
     public bool L_canGripFinish { get; set; }
     public bool L_canGripCheckpoint { get; set; }
+    public bool L_canGripPlayer { get; set; }
     public bool L_canGripJug { get; set; }
     public bool L_canGripCrimp { get; set; }
     public bool L_canGripPocket { get; set; }
     // Right Grips
     public bool R_canGripFinish { get; set; }
     public bool R_canGripCheckpoint { get; set; }
+    public bool R_canGripPlayer { get; set; }
     public bool R_canGripJug { get; set; }
     public bool R_canGripCrimp { get; set; }
     public bool R_canGripPocket { get; set; }
@@ -129,12 +137,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         InitializeGamepad(); // Read gamepad inputs
         ControllerMovement(); // Move hands based on joystick input
         GrippingLogic(); // Handle gripping logic
-
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            
-        }
     }
     private void FixedUpdate()
     {
@@ -247,101 +249,49 @@ public class NetworkPlayerMovement : NetworkBehaviour
         bool rightTriggerPressed = rightTrigger >= triggerDeadZone;
         bool rightShoulderPressed = rightShoulder >= triggerDeadZone;
 
-        // If any grip button is pressed, remove body constraints
-        //if (leftTriggerPressed || leftShoulderPressed || rightTriggerPressed || rightShoulderPressed)
-        //{
-        //    bodyRB.constraints = RigidbodyConstraints.None;
-        //    bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
-        //    bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
-        //}
-        
         // Left Hand Grip Logic
         if (leftTriggerPressed)
         {
-            if (L_canGripFinish)
-            {
-                OnLGrip();
-                Finish();
-            }
-            else if (L_canGripCheckpoint)
-            {
-                OnLGrip();
-                SetCheckPoint();
-            }
+            if (L_canGripFinish) { OnLGrip(); Finish(); }
+            else if (L_canGripCheckpoint) { OnLGrip(); SetCheckPoint(); }
+            else if (L_canGripPlayer) { OnLPlayerGrip(); }
             else if (L_canGripJug && !leftShoulderPressed) OnLGrip();
             else if (L_canGripPocket && leftShoulderPressed) OnLGrip();
-            else
-            {
-                L_isGripping = false;
-                L_handRB.constraints = RigidbodyConstraints.None;
-            }
+            else { L_isGripping = false; L_handRB.constraints = RigidbodyConstraints.None; }
         }
         else if (leftShoulderPressed)
         {
-            if (L_canGripFinish)
-            {
-                OnLGrip();
-                Finish();
-            }
-            else if (L_canGripCheckpoint)
-            {
-                OnLGrip();
-                SetCheckPoint();
-            }
+            if (L_canGripFinish) { OnLGrip(); Finish(); }
+            else if (L_canGripCheckpoint) { OnLGrip(); SetCheckPoint(); }
             else if (L_canGripCrimp && !leftTriggerPressed) OnLGrip();
-            else
-            {
-                L_isGripping = false;
-                L_handRB.constraints = RigidbodyConstraints.None;
-            }
+            else { L_isGripping = false; L_handRB.constraints = RigidbodyConstraints.None; }
         }
         else
         {
+            OnLPlayerLetGo();
             L_isGripping = false;
             L_handRB.constraints = RigidbodyConstraints.None;
         }
         // Right Hand Grip Logic
         if (rightTriggerPressed)
         {
-            if (R_canGripFinish)
-            {
-                OnRGrip();
-                Finish();
-            }
-            else if (R_canGripCheckpoint)
-            {
-                OnRGrip();
-                SetCheckPoint();
-            }
+            if (R_canGripFinish) { OnRGrip(); Finish(); }
+            else if (R_canGripCheckpoint) { OnRGrip(); SetCheckPoint(); }
+            else if (R_canGripPlayer) { OnRPlayerGrip(); }
             else if (R_canGripJug && !rightShoulderPressed) OnRGrip();
             else if (R_canGripPocket && rightShoulderPressed) OnRGrip();
-            else
-            {
-                R_isGripping = false;
-                R_handRB.constraints = RigidbodyConstraints.None;
-            }
+            else { R_isGripping = false; R_handRB.constraints = RigidbodyConstraints.None; }
         }
         else if (rightShoulderPressed)
         {
-            if (R_canGripFinish)
-            {
-                OnRGrip();
-                Finish();
-            }
-            else if (R_canGripCheckpoint)
-            {
-                OnRGrip();
-                SetCheckPoint();
-            }
+            if (R_canGripFinish) { OnRGrip(); Finish(); }
+            else if (R_canGripCheckpoint) { OnRGrip(); SetCheckPoint(); }
             else if (R_canGripCrimp && !rightTriggerPressed) OnRGrip();
-            else
-            {
-                R_isGripping = false;
-                R_handRB.constraints = RigidbodyConstraints.None;
-            }
+            else { R_isGripping = false; R_handRB.constraints = RigidbodyConstraints.None; }
         }
         else
         {
+            OnRPlayerLetGo();
             R_isGripping = false;
             R_handRB.constraints = RigidbodyConstraints.None;
         }
@@ -370,6 +320,91 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
         R_isGripping = true;
         R_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    }
+    //private void OnGrip(bool isLeftHand, bool isPlayer)
+    //{
+    //    if (isRespawning)
+    //    {
+    //        isRespawning = false;
+    //        bodyRB.constraints = RigidbodyConstraints.None;
+    //        bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
+    //        bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
+    //    }
+    //    if (isLeftHand)
+    //    {
+    //        if (isPlayer)
+    //        {
+    //            if (!L_isGrippingPlayer)
+    //            {
+    //                L_distanceFromHandToGrippedObject = L_handRB.transform.position - L_playerGrippedGameObject.transform.position;
+    //                L_isGrippingPlayer = true;
+    //            }
+    //            L_isGripping = true;
+    //            L_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    //            L_handRB.transform.position = L_playerGrippedGameObject.transform.position + L_distanceFromHandToGrippedObject;
+    //        }
+    //        else 
+    //        { 
+    //            L_isGripping = true;
+    //            L_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (isPlayer)
+    //        {
+    //            if (!R_isGrippingPlayer)
+    //            {
+    //                R_distanceFromHandToGrippedObject = R_handRB.transform.position - R_playerGrippedGameObject.transform.position;
+    //                R_isGrippingPlayer = true;
+    //            }
+    //            R_isGripping = true;
+    //            R_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    //            R_handRB.transform.position = R_playerGrippedGameObject.transform.position + R_distanceFromHandToGrippedObject;
+    //        }
+    //        R_isGripping = true;
+    //        R_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    //    }
+    //}
+    private void OnLPlayerGrip()
+    {
+        if (!isRespawning)
+        {
+            if (!L_isGrippingPlayer)
+            {
+                L_distanceFromHandToGrippedObject = L_handRB.transform.position - L_playerGrippedGameObject.transform.position;
+                L_isGrippingPlayer = true;
+            }
+            L_isGripping = true;
+            L_handRB.constraints = RigidbodyConstraints.FreezeAll;
+            L_handRB.transform.position = L_playerGrippedGameObject.transform.position + L_distanceFromHandToGrippedObject;
+        }
+    }
+    private void OnRPlayerGrip()
+    {
+        if (!isRespawning)
+        {
+            if (!R_isGrippingPlayer)
+            {
+                R_distanceFromHandToGrippedObject = R_handRB.transform.position - R_playerGrippedGameObject.transform.position;
+                R_isGrippingPlayer = true;
+            }
+            R_isGripping = true;
+            R_handRB.constraints = RigidbodyConstraints.FreezeAll;
+            R_handRB.transform.position = R_playerGrippedGameObject.transform.position + R_distanceFromHandToGrippedObject;
+        }
+    }
+    private void OnLPlayerLetGo()
+    {
+        L_isGrippingPlayer = false;
+        L_isGripping = false;
+        L_handRB.constraints = RigidbodyConstraints.None;
+    }
+    private void OnRPlayerLetGo()
+    {
+        R_isGrippingPlayer = false;
+        R_isGripping = false;
+        R_handRB.constraints = RigidbodyConstraints.None;
     }
     private void Finish()
     {
