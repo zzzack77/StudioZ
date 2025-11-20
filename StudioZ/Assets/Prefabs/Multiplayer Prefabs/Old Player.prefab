@@ -1025,10 +1025,17 @@ MonoBehaviour:
   R_shoulderPoint: {fileID: 5767027807498401312}
   armLength: 4.2
   jointBreakingSensitivity: 0.99
+  shouldersInLine: 0
+  invertGrippingInput: 1
   currentCheckpoint: {x: 0, y: 0}
   L_isGripping: 0
   R_isGripping: 0
-  forceMultiplier: 55
+  forceMultiplier: 15
+  downThreshold: -0.85
+  singleHandUpwardBoost: 1.6
+  doubleHandedUpwardBoost: 1
+  horizontalDamping: 0.4
+  swingDampening: 0.98
 --- !u!1 &6011741683816748286
 GameObject:
   m_ObjectHideFlags: 0
