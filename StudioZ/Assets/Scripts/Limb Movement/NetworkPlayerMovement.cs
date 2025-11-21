@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class NetworkPlayerMovement : NetworkBehaviour
 {
+    private TimerHandeler timerHandeler;
+
     [Header("Rigidbodys")]
     [SerializeField] private Rigidbody bodyRB;
     [SerializeField] public Rigidbody L_handRB;
@@ -112,6 +114,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void Start()
     {
+        timerHandeler = FindFirstObjectByType<TimerHandeler>();
         shoulderPosition = L_shoulderPoint.position;
         SpawnPlayer();
     }
@@ -120,9 +123,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
         isRespawning = true;
         bodyRB.linearVelocity = Vector3.zero;
         bodyRB.constraints = RigidbodyConstraints.FreezeAll;
-        if (spawnPoint != Vector2.zero && currentCheckpoint == Vector2.zero)
+        if (currentCheckpoint == Vector2.zero)
         {
             bodyRB.transform.position = new Vector2(spawnPoint.x, spawnPoint.y - armLength);
+            timerHandeler.timeElapsed = 0f;
+            timerHandeler.isTimerRunning = true;
         }
         else
         {
@@ -170,21 +175,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
         if (gamepad.buttonEast.wasPressedThisFrame)
         {
-            if (shouldersInLine)
-            {
-                L_shoulderPoint.localPosition = new Vector2(shoulderPosition.x, shoulderPosition.y);
-                R_shoulderPoint.localPosition = new Vector2(-shoulderPosition.x, shoulderPosition.y);
-            }
-            else
-            {
-                L_shoulderPoint.localPosition = new Vector2(0, shoulderPosition.y);
-                R_shoulderPoint.localPosition = new Vector2(0, shoulderPosition.y);
-            }
-                
-        }
-        if (gamepad.buttonEast.wasReleasedThisFrame)
-        {
-            shouldersInLine = !shouldersInLine;
+             currentCheckpoint = Vector2.zero;
+             SpawnPlayer();
         }
     }
     private void LGrippedHandMovement()
@@ -205,7 +197,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         // If stick is pushed downward
         if ((invertGrippingInput && joyStick.y < downThreshold) || (!invertGrippingInput && joyStick.y > -downThreshold))
         {
-            Debug.Log("power");
             // apply bias for double handed or single handed grip types
             if (R_isGripping && L_isGripping) joyStick.y *= doubleHandedUpwardBoost;
             else joyStick.y *= singleHandUpwardBoost; 
@@ -220,6 +211,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         // Apply force
         if (invertGrippingInput) bodyRB.AddForce(-joyStick * forceMultiplier, ForceMode.Acceleration);
         else bodyRB.AddForce(joyStick * forceMultiplier, ForceMode.Acceleration);
+        //Debug.Log(bodyRB.GetAccumulatedForce());
     }
     // Move hand based on joystick input and handle gripping
     private void ControllerMovement()
@@ -321,51 +313,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         R_isGripping = true;
         R_handRB.constraints = RigidbodyConstraints.FreezeAll;
     }
-    //private void OnGrip(bool isLeftHand, bool isPlayer)
-    //{
-    //    if (isRespawning)
-    //    {
-    //        isRespawning = false;
-    //        bodyRB.constraints = RigidbodyConstraints.None;
-    //        bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
-    //        bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
-    //    }
-    //    if (isLeftHand)
-    //    {
-    //        if (isPlayer)
-    //        {
-    //            if (!L_isGrippingPlayer)
-    //            {
-    //                L_distanceFromHandToGrippedObject = L_handRB.transform.position - L_playerGrippedGameObject.transform.position;
-    //                L_isGrippingPlayer = true;
-    //            }
-    //            L_isGripping = true;
-    //            L_handRB.constraints = RigidbodyConstraints.FreezeAll;
-    //            L_handRB.transform.position = L_playerGrippedGameObject.transform.position + L_distanceFromHandToGrippedObject;
-    //        }
-    //        else 
-    //        { 
-    //            L_isGripping = true;
-    //            L_handRB.constraints = RigidbodyConstraints.FreezeAll;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (isPlayer)
-    //        {
-    //            if (!R_isGrippingPlayer)
-    //            {
-    //                R_distanceFromHandToGrippedObject = R_handRB.transform.position - R_playerGrippedGameObject.transform.position;
-    //                R_isGrippingPlayer = true;
-    //            }
-    //            R_isGripping = true;
-    //            R_handRB.constraints = RigidbodyConstraints.FreezeAll;
-    //            R_handRB.transform.position = R_playerGrippedGameObject.transform.position + R_distanceFromHandToGrippedObject;
-    //        }
-    //        R_isGripping = true;
-    //        R_handRB.constraints = RigidbodyConstraints.FreezeAll;
-    //    }
-    //}
+    
     private void OnLPlayerGrip()
     {
         if (!isRespawning && (L_playerGrippedGameObject != bodyRB.gameObject))
@@ -408,7 +356,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void Finish()
     {
-        Debug.Log("Finish Reached!");
+        timerHandeler.isTimerRunning = false;
+        Debug.Log(timerHandeler.totalTime);
     }
     private void SetCheckPoint()
     {

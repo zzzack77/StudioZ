@@ -13502,6 +13502,7 @@ MonoBehaviour:
   shouldersInLine: 0
   invertGrippingInput: 1
   currentCheckpoint: {x: 0, y: 0}
+  R_playerGrippedGameObject: {fileID: 0}
   L_isGripping: 0
   R_isGripping: 0
   forceMultiplier: 15
