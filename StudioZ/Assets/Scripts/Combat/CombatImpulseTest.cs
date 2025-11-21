@@ -34,6 +34,7 @@ public class CombatImpulseTest : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("TriggerEnter");
         Rigidbody otherRb = other.GetComponent<Rigidbody>();
 
         Vector3 LVOfAttacker = other.attachedRigidbody.linearVelocity;
