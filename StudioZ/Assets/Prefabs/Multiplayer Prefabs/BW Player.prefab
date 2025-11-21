@@ -779,8 +779,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4267463337
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 405483212
+  InScenePlacedSourceGlobalObjectIdHash: 3234245720
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -1290,7 +1290,7 @@ GameObject:
   - component: {fileID: 4736109426978950846}
   - component: {fileID: 5734394939249938878}
   m_Layer: 0
-  m_Name: Old Player
+  m_Name: BW Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1328,8 +1328,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3396386750
-  InScenePlacedSourceGlobalObjectIdHash: 1531420698
+  GlobalObjectIdHash: 2635825611
+  InScenePlacedSourceGlobalObjectIdHash: 3234245720
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
