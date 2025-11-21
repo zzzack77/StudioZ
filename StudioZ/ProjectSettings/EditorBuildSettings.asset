@@ -9,17 +9,20 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Multiplayer/MultiplayerScene.unity
+    path: Assets/Data/Multiplayer/MultiplayerScene.unity
     guid: ce6566fffe632ef41b1d604414ef9421
   - enabled: 1
-    path: Assets/Multiplayer/LobbyScene.unity
+    path: Assets/Data/Multiplayer/LobbyScene.unity
     guid: f1706b043100554429607d5a45ee08bb
   - enabled: 1
     path: Assets/Scenes/BA-TestLevel.unity
     guid: cf57227eac8dc4b42a6e46b48b77d072
   - enabled: 1
-    path: Assets/Multiplayer/EasyLobbyScene.unity
+    path: Assets/Data/Multiplayer/EasyLobbyScene.unity
     guid: 4de1006fbefa5234d9df95157a4cfd9b
+  - enabled: 1
+    path: Assets/Data/Multiplayer/BWLobbyScene.unity
+    guid: e89b51e55717d0940a2b00a2c7c90451
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

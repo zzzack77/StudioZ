@@ -1,78 +1,76 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class CameraMovement : NetworkBehaviour
 {
-    //[SerializeField] private List<GameObject> playerGameObjects = new List<GameObject>();
-
-    private List<Vector3> playerVectors = new List<Vector3>();
-
-    private Vector3 addedPlayerPositions;
-
-    [SerializeField] private float cameraSpeed = 5f;
     private Camera cameraRef;
 
+    [SerializeField] private float cameraSpeed = 5f;
     [SerializeField] private float defaultCameraSize = 13f;
     [SerializeField] private float zoomRate = 0.1f;
-    [SerializeField] private float maxDistance;
-    private float largestDistance;
+    [SerializeField] private float maxTrackingDistance = 25f;
 
-
-    private Vector3 prevVector;
-    void Start()
+    private void Start()
     {
         cameraRef = GetComponent<Camera>();
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
-        if (GameManager.instance != null && GameManager.instance.playerGameObjects.Count != 0)
+        var players = GameManager.instance?.playerGameObjects;
+        if (players == null || players.Count == 0) return;
+
+        // TEMP LIST (don't use a persistent list!)
+        List<GameObject> trackedPlayers = new List<GameObject>();
+
+        // 1. compute midpoint of ALL players
+        Vector3 globalMid = Vector3.zero;
+        foreach (var p in players)
+            globalMid += p.transform.position;
+        globalMid /= players.Count;
+
+        // 2. find players close enough to track
+        foreach (var p in players)
         {
-            addedPlayerPositions = Vector3.zero;
-            playerVectors.Clear();
-
-
-            foreach (GameObject playerGameObject in GameManager.instance.playerGameObjects)
-            {
-                addedPlayerPositions += playerGameObject.transform.position;
-                playerVectors.Add(playerGameObject.transform.position);
-
-            }
-
-            if (playerVectors.Count > 1 && playerVectors.Count < 5)
-            {
-                float largestDistance = 0f;
-
-                for (int i = 0; i < playerVectors.Count; i++)
-                {
-                    
-                    for (int j = i + 1; j < playerVectors.Count; j++)
-                    {
-                        float dist = Vector3.Distance(playerVectors[i], playerVectors[j]);
-
-                        
-                        if (dist > largestDistance)
-                        {
-                            largestDistance = dist;
-                        }
-                        
-                    }
-                }
-                
-                cameraRef.orthographicSize = Mathf.Min(defaultCameraSize + largestDistance * zoomRate, maxDistance);
-            }
-            
-            Vector3 midPoint = addedPlayerPositions / GameManager.instance.playerGameObjects.Count;
-            midPoint.z = -10f;
-
-            transform.position = Vector3.Lerp(transform.position, midPoint, cameraSpeed * Time.deltaTime);
+            float dist = Vector3.Distance(p.transform.position, globalMid);
+            if (dist <= maxTrackingDistance)
+                trackedPlayers.Add(p);
         }
 
+        // 3. If nobody is close enough, track everyone
+        if (trackedPlayers.Count == 0)
+            trackedPlayers.AddRange(players);
+
+        // 4. Compute midpoint of tracked players
+        Vector3 mid = Vector3.zero;
+        foreach (var p in trackedPlayers)
+            mid += p.transform.position;
+        mid /= trackedPlayers.Count;
+        mid.z = -10f;
+
+        // 5. Compute camera zoom based on tracked players
+        float largestDist = 0f;
+        for (int i = 0; i < trackedPlayers.Count; i++)
+        {
+            for (int j = i + 1; j < trackedPlayers.Count; j++)
+            {
+                float dist = Vector3.Distance(
+                    trackedPlayers[i].transform.position,
+                    trackedPlayers[j].transform.position
+                );
+                if (dist > largestDist)
+                    largestDist = dist;
+            }
+        }
+
+        cameraRef.orthographicSize = defaultCameraSize + largestDist * zoomRate;
+
+        // 6. Move camera
+        transform.position = Vector3.Lerp(
+            transform.position,
+            mid,
+            cameraSpeed * Time.deltaTime
+        );
     }
-        
 }
-
-    
-
