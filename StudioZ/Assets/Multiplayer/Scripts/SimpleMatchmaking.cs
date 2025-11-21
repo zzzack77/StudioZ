@@ -13,18 +13,23 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SimpleMatchmaking : MonoBehaviour
 {
     [SerializeField] private GameObject buttons;
-
+    [SerializeField] private GameObject hostPlayButton;
+    
     private Lobby connectedLoby;
     private QueryResponse lobbies;
     private UnityTransport transport;
     private const string JoinCodeKey = "j";
     private string playerId;
     
-   
+
+  
+    
+
     void Awake() => transport = FindObjectOfType<UnityTransport>();
 
     public async void CreateOrJoinLobby()
@@ -32,6 +37,14 @@ public class SimpleMatchmaking : MonoBehaviour
         await Authenticate();
 
         connectedLoby = await QuickJoinLobby() ?? await CreateLobby();
+        
+        if(connectedLoby != null) buttons.SetActive(false);
+    }
+    public async void HostLobby()
+    {
+        await Authenticate();
+
+        connectedLoby =  await CreateLobby();
         
         if(connectedLoby != null) buttons.SetActive(false);
     }
@@ -46,6 +59,7 @@ public class SimpleMatchmaking : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
         
         playerId = AuthenticationService.Instance.PlayerId;
+       
     }
 
     private async Task<Lobby> QuickJoinLobby()
@@ -54,12 +68,15 @@ public class SimpleMatchmaking : MonoBehaviour
         {
 
             var lobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+            
+          
 
             var a = await RelayService.Instance.JoinAllocationAsync(lobby.Data[JoinCodeKey].Value);
 
             SetTransfromAsClient(a);
 
             NetworkManager.Singleton.StartClient();
+            
             return lobby;
         }
         catch (Exception e)
@@ -74,12 +91,14 @@ public class SimpleMatchmaking : MonoBehaviour
         try
         {
             const int maxPlayers = 10;
-
+            
+           
             var a = await RelayService.Instance.CreateAllocationAsync(maxPlayers);
             var joinCode = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
 
             var options = new CreateLobbyOptions()
             {
+               
                 Data = new Dictionary<string, DataObject>
                     { { JoinCodeKey, new DataObject(DataObject.VisibilityOptions.Public, joinCode) } }
             };
@@ -89,8 +108,9 @@ public class SimpleMatchmaking : MonoBehaviour
             StartCoroutine(HeartBeatLobbyCoroutine(lobby.Id, 15));
             transport.SetHostRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key,
                 a.ConnectionData);
-
+            hostPlayButton.SetActive(true);
             NetworkManager.Singleton.StartHost();
+            
             return lobby;
         }
         catch (Exception e)
@@ -125,6 +145,8 @@ public class SimpleMatchmaking : MonoBehaviour
             {
                 if (connectedLoby.HostId == playerId) LobbyService.Instance.DeleteLobbyAsync(connectedLoby.Id);
                 else LobbyService.Instance.RemovePlayerAsync(connectedLoby.Id, playerId);
+                
+             
             }
         }
         catch (Exception e)
@@ -133,4 +155,8 @@ public class SimpleMatchmaking : MonoBehaviour
         }
         
     }
+    
+  
+    
+  
 }

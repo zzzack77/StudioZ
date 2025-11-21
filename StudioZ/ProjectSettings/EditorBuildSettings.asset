@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Multiplayer/EasyLobbyScene.unity
     guid: 4de1006fbefa5234d9df95157a4cfd9b
+  - enabled: 1
+    path: Assets/Multiplayer/MainLobbyScene.unity
+    guid: 39cdca0c642ce454e95e5d16ef779362
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
