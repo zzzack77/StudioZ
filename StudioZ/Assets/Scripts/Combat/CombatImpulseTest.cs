@@ -32,7 +32,7 @@ public class CombatImpulseTest : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collision collision)
     {
         Rigidbody otherRb = collision.rigidbody;
 
