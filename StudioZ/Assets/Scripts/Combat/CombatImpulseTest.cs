@@ -32,13 +32,16 @@ public class CombatImpulseTest : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
-        Rigidbody otherRb = other.rigidbody;
+        Rigidbody otherRb = other.GetComponent<Rigidbody>();
+
+        Vector3 LVOfAttacker = other.attachedRigidbody.linearVelocity;
+        Vector3 AttackDirection = LVOfAttacker.normalized;
 
         if (otherRb != null)
         {
-            Vector3 punch = transform.forward * 50f;
+            Vector3 punch = AttackDirection * 50f;
             otherRb.AddForce(punch, ForceMode.Impulse);
             Debug.Log("HitPlayer");
         }
