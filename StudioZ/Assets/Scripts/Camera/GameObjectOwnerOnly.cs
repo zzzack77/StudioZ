@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class CameraOwnerOnly : NetworkBehaviour
+public class GameObjectOwnerOnly : NetworkBehaviour
 {
     public override void OnNetworkSpawn()
     {
