@@ -4,6 +4,8 @@ public class CombatImpulseTest : MonoBehaviour
 {
     
     public Rigidbody BodyRB;
+    public Rigidbody HandRB;
+    public Vector3 previousVelocity;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,7 +17,7 @@ public class CombatImpulseTest : MonoBehaviour
     void Update()
     {
         CheckImpulse();
-        
+        //ForceChecker();
     }
 
     public void ApplyImpulse(Vector3 forceDirection, float forceAmount)
@@ -27,7 +29,9 @@ public class CombatImpulseTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ApplyImpulse(Vector3.right, 50f);
+            Vector3 LVAttacker = BodyRB.GetComponent<Rigidbody>().linearVelocity;
+            Vector3 AttackDirection = LVAttacker.normalized;
+            ApplyImpulse(AttackDirection, 50f);
             
         }
     }
@@ -37,38 +41,43 @@ public class CombatImpulseTest : MonoBehaviour
         Debug.Log("TriggerEnter");
         Rigidbody otherRb = other.GetComponent<Rigidbody>();
 
-        Vector3 LVOfAttacker = other.attachedRigidbody.linearVelocity;
-        Vector3 AttackDirection = LVOfAttacker.normalized;
+        ////Vector3 LVOfopponet = other.attachedRigidbody.linearVelocity;
+        ////Vector3 AttackDirection = LVOfAttacker.normalized;
+        //Vector3 LVAttacker = BodyRB.GetComponent<Rigidbody>().linearVelocity;
+        //Vector3 AttackDirection = LVAttacker.normalized;
 
         if (otherRb != null)
         {
-            Vector3 punch = AttackDirection * 50f;
+            Vector3 punch = Vector3.right * 50f;
             otherRb.AddForce(punch, ForceMode.Impulse);
             Debug.Log("HitPlayer");
         }
     }
 
-    void ApplyPunch(
-    Rigidbody target,
-    Vector3 attackerHandVelocity,
-    Vector3 targetVelocity,
-    Vector3 hitNormal,
-    float effectiveMass = 4f
-)
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    Debug.Log("CollisionEnter");
+    //    Rigidbody otherRb = collision.rigidbody;
+
+    //    //Vector3 LVOfopponet = other.attachedRigidbody.linearVelocity;
+    //    //Vector3 AttackDirection = LVOfAttacker.normalized;
+    //    Vector3 LVAttacker = otherRb.GetComponent<Rigidbody>().linearVelocity;
+    //    Vector3 AttackDirection = LVAttacker.normalized;
+
+    //    if (otherRb != null)
+    //    {
+    //        Vector3 punch = AttackDirection * 50f;
+    //        otherRb.AddForce(punch, ForceMode.Impulse);
+    //        Debug.Log("Hit");
+    //    }
+    //}
+    public void ForceChecker()
     {
-        // 1. Relative velocity along the line of impact
-        float relativeVel = Vector3.Dot(attackerHandVelocity - targetVelocity, hitNormal);
-
-        // If the fist isn't moving into the target, no impulse
-        if (relativeVel <= 0f)
-            return;
-
-        // 2. Momentum (Impulse)
-        float impulseMag = effectiveMass * relativeVel;
-
-        // 3. Apply to target
-        Vector3 impulse = hitNormal * impulseMag;
-        target.AddForce(impulse, ForceMode.Impulse);
+        Vector3 acceleration = (BodyRB.linearVelocity - previousVelocity) / Time.fixedDeltaTime;
+        Vector3 netForce = BodyRB.mass * acceleration;
+        previousVelocity = BodyRB.linearVelocity;
+        Debug.Log("Net Force on BodyRB: " + (netForce.x, netForce.y, netForce.z));
     }
+
 
 }
