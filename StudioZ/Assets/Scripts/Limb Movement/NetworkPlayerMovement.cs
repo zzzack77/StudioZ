@@ -60,7 +60,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public GameObject L_playerGrippedGameObject { get; set; }
     private Vector3 L_distanceFromHandToGrippedObject { get; set; }
     private bool L_isGrippingPlayer;
-    public GameObject R_playerGrippedGameObject { get; set; }
+    public GameObject R_playerGrippedGameObject;
     private Vector3 R_distanceFromHandToGrippedObject { get; set; }
     private bool R_isGrippingPlayer;
     // Left Grips
@@ -368,7 +368,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     //}
     private void OnLPlayerGrip()
     {
-        if (!isRespawning)
+        if (!isRespawning && (L_playerGrippedGameObject != bodyRB.gameObject))
         {
             if (!L_isGrippingPlayer)
             {
@@ -382,7 +382,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void OnRPlayerGrip()
     {
-        if (!isRespawning)
+        if (!isRespawning && (R_playerGrippedGameObject != bodyRB.gameObject))
         {
             if (!R_isGrippingPlayer)
             {
