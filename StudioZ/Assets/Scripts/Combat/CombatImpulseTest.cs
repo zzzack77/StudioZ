@@ -27,7 +27,8 @@ public class CombatImpulseTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ApplyImpulse(Vector3.right, 20f);
+            ApplyImpulse(Vector3.right, 50f);
+            
         }
     }
 
@@ -37,8 +38,9 @@ public class CombatImpulseTest : MonoBehaviour
 
         if (otherRb != null)
         {
-            Vector3 punch = transform.forward * 5f;
+            Vector3 punch = transform.forward * 50f;
             otherRb.AddForce(punch, ForceMode.Impulse);
+            Debug.Log("HitPlayer");
         }
     }
 
