@@ -1177,7 +1177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 418631369
+  GlobalObjectIdHash: 1531420698
   InScenePlacedSourceGlobalObjectIdHash: 1531420698
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1203,6 +1203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  timerHandeler: {fileID: 6781876260613860221}
   bodyRB: {fileID: 3080690037391331093}
   L_handRB: {fileID: 766306367707682103}
   R_handRB: {fileID: 5375496430398545004}
