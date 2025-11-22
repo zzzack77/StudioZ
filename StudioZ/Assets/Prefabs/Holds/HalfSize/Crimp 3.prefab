@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2353577834506758212}
   - component: {fileID: 4988968572063854736}
-  - component: {fileID: 135190074333342981}
+  - component: {fileID: 3857132831331693427}
   m_Layer: 0
   m_Name: Crimp 3
   m_TagString: Crimp
@@ -88,8 +88,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &135190074333342981
-BoxCollider:
+--- !u!136 &3857132831331693427
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -103,9 +103,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3.3, y: 0.79517984, z: 0.2}
-  m_Center: {x: 0, y: 0.15335584, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.7404597
+  m_Height: 3.4804647
+  m_Direction: 0
+  m_Center: {x: -0.09023206, y: -0.0072185993, z: 0}

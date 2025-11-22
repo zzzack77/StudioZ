@@ -37,10 +37,14 @@ public class GameManager : NetworkBehaviour
     }
     public void setLevelTime(float time)
     {
-        if (playerDataManager.GetSingleLevelTime(levelManager.CurrentLevelIndex) < time)
+        if (playerDataManager.GetSingleLevelTime(levelManager.CurrentLevelIndex) > time)
         {
             playerDataManager.SetSingleLevelTime(levelManager.CurrentLevelIndex, time);
         }
+    }
+    public float GetCurrentLevelTime()
+    {
+        return playerDataManager.GetSingleLevelTime(levelManager.CurrentLevelIndex);
     }
     public void LoadLevel(int index) 
     {
