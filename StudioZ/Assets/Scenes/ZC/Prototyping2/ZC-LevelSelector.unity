@@ -792,7 +792,7 @@ MonoBehaviour:
   playerGameObjects: []
   trackedTargets: []
   setLevel: 1
-  level: 4
+  level: 5
 --- !u!4 &944555970
 Transform:
   m_ObjectHideFlags: 0
@@ -864,6 +864,7 @@ MonoBehaviour:
   - {fileID: 9129942663012595532, guid: 479eb92b12241fb41ab455d04c0eccf0, type: 3}
   - {fileID: 250591480523320337, guid: 9ddbecf5cac6841498ea518ce1ecf9f1, type: 3}
   - {fileID: 1122683889736158527, guid: dc2736e6280939f4cb121331ac717db2, type: 3}
+  - {fileID: 8165474761427647458, guid: b38fe6039f5f0624195f59cd9db39584, type: 3}
 --- !u!1 &997791072
 GameObject:
   m_ObjectHideFlags: 0
