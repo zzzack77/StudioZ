@@ -12,7 +12,7 @@ public class CameraManager : MonoBehaviour
 
     private float dist = 0;
 
-    private float zoomScalar = 0.4f;
+    [SerializeField] private float zoomScalar = 0.4f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
