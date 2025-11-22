@@ -8,6 +8,7 @@ public class CombatImpulseTest : MonoBehaviour
     private Rigidbody OpponentBodyRB;
 
     private Vector3 previousVelocity;
+    private Vector2 forceDirection;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,50 +38,55 @@ public class CombatImpulseTest : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("TriggerEnter");
         OpponentBodyRB = other.GetComponent<Rigidbody>();
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("TriggerEnter");
-        OpponentBodyRB = other.GetComponent<Rigidbody>();
-
-
-        ////Vector3 LVOfopponet = other.attachedRigidbody.linearVelocity;
-        ////Vector3 AttackDirection = LVOfAttacker.normalized;
-        //Vector3 LVAttacker = BodyRB.GetComponent<Rigidbody>().linearVelocity;
-        //Vector3 AttackDirection = LVAttacker.normalized;
 
         if (OpponentBodyRB != null)
         {
-
-            Vector3 punch = Vector3.right * 50f;
-            OpponentBodyRB.AddForce(punch, ForceMode.Impulse);
-            Debug.Log("HitPlayer");
+            forceDirection = (other.transform.position - transform.position).normalized;
+            OpponentBodyRB.AddForce(forceDirection * 100f, ForceMode.Impulse);
+            Debug.Log("ForceApplied");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log("TriggerEnter");
+    //    OpponentBodyRB = other.GetComponent<Rigidbody>();
+
+
+    //    ////Vector3 LVOfopponet = other.attachedRigidbody.linearVelocity;
+    //    ////Vector3 AttackDirection = LVOfAttacker.normalized;
+    //    //Vector3 LVAttacker = BodyRB.GetComponent<Rigidbody>().linearVelocity;
+    //    //Vector3 AttackDirection = LVAttacker.normalized;
+
+    //    if (OpponentBodyRB != null)
+    //    {
+
+    //        Vector3 punch = Vector3.right * 50f;
+    //        OpponentBodyRB.AddForce(punch, ForceMode.Impulse);
+    //        Debug.Log("HitPlayer");
+    //    }
+    //}
 
     //void OnCollisionEnter(Collision collision)
     //{
