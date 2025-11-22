@@ -38,16 +38,25 @@ public class CombatImpulseTest : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter(Collider other)
     {
         Debug.Log("TriggerEnter");
         OpponentBodyRB = other.GetComponent<Rigidbody>();
 
         if (OpponentBodyRB != null)
         {
-            forceDirection = (other.transform.position - transform.position).normalized;
-            OpponentBodyRB.AddForce(forceDirection * 100f, ForceMode.Impulse);
-            Debug.Log("ForceApplied");
+            if(other.gameObject.CompareTag("Arm"))
+            {
+                Debug.Log("HitArm");
+            }
+            else
+            {
+                Debug.Log("HitPlayer");
+                forceDirection = (other.transform.position - transform.position).normalized;
+                OpponentBodyRB.AddForce(forceDirection * 50f, ForceMode.Impulse);
+                Debug.Log("ForceApplied");
+            }
+           
         }
     }
 

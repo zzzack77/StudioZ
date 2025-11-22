@@ -9,6 +9,7 @@ TagManager:
   - Crimp
   - Pocket
   - Checkpoint
+  - Arm
   layers:
   - Default
   - TransparentFX
