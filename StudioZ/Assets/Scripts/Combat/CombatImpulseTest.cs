@@ -1,11 +1,13 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CombatImpulseTest : MonoBehaviour
 {
     
     public Rigidbody BodyRB;
-    public Rigidbody HandRB;
-    public Vector3 previousVelocity;
+    private Rigidbody OpponentBodyRB;
+
+    private Vector3 previousVelocity;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,16 +24,15 @@ public class CombatImpulseTest : MonoBehaviour
 
     public void ApplyImpulse(Vector3 forceDirection, float forceAmount)
     {
-        BodyRB.AddForce(forceDirection * forceAmount, ForceMode.Impulse);
+        //BodyRB.AddForce(forceDirection * forceAmount, ForceMode.Impulse);
     }
 
     public void CheckImpulse()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Vector3 LVAttacker = BodyRB.GetComponent<Rigidbody>().linearVelocity;
-            Vector3 AttackDirection = LVAttacker.normalized;
-            ApplyImpulse(AttackDirection, 50f);
+            
+            ApplyImpulse(Vector3.right, 50f);
             
         }
     }
@@ -39,17 +40,44 @@ public class CombatImpulseTest : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("TriggerEnter");
-        Rigidbody otherRb = other.GetComponent<Rigidbody>();
+        OpponentBodyRB = other.GetComponent<Rigidbody>();
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("TriggerEnter");
+        OpponentBodyRB = other.GetComponent<Rigidbody>();
+
 
         ////Vector3 LVOfopponet = other.attachedRigidbody.linearVelocity;
         ////Vector3 AttackDirection = LVOfAttacker.normalized;
         //Vector3 LVAttacker = BodyRB.GetComponent<Rigidbody>().linearVelocity;
         //Vector3 AttackDirection = LVAttacker.normalized;
 
-        if (otherRb != null)
+        if (OpponentBodyRB != null)
         {
+
             Vector3 punch = Vector3.right * 50f;
-            otherRb.AddForce(punch, ForceMode.Impulse);
+            OpponentBodyRB.AddForce(punch, ForceMode.Impulse);
             Debug.Log("HitPlayer");
         }
     }
