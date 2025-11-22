@@ -6,12 +6,11 @@ using UnityEngine;
 public class GameManager : NetworkBehaviour
 {
     public static GameManager instance;
+    public PlayerDataManager playerDataManager;
 
     public List<GameObject> playerGameObjects = new List<GameObject>();
 
-    // A list for the tracked targets in the Cinemachine Target Group
-    public List<GameObject> trackedTargets = new List<GameObject>();
-
+    
     private void Awake()
     {
         if (instance == null)
@@ -19,7 +18,7 @@ public class GameManager : NetworkBehaviour
             instance = this;
         }
         else Destroy(gameObject);
-
+        playerDataManager = FindFirstObjectByType<PlayerDataManager>();
     }
 
     public void RegisterPlayer(GameObject player)
@@ -36,5 +35,9 @@ public class GameManager : NetworkBehaviour
         {
             playerGameObjects.Remove(player);
         }
+    }
+    public void setPlayerScore(int score)
+    {
+        playerDataManager.SetPlayerScore(score);
     }
 }
