@@ -54,7 +54,7 @@ public class CombatImpulseTest : MonoBehaviour
                 
                 Debug.Log("HitPlayer");
                 forceDirection = (other.transform.position - transform.position).normalized;
-                OpponentBodyRB.AddForce(forceDirection * 50f, ForceMode.Impulse);
+                OpponentBodyRB.AddForce(forceDirection * 30f, ForceMode.Impulse);
                 Debug.Log("ForceApplied");
             }
            
