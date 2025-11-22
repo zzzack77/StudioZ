@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class NetworkPlayerMovement : NetworkBehaviour
 {
-    private TimerHandeler timerHandeler;
+    [SerializeField] private TimerHandeler timerHandeler;
 
     [Header("Rigidbodys")]
     [SerializeField] private Rigidbody bodyRB;
@@ -114,7 +114,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void Start()
     {
-        timerHandeler = FindFirstObjectByType<TimerHandeler>();
         shoulderPosition = L_shoulderPoint.position;
         SpawnPlayer();
     }
