@@ -16,7 +16,12 @@ public class SceneSwaper : MonoBehaviour
         {
             if (input.ButtonSouthPressed())
             {
-                netScene.LoadSceneForAll("SceneTest2");
+                netScene.LoadSceneForAll("SceneTest3");
+            }
+            if (input.ButtonEastPressed())
+            {
+                netScene.UnloadSceneForAll("SceneTest3");
+                netScene.LoadSceneForAll("SceneTest4");
             }
         }
     }
