@@ -14,7 +14,7 @@ public class RegisterPlayer : NetworkBehaviour
     [SerializeField] PlayerCameraHandler playerCameraHandler;
 
     
-
+    
 
     public override void OnNetworkSpawn()
     {
@@ -48,7 +48,10 @@ public class RegisterPlayer : NetworkBehaviour
 
     private void Start()
     {
-        
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.RegisterPlayer(this.gameObject);
+        }
         if (targetGroup == null) Debug.LogError("Target group ref is null!");
         if (targetGroup != null && !GameManager.instance.trackedTargets.Contains(this.gameObject))
         {
