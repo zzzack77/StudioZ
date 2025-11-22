@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6027409030052805155}
   - component: {fileID: 9205927917658421153}
   - component: {fileID: 107613331327264175}
-  - component: {fileID: 6756246102320478894}
   - component: {fileID: 6696367536658146852}
   - component: {fileID: 8566375428126236136}
   m_Layer: 0
@@ -98,31 +97,6 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -10}
---- !u!114 &6756246102320478894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328340074587291134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 148782525
-  InScenePlacedSourceGlobalObjectIdHash: 1531420698
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &6696367536658146852
 MonoBehaviour:
   m_ObjectHideFlags: 0
