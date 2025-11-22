@@ -134,6 +134,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyRB.transform.position = new Vector2(spawnPoint.x, spawnPoint.y - armLength);
             timerHandeler.isTimerRunning = false;
             shouldRestartTimer = true;
+            hasFinished = false;
         }
         else
         {
