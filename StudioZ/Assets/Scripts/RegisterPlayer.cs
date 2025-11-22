@@ -30,6 +30,7 @@ public class RegisterPlayer : NetworkBehaviour
                 GameManager.instance.trackedTargets.Add(this.gameObject);
             }
         }
+        targetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
     }
 
     public override void OnNetworkDespawn()
@@ -47,6 +48,7 @@ public class RegisterPlayer : NetworkBehaviour
 
     private void Start()
     {
+        
         if (targetGroup == null) Debug.LogError("Target group ref is null!");
         if (targetGroup != null && !GameManager.instance.trackedTargets.Contains(this.gameObject))
         {
@@ -57,38 +59,38 @@ public class RegisterPlayer : NetworkBehaviour
 
     private void Update()
     {
-        float dist = Vector3.Distance(transform.position, targetGroup.Sphere.position);
-
-        if (dist > maxDistance)
+        if (targetGroup != null && playerCameraHandler != null)
         {
-            if (GameManager.instance.trackedTargets.Contains(this.gameObject))
+            float dist = Vector3.Distance(transform.position, targetGroup.Sphere.position);
+
+            if (dist > maxDistance)
             {
-                targetGroup.RemoveMember(transform);
-                GameManager.instance.trackedTargets.Remove(this.gameObject);
-                playerCameraHandler.ActivateCamera();
+                if (GameManager.instance.trackedTargets.Contains(this.gameObject))
+                {
+                    targetGroup.RemoveMember(transform);
+                    GameManager.instance.trackedTargets.Remove(this.gameObject);
+                    playerCameraHandler.ActivateCamera();
+
+                }
 
             }
-            
-        }
-        else if (dist < maxDistance && !GameManager.instance.trackedTargets.Contains(this.gameObject) )
-        {
-            targetGroup.AddMember(transform, 3f, 0.2f);
-            GameManager.instance.trackedTargets.Add(this.gameObject);
-            playerCameraHandler.DeactivateCamera();
-        }
-
-        float largestDistance = 0;
-        foreach (var p in GameManager.instance.trackedTargets)
-        {
-            dist = Vector3.Distance(p.transform.position, targetGroup.Sphere.position);
-
-            if (dist > largestDistance)
+            else if (dist < maxDistance && !GameManager.instance.trackedTargets.Contains(this.gameObject))
             {
-                largestDistance = dist;
+                targetGroup.AddMember(transform, 3f, 0.2f);
+                GameManager.instance.trackedTargets.Add(this.gameObject);
+                playerCameraHandler.DeactivateCamera();
+            }
+
+            float largestDistance = 0;
+            foreach (var p in GameManager.instance.trackedTargets)
+            {
+                dist = Vector3.Distance(p.transform.position, targetGroup.Sphere.position);
+
+                if (dist > largestDistance)
+                {
+                    largestDistance = dist;
+                }
             }
         }
-
-        
-
     }
 }

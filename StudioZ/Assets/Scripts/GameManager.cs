@@ -10,7 +10,9 @@ public class GameManager : NetworkBehaviour
 
     public List<GameObject> playerGameObjects = new List<GameObject>();
 
-    
+    // A list for the tracked targets in the Cinemachine Target Group
+    public List<GameObject> trackedTargets = new List<GameObject>();
+
     private void Awake()
     {
         if (instance == null)

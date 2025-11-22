@@ -1,9 +1,11 @@
+using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerCameraHandler : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCamera;
+    [SerializeField] private CinemachineCamera cineCam;
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -17,11 +19,11 @@ public class PlayerCameraHandler : NetworkBehaviour
 
     public void ActivateCamera()
     {
-        playerCamera.SetActive(true);
+        cineCam.Priority = 2;
     }
 
     public void DeactivateCamera()
     {
-        playerCamera.SetActive(false);
+        cineCam.Priority = 0;
     }
 }

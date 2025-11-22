@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  networkPlayerMovement: {fileID: 4736109426978950846}
+  networkPlayerMovement: {fileID: 0}
 --- !u!114 &2614581624468360092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -779,7 +779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 405483212
+  GlobalObjectIdHash: 3418819407
   InScenePlacedSourceGlobalObjectIdHash: 3234245720
   DeferredDespawnTick: 0
   Ownership: 1
@@ -969,7 +969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  networkPlayerMovement: {fileID: 4736109426978950846}
+  networkPlayerMovement: {fileID: 0}
 --- !u!135 &4186585368967150693
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1287,15 +1287,16 @@ GameObject:
   m_Component:
   - component: {fileID: 988624509679097442}
   - component: {fileID: 5577093107105042949}
-  - component: {fileID: 4736109426978950846}
-  - component: {fileID: 5734394939249938878}
+  - component: {fileID: 1940114060869620337}
+  - component: {fileID: 2298292767006584016}
+  - component: {fileID: 4615731459719778660}
   m_Layer: 0
   m_Name: BW Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &988624509679097442
 Transform:
   m_ObjectHideFlags: 0
@@ -1328,7 +1329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2635825611
+  GlobalObjectIdHash: 3602908160
   InScenePlacedSourceGlobalObjectIdHash: 3234245720
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1341,7 +1342,22 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &4736109426978950846
+--- !u!114 &1940114060869620337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334838283628257679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1df0f2f2708e7b40b683515cfcb9a8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  playerCamera: {fileID: 3209205077132175199}
+  cineCam: {fileID: 0}
+--- !u!114 &2298292767006584016
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1364,15 +1380,16 @@ MonoBehaviour:
   shouldersInLine: 0
   invertGrippingInput: 1
   currentCheckpoint: {x: 0, y: 0}
+  R_playerGrippedGameObject: {fileID: 0}
   L_isGripping: 0
   R_isGripping: 0
   forceMultiplier: 15
   downThreshold: -0.85
-  singleHandUpwardBoost: 1.8
-  doubleHandedUpwardBoost: 1.4
-  horizontalDamping: 0.5
+  singleHandUpwardBoost: 1.6
+  doubleHandedUpwardBoost: 1
+  horizontalDamping: 0.4
   swingDampening: 0.98
---- !u!114 &5734394939249938878
+--- !u!114 &4615731459719778660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1381,11 +1398,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5334838283628257679}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1df0f2f2708e7b40b683515cfcb9a8e, type: 3}
+  m_Script: {fileID: 11500000, guid: 614250e631b40e04a8d23a9687f2e490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  playerCamera: {fileID: 3209205077132175199}
+  isTimerRunning: 0
+  timeElapsed: 0
+  totalTime: 0
 --- !u!1 &6011741683816748286
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,7 +1770,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   targetGroup: {fileID: 0}
   maxDistance: 30
-  playerCameraHandler: {fileID: 5734394939249938878}
+  playerCameraHandler: {fileID: 1940114060869620337}
 --- !u!65 &517347061133756013
 BoxCollider:
   m_ObjectHideFlags: 0
