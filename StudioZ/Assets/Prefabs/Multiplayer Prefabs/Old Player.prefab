@@ -1665,7 +1665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   targetGroup: {fileID: 0}
-  maxDistance: 15
+  maxDistance: 10
   playerCameraHandler: {fileID: 8735202720966013346}
 --- !u!65 &517347061133756013
 BoxCollider:
