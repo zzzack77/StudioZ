@@ -934,6 +934,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6733424738599786703}
   - component: {fileID: 5512893951176995141}
+  - component: {fileID: 976652689004106557}
+  - component: {fileID: 4874455238442069940}
   m_Layer: 0
   m_Name: L Wrist Sprite
   m_TagString: Untagged
@@ -1012,6 +1014,40 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &976652689004106557
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4535715931811391437}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2748663, y: 1.3285728, z: 0.2}
+  m_Center: {x: -1.2198745, y: 2.288763, z: 0}
+--- !u!114 &4874455238442069940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4535715931811391437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf3d644e66278843a14e79394cdaaec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BodyRB: {fileID: 3080690037391331093}
 --- !u!1 &4777389163214749034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +1058,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3368648396585893588}
   - component: {fileID: 5497369268480912567}
+  - component: {fileID: 7316974793217383287}
+  - component: {fileID: 5863885710342223679}
   m_Layer: 0
   m_Name: L Wrist Sprite
   m_TagString: Untagged
@@ -1100,6 +1138,40 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7316974793217383287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4777389163214749034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf3d644e66278843a14e79394cdaaec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BodyRB: {fileID: 3080690037391331093}
+--- !u!65 &5863885710342223679
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4777389163214749034}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2426567, y: 1.1897335, z: 0.2}
+  m_Center: {x: 1.1948001, y: 2.3179455, z: 0}
 --- !u!1 &5334838283628257679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,6 +1497,7 @@ GameObject:
   - component: {fileID: 7451065577519552536}
   - component: {fileID: 2732741108443497448}
   - component: {fileID: 517347061133756013}
+  - component: {fileID: 2823184590667828353}
   m_Layer: 0
   m_Name: Body
   m_TagString: Player
@@ -1615,6 +1688,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.37, y: 7.1400003, z: 0.2}
   m_Center: {x: -0.027431607, y: -2.0024848, z: 0}
+--- !u!65 &2823184590667828353
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7501277548032060922}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.37, y: 9.01, z: 0.2}
+  m_Center: {x: -0.027431607, y: -1.08, z: 0}
 --- !u!1 &8257771003232887019
 GameObject:
   m_ObjectHideFlags: 0

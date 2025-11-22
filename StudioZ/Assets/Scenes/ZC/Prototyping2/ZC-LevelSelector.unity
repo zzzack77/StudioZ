@@ -791,8 +791,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerGameObjects: []
   trackedTargets: []
-  setLevel: 1
-  level: 5
+  setLevel: 0
+  level: 0
 --- !u!4 &944555970
 Transform:
   m_ObjectHideFlags: 0
