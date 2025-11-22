@@ -26,6 +26,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ZC/Prototyping2/ZC-LevelSelector.unity
     guid: 0e700a030da059f448654ddfee053217
+  - enabled: 1
+    path: Assets/Scenes/BW/SceneTest2.unity
+    guid: 362713e53ee6a314e8569decec623884
+  - enabled: 1
+    path: Assets/Scenes/BW/BWSceneLoadTest.unity
+    guid: 9c0dfd71aaa44b449b597f67faf140e0
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
