@@ -1,0 +1,287 @@
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class HandAndBodyMovement : MonoBehaviour
+{
+    [Header("Rigidbodys")]
+    [SerializeField] private Rigidbody bodyRB;
+    [SerializeField] private Rigidbody L_handRB;
+    [SerializeField] private Rigidbody R_handRB;
+
+    [Header("Shoulder Points")]
+    [SerializeField] private Transform L_shoulderPoint;
+    [SerializeField] private Transform R_shoulderPoint;
+
+    [Header("Arm and joint settings")]
+    private ConfigurableJoint L_currentJoint;
+    private ConfigurableJoint R_currentJoint;
+    [SerializeField] private float armLength = 2f;             // Max distance before joint connects
+    [SerializeField] private float jointSpring = 500f;         // How stiff the joint tries to stay at the target
+    [SerializeField] private float jointDamper = 50f;
+    [SerializeField] private float jointBreakingSensitivity = 0.9f; // Percentage of arm length before joint breaks
+
+    [Header("Grip Settings")]
+    public bool canGripAny { get; set; }
+    public bool canGripCheckPoint { get; set; }
+    public bool canGripFinish { get; set; }
+
+    // Left Grips
+    public bool L_canGripJug { get; set; }
+    public bool L_canGripCrimp { get; set; }
+    public bool L_canGripPocket { get; set; }
+    // Right Grips
+    public bool R_canGripJug;
+    public bool R_canGripCrimp { get; set; }
+    public bool R_canGripPocket { get; set; }
+
+    [SerializeField] private bool L_isGripping = false;
+    [SerializeField] private bool R_isGripping = false;
+
+    // Trigger values
+    private float leftTrigger;
+    private float rightTrigger;
+    // Shoulder values
+    private float leftShoulder;
+    private float rightShoulder;
+    // Joystick values
+    private Vector2 leftStick;
+    private Vector2 rightStick;
+
+
+    // Dead zones
+    private float triggerDeadZone = 0.1f;
+    private float joystickDeadZone = 0.2f;
+
+    [Header("Joystick Flicking Settings")]
+    [SerializeField] private bool L_hasFlicked = false;
+    [SerializeField] private bool R_hasFlicked = false;
+    [SerializeField] private float flickCooldown = 0.2f;
+    [SerializeField] private float forceMultiplier; // How strong the swigning force is
+    [SerializeField] private float flickMultiplier; // How strong the flick force is
+    [SerializeField] private float flickThreshold;  // How "fast" the stick must move to count as a flick
+    [SerializeField] private float maxForce;
+    // For calculating flick speed
+    private Vector2 L_lastStick;
+    private float L_lastTime;
+    private float L_lastFlickTime = -1f;
+
+    private Vector2 R_lastStick;
+    private float R_lastTime;
+    private float R_lastFlickTime = -1f;
+
+    [SerializeField] private bool oneStick;
+    // Update is called once per frame
+    void Update()
+    {
+        JointChecking();
+        InitializeGamepad();
+        LGrippedHandMovement();
+        if (!oneStick) RGrippedHandMovement();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            bodyRB.transform.position = Vector3.zero;
+            bodyRB.linearVelocity = Vector3.zero;
+        }
+        //RGrippedHandMovement();
+    }
+    private void FixedUpdate()
+    {
+        ControllerMovement();
+    }
+    private void InitializeGamepad()
+    {
+        // Get the current gamepad
+        var gamepad = Gamepad.current;
+        if (gamepad == null)
+        {
+            Debug.Log("No controller connected.");
+            return;
+        }
+
+        // Read joystick values
+        leftStick = gamepad.leftStick.ReadValue();
+        rightStick = gamepad.rightStick.ReadValue();
+
+        leftTrigger = gamepad.leftTrigger.ReadValue();
+        rightTrigger = gamepad.rightTrigger.ReadValue();
+
+        leftShoulder = gamepad.leftShoulder.ReadValue();
+        rightShoulder = gamepad.rightShoulder.ReadValue();
+
+
+    }
+    private void LGrippedHandMovement()
+    {
+        if (!L_isGripping) return;
+
+        Vector3 controllerDirection = new Vector3(leftStick.x, leftStick.y, 0);
+        bodyRB.AddForce(-controllerDirection * forceMultiplier);
+    }
+    private void RGrippedHandMovement()
+    {
+        if (!R_isGripping) return;
+        Vector3 controllerDirection = new Vector3(rightStick.x, rightStick.y, 0);
+        bodyRB.AddForce(-controllerDirection * forceMultiplier);
+    }
+    // Move hand based on joystick input and handle gripping
+    private void ControllerMovement()
+    {
+        if (!L_isGripping)
+        {
+            Vector3 L_WorldOffset = new Vector3(
+                Mathf.Clamp(leftStick.x, -1, 1) * armLength,
+                Mathf.Clamp(leftStick.y, -1, 1) * armLength,
+                0f);
+            
+            L_handRB.transform.position = L_WorldOffset + L_shoulderPoint.transform.position;
+        }
+        if(!R_isGripping)
+        {
+            Vector3 R_WorldOffset = new Vector3(
+                Mathf.Clamp(rightStick.x, -1, 1) * armLength,
+                Mathf.Clamp(rightStick.y, -1, 1) * armLength,
+                0f);
+            R_handRB.transform.position = R_WorldOffset + R_shoulderPoint.transform.position;
+        }
+        // Left Hand Grip Checks
+        if (leftTrigger >= triggerDeadZone && leftShoulder < triggerDeadZone && L_canGripJug)
+        {
+            OnLGrip();
+        }
+        else if (leftShoulder >= triggerDeadZone && leftTrigger < triggerDeadZone && L_canGripCrimp)
+        {
+            OnLGrip();
+        }
+        else if (leftTrigger >= triggerDeadZone && leftShoulder >= triggerDeadZone && L_canGripPocket)
+        {
+            OnLGrip();
+        }
+        else
+        {
+            L_isGripping = false;
+            L_handRB.constraints = RigidbodyConstraints.None;
+            L_hasFlicked = false;
+        }
+        // Right Hand Grip Checks
+        if (rightTrigger >= triggerDeadZone && rightShoulder < triggerDeadZone && R_canGripJug)
+        {
+            OnRGrip();
+        }
+        else if (rightShoulder >= triggerDeadZone && rightTrigger < triggerDeadZone && R_canGripCrimp)
+        {
+            OnRGrip();
+        }
+        else if (rightTrigger >= triggerDeadZone && rightShoulder >= triggerDeadZone && R_canGripPocket)
+        {
+            OnRGrip();
+        }
+        else
+        {
+            R_isGripping = false;
+            R_handRB.constraints = RigidbodyConstraints.None;
+            R_hasFlicked = false;
+        }
+    }
+
+    private void OnLGrip()
+    {
+        L_isGripping = true;
+        L_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    }
+    private void OnRGrip()
+    {
+        R_isGripping = true;
+        R_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    }
+    // Check distance between hand and body to create/destroy joint
+    private void JointChecking()
+    {
+        if (L_isGripping)
+        {
+            float distance = Vector3.Distance(L_shoulderPoint.position, L_handRB.position);
+
+            // When hand is beyond arm length and no joint exists create joint
+            if (L_currentJoint == null && distance >= armLength)
+            {
+                CreateLeftJoint();
+            }
+
+            // When hand comes back within range remove joint
+            if (L_currentJoint != null && distance < armLength * jointBreakingSensitivity)
+            {
+                Destroy(L_currentJoint);
+                L_currentJoint = null;
+            }
+        }
+        else
+        {
+            if (L_currentJoint != null)
+            {
+                Destroy(L_currentJoint);
+                L_currentJoint = null;
+            }
+        }
+        if (R_isGripping)
+        {
+            float distance = Vector3.Distance(R_shoulderPoint.position, R_handRB.position);
+            // When hand is beyond arm length and no joint exists create joint
+            if (R_currentJoint == null && distance >= armLength)
+            {
+                CreateRightJoint();
+            }
+            // When hand comes back within range remove joint
+            if (R_currentJoint != null && distance < armLength * jointBreakingSensitivity)
+            {
+                Destroy(R_currentJoint);
+                R_currentJoint = null;
+            }
+        }
+        else
+        {
+            if (R_currentJoint != null)
+            {
+                Destroy(R_currentJoint);
+                R_currentJoint = null;
+            }
+        }
+    }
+    // Create a configurable joint between body and hand
+    void CreateLeftJoint()
+    {
+        L_currentJoint = bodyRB.gameObject.AddComponent<ConfigurableJoint>();
+        L_currentJoint.connectedBody = L_handRB;
+
+        // Prevent Unity from auto adjusting anchor positions
+        L_currentJoint.autoConfigureConnectedAnchor = false;
+        // L_shoulderPoint.position
+        L_currentJoint.anchor = L_shoulderPoint.localPosition;
+        L_currentJoint.connectedAnchor = Vector3.zero;
+
+        // Limit motion to simulate a rope/arm constraint
+        L_currentJoint.xMotion = ConfigurableJointMotion.Limited;
+        L_currentJoint.yMotion = ConfigurableJointMotion.Limited;
+        L_currentJoint.zMotion = ConfigurableJointMotion.Limited;
+
+        SoftJointLimit linearLimit = new SoftJointLimit();
+        linearLimit.limit = armLength; // arm can stretch this far
+        L_currentJoint.linearLimit = linearLimit;
+    }
+    private void CreateRightJoint()
+    {
+        R_currentJoint = bodyRB.gameObject.AddComponent<ConfigurableJoint>();
+        R_currentJoint.connectedBody = R_handRB;
+        // Prevent Unity from auto adjusting anchor positions
+        R_currentJoint.autoConfigureConnectedAnchor = false;
+        R_currentJoint.anchor = R_shoulderPoint.localPosition;
+        R_currentJoint.connectedAnchor = Vector3.zero;
+        // Limit motion to simulate a rope/arm constraint
+        R_currentJoint.xMotion = ConfigurableJointMotion.Limited;
+        R_currentJoint.yMotion = ConfigurableJointMotion.Limited;
+        R_currentJoint.zMotion = ConfigurableJointMotion.Limited;
+        SoftJointLimit linearLimit = new SoftJointLimit();
+        linearLimit.limit = armLength; // arm can stretch this far
+        R_currentJoint.linearLimit = linearLimit;
+    }
+}
