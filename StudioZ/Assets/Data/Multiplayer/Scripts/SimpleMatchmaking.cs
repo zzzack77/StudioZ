@@ -25,7 +25,7 @@ public class SimpleMatchmaking : MonoBehaviour
     private string playerId;
     
    
-    void Awake() => transport = FindObjectOfType<UnityTransport>();
+    void Awake() => transport = FindFirstObjectByType<UnityTransport>();
 
     public async void CreateOrJoinLobby()
     {

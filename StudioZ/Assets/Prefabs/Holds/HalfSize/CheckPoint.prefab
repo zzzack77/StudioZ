@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1252275775645069786}
   - component: {fileID: 884294636868208993}
-  - component: {fileID: 3140246789850055058}
+  - component: {fileID: 6386592973247560152}
   m_Layer: 0
   m_Name: CheckPoint
   m_TagString: Checkpoint
@@ -88,8 +88,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &3140246789850055058
-BoxCollider:
+--- !u!136 &6386592973247560152
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -106,6 +106,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4.11, y: 1.0141882, z: 0.2}
-  m_Center: {x: 0, y: 0.36290592, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.8770849
+  m_Height: 4.2300005
+  m_Direction: 0
+  m_Center: {x: 0, y: -0.006771247, z: 0}

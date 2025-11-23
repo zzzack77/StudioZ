@@ -20,14 +20,14 @@ public class RegisterPlayer : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        if (GameManager.instance != null)
+        if (GameManager.Instance != null)
         {
-            GameManager.instance.RegisterPlayer(this.gameObject);
-            if (targetGroup != null && !GameManager.instance.trackedTargets.Contains(this.gameObject))
+            GameManager.Instance.RegisterPlayer(this.gameObject);
+            if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
             {
                 
                 targetGroup.AddMember(transform, 3f, 0.2f);
-                GameManager.instance.trackedTargets.Add(this.gameObject);
+                GameManager.Instance.trackedTargets.Add(this.gameObject);
             }
         }
         targetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
@@ -35,28 +35,28 @@ public class RegisterPlayer : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        if (GameManager.instance != null)
+        if (GameManager.Instance != null)
         {
-            GameManager.instance.UnregisterPlayer(gameObject);
-            if (targetGroup != null && GameManager.instance.trackedTargets.Contains(this.gameObject))
+            GameManager.Instance.UnregisterPlayer(gameObject);
+            if (targetGroup != null && GameManager.Instance.trackedTargets.Contains(this.gameObject))
             {
                 targetGroup.RemoveMember(transform);
-                GameManager.instance.trackedTargets.Remove(this.gameObject);
+                GameManager.Instance.trackedTargets.Remove(this.gameObject);
             }
         }
     }
 
     private void Start()
     {
-        if (GameManager.instance != null)
+        if (GameManager.Instance != null)
         {
-            GameManager.instance.RegisterPlayer(this.gameObject);
+            GameManager.Instance.RegisterPlayer(this.gameObject);
         }
         if (targetGroup == null) Debug.LogError("Target group ref is null!");
-        if (targetGroup != null && !GameManager.instance.trackedTargets.Contains(this.gameObject))
+        if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
         {
             targetGroup.AddMember(transform, 3f, 0.2f);
-            GameManager.instance.trackedTargets.Add(this.gameObject);
+            GameManager.Instance.trackedTargets.Add(this.gameObject);
         }
     }
 
@@ -68,24 +68,24 @@ public class RegisterPlayer : NetworkBehaviour
 
             if (dist > maxDistance)
             {
-                if (GameManager.instance.trackedTargets.Contains(this.gameObject))
+                if (GameManager.Instance.trackedTargets.Contains(this.gameObject))
                 {
                     targetGroup.RemoveMember(transform);
-                    GameManager.instance.trackedTargets.Remove(this.gameObject);
+                    GameManager.Instance.trackedTargets.Remove(this.gameObject);
                     playerCameraHandler.ActivateCamera();
 
                 }
 
             }
-            else if (dist < maxDistance && !GameManager.instance.trackedTargets.Contains(this.gameObject))
+            else if (dist < maxDistance && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
             {
                 targetGroup.AddMember(transform, 3f, 0.2f);
-                GameManager.instance.trackedTargets.Add(this.gameObject);
+                GameManager.Instance.trackedTargets.Add(this.gameObject);
                 playerCameraHandler.DeactivateCamera();
             }
 
             float largestDistance = 0;
-            foreach (var p in GameManager.instance.trackedTargets)
+            foreach (var p in GameManager.Instance.trackedTargets)
             {
                 dist = Vector3.Distance(p.transform.position, targetGroup.Sphere.position);
 

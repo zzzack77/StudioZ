@@ -13,442 +13,82 @@ public class PlayerData
 // Manager to handle saving and loading player data
 public class PlayerDataManager : MonoBehaviour
 {
+    public static PlayerDataManager Instance;
     private string filePath;
+    private PlayerData cachedData;
 
     void Awake()
     {
-        // Set the file path where the player data will be stored
+        // Singleton setup
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         filePath = Path.Combine(Application.persistentDataPath, "PlayerData.json");
+        Debug.Log("Save Path: " + filePath);
 
-        // Debug log to check the file path
-        Debug.Log("Persistent Data Path: " + filePath);
+        LoadOrCreate();
     }
 
-    // Save player data to a JSON file
-    public void SavePlayerData(PlayerData playerData)
+    // Load existing data or create new file
+    private void LoadOrCreate()
     {
-        if (playerData == null)
+        if (File.Exists(filePath))
         {
-            Debug.LogError("Error: Player data is null!");
-            return;
+            string json = File.ReadAllText(filePath);
+            cachedData = JsonUtility.FromJson<PlayerData>(json);
         }
-
-        if (string.IsNullOrEmpty(filePath))
+        else
         {
-            Debug.LogError("Error: filePath is null or empty!");
-            return;
+            Debug.Log("No save found, creating new data.");
+            cachedData = new PlayerData();
+            Save();
         }
+    }
 
-        // Convert the PlayerData object to JSON
-        string json = JsonUtility.ToJson(playerData, true);
-
-        if (string.IsNullOrEmpty(json))
-        {
-            Debug.LogError("Serialization failed: JSON is empty.");
-            return;
-        }
-
-        // Write the JSON to the file
+    public void Save()
+    {
+        string json = JsonUtility.ToJson(cachedData, true);
         File.WriteAllText(filePath, json);
-        //Debug.Log("Player data saved successfully at: " + filePath);
+        Debug.Log("Saved PlayerData.");
     }
 
-    // Load player data from a JSON file
-    public PlayerData LoadPlayerData()
-    {
-        if (!File.Exists(filePath))
-        {
-            Debug.LogWarning("Save file not found! Returning new player data.");
-            return new PlayerData();
-        }
+    // ------------ Getters and Setters ------------
 
-        string json = File.ReadAllText(filePath);
-        if (string.IsNullOrEmpty(json))
-        {
-            Debug.LogError("Error: Loaded JSON is empty.");
-            return new PlayerData();
-        }
+    public string GetPlayerName() => cachedData.PlayerName;
 
-        PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
-        return playerData;
-    }
-    public string GetPlayerName()
-    {
-        if (GetPlayerDataManager())
-        {
-            PlayerData player = LoadPlayerData();
-            return player.PlayerName;
-        }
-        return null;
-    }
     public void SetPlayerName(string name)
     {
-        if (GetPlayerDataManager())
-        {
-            PlayerData player = LoadPlayerData();
-            player.PlayerName = name;
-            SavePlayerData(player);
-        }
+        cachedData.PlayerName = name;
+        Save();
     }
-    public float[] GetBestLevelTimes()
-    {
-        if (GetPlayerDataManager())
-        {
-            PlayerData player = LoadPlayerData();
-            return player.BestLevelTimes;
-        }
-        return null;
-    }
+
+    public float[] GetBestLevelTimes() => cachedData.BestLevelTimes;
 
     public float GetSingleLevelTime(int level)
     {
-        if (!GetPlayerDataManager())
+        if (level < 0 || level >= cachedData.BestLevelTimes.Length)
             return -1f;
 
-        PlayerData player = LoadPlayerData();
-        float[] times = player.BestLevelTimes;
-
-        if (times == null || level < 0 || level >= times.Length)
-            return -1f;
-
-        return times[level];
+        return cachedData.BestLevelTimes[level];
     }
 
-    public void SetBestLevelTimes(float[] levelTimes)
-    {
-        if (GetPlayerDataManager())
-        {
-            PlayerData player = LoadPlayerData();
-            player.BestLevelTimes = levelTimes;
-            SavePlayerData(player);
-        }
-    }
     public void SetSingleLevelTime(int level, float time)
     {
-        if (!GetPlayerDataManager())
-            return;
-
-        PlayerData player = LoadPlayerData();
-
-        // Ensure list exists
-        if (player.BestLevelTimes == null)
-            player.BestLevelTimes = new float[level + 1];
-
-        // Expand array if too small
-        if (level >= player.BestLevelTimes.Length)
+        // Expand if needed
+        if (level >= cachedData.BestLevelTimes.Length)
         {
             float[] newArray = new float[level + 1];
-            player.BestLevelTimes.CopyTo(newArray, 0);
-            player.BestLevelTimes = newArray;
+            cachedData.BestLevelTimes.CopyTo(newArray, 0);
+            cachedData.BestLevelTimes = newArray;
         }
 
-        player.BestLevelTimes[level] = time;
-        SavePlayerData(player);
+        cachedData.BestLevelTimes[level] = time;
+        Save();
     }
-    public bool GetPlayerDataManager()
-    {
-        // Find an existing PlayerDataManager in the scene
-        PlayerDataManager manager = FindFirstObjectByType<PlayerDataManager>();
-
-        if (manager == null)
-        {
-            Debug.LogError("PlayerDataManager not found in the scene!");
-            return false;
-        }
-        return true;
-    }
-
-
-    //public int GetPlayerScore()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.PlayerScore;
-    //    }
-    //    return 0;
-    //}
-    //public void SetPlayerScore(int score)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.PlayerScore = score;
-    //        SavePlayerData(player);
-    //    }
-    //}
-    //public string GetPlayerPet()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.currentPet;
-    //    }
-    //    return null;
-    //}
-    //public void SetPlayerPet(string pet)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.currentPet = pet;
-    //        SavePlayerData(player);
-    //    }
-    //}
-    //public int GetPlayerLevel()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.currentLevel;
-    //    }
-    //    return 0;
-    //}
-    //public void SetPlayerLevel(int level)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.currentLevel = level;
-    //        SavePlayerData(player);
-    //    }
-    //}
-    //public int GetPlayerXP()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.xp;
-    //    }
-    //    return 0;
-    //}
-    //public void SetPlayerXP(int xp)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.xp = xp;
-    //        SavePlayerData(player);
-    //    }
-    //}
-    //public float GetTotalTimePlayed()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.totalTimePlayed;
-    //    }
-    //    return 0f;
-    //}
-
-    //public void SetTotalTimePlayed(float time)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.totalTimePlayed = time;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumQuestionsAnswered()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numQuestionsAnswered;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumQuestionsAnswered(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numQuestionsAnswered = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumQuestionsAnsweredCorrect()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numQuestionsAnsweredCorrect;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumQuestionsAnsweredCorrect(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numQuestionsAnsweredCorrect = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumAdditionPicked()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numAdditionPicked;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumAdditionPicked(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numAdditionPicked = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumSubtractionPicked()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numSubtractionPicked;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumSubtractionPicked(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numSubtractionPicked = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumMultiplicationPicked()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numMultiplicationPicked;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumMultiplicationPicked(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numMultiplicationPicked = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumDivisionPicked()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numDivisionPicked;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumDivisionPicked(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numDivisionPicked = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumEasyPicked()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numEasyPicked;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumEasyPicked(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numEasyPicked = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumMediumPicked()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numMediumPicked;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumMediumPicked(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numMediumPicked = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumHardPicked()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numHardPicked;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumHardPicked(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numHardPicked = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
-    //public int GetNumVeryHardPicked()
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        return player.numVeryHardPicked;
-    //    }
-    //    return 0;
-    //}
-
-    //public void SetNumVeryHardPicked(int num)
-    //{
-    //    if (GetPlayerDataManager())
-    //    {
-    //        PlayerData player = LoadPlayerData();
-    //        player.numVeryHardPicked = num;
-    //        SavePlayerData(player);
-    //    }
-    //}
-
 }

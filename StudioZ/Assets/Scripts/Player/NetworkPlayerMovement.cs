@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,9 +25,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
 
     [Header("Player Settings")]
-    [SerializeField] private bool shouldersInLine = false;
-    private Vector2 shoulderPosition;
     [SerializeField] private bool invertGrippingInput = true;
+    private bool shouldRestartTimer = false;
+    [SerializeField] private bool hasFinished;
+
 
 
     // Spawning and checkpoints
@@ -54,16 +56,17 @@ public class NetworkPlayerMovement : NetworkBehaviour
             if (potentialCheckPoint != value)
             {
                 potentialCheckPoint = value;
-                Debug.Log(potentialCheckPoint);
             }
         }
     }
-    [SerializeField] public Vector2 currentCheckpoint;
-    public GameObject L_playerGrippedGameObject { get; set; }
-    private Vector3 L_distanceFromHandToGrippedObject { get; set; }
+    public Vector2 currentCheckpoint { get; set; }
+
+    // Player on player griping
+    public GameObject L_playerGrippedGameObject {  get; set; }
+    public GameObject R_playerGrippedGameObject { get; set; }
+    private Vector3 L_distanceFromHandToGrippedObject;
+    private Vector3 R_distanceFromHandToGrippedObject;
     private bool L_isGrippingPlayer;
-    public GameObject R_playerGrippedGameObject;
-    private Vector3 R_distanceFromHandToGrippedObject { get; set; }
     private bool R_isGrippingPlayer;
     // Left Grips
     public bool L_canGripFinish { get; set; }
@@ -114,7 +117,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void Start()
     {
-        shoulderPosition = L_shoulderPoint.position;
         SpawnPlayer();
     }
     public void SpawnPlayer()
@@ -126,8 +128,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (currentCheckpoint == Vector2.zero)
         {
             bodyRB.transform.position = new Vector2(spawnPoint.x, spawnPoint.y - armLength);
-            timerHandeler.timeElapsed = 0f;
-            timerHandeler.isTimerRunning = true;
+            timerHandeler.isTimerRunning = false;
+            shouldRestartTimer = true;
+            hasFinished = false;
         }
         else
         {
@@ -316,6 +319,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (isRespawning)
         {
             isRespawning = false;
+            if (shouldRestartTimer)
+            {
+                timerHandeler.timeElapsed = 0f;
+                timerHandeler.isTimerRunning = true;
+                shouldRestartTimer = false;
+            }
             bodyRB.constraints = RigidbodyConstraints.None;
             bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
             bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
@@ -328,6 +337,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (isRespawning) 
         {
             isRespawning = false;
+            if (shouldRestartTimer)
+            {
+                timerHandeler.timeElapsed = 0f;
+                timerHandeler.isTimerRunning = true;
+                shouldRestartTimer = false;
+            }
             bodyRB.constraints = RigidbodyConstraints.None;
             bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
             bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
@@ -378,15 +393,22 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void Finish()
     {
-        timerHandeler.isTimerRunning = false;
-        Debug.Log(timerHandeler.totalTime);
+        if (!hasFinished)
+        {
+            hasFinished = true;
+            timerHandeler.isTimerRunning = false;
+            Debug.Log("Best Time: " + GameManager.Instance.GetCurrentLevelBestTime());
+            float timeDif = timerHandeler.timeElapsed - GameManager.Instance.GetCurrentLevelBestTime();
+            GameManager.Instance.setCurrentLevelTime(timerHandeler.timeElapsed);
+            Debug.Log("Time: " + timerHandeler.timeElapsed + ((timeDif > 0) ? " Time difference from best: +": " Time difference from best: ") + timeDif); 
+
+        }
     }
     private void SetCheckPoint()
     {
         if (currentCheckpoint != potentialCheckPoint)
         {
             currentCheckpoint = potentialCheckPoint;
-            Debug.Log("Checkpoint Reached!");
         }
     }
     // Check distance between hand and body to create/destroy joint
