@@ -20,7 +20,7 @@ public class Matchmaking : MonoBehaviour
 
     async void Awake()
     {
-        transport = FindObjectOfType<UnityTransport>();
+        transport = FindFirstObjectByType<UnityTransport>();
         
         inputUI.SetActive(false);
 

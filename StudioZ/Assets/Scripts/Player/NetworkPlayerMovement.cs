@@ -25,8 +25,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
 
     [Header("Player Settings")]
-    [SerializeField] private bool shouldersInLine = false;
-    private Vector2 shoulderPosition;
     [SerializeField] private bool invertGrippingInput = true;
     private bool shouldRestartTimer = false;
     [SerializeField] private bool hasFinished;
@@ -119,7 +117,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void Start()
     {
-        shoulderPosition = L_shoulderPoint.position;
         SpawnPlayer();
     }
     public void SpawnPlayer()

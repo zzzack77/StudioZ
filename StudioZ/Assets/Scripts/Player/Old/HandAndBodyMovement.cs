@@ -17,8 +17,7 @@ public class HandAndBodyMovement : MonoBehaviour
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
     [SerializeField] private float armLength = 2f;             // Max distance before joint connects
-    [SerializeField] private float jointSpring = 500f;         // How stiff the joint tries to stay at the target
-    [SerializeField] private float jointDamper = 50f;
+    //[SerializeField] private float jointSpring = 500f;         // How stiff the joint tries to stay at the target
     [SerializeField] private float jointBreakingSensitivity = 0.9f; // Percentage of arm length before joint breaks
 
     [Header("Grip Settings")]
@@ -51,24 +50,22 @@ public class HandAndBodyMovement : MonoBehaviour
 
     // Dead zones
     private float triggerDeadZone = 0.1f;
-    private float joystickDeadZone = 0.2f;
+    //private float joystickDeadZone = 0.2f;
 
     [Header("Joystick Flicking Settings")]
-    [SerializeField] private bool L_hasFlicked = false;
-    [SerializeField] private bool R_hasFlicked = false;
-    [SerializeField] private float flickCooldown = 0.2f;
+    //[SerializeField] private float flickCooldown = 0.2f;
     [SerializeField] private float forceMultiplier; // How strong the swigning force is
     [SerializeField] private float flickMultiplier; // How strong the flick force is
     [SerializeField] private float flickThreshold;  // How "fast" the stick must move to count as a flick
     [SerializeField] private float maxForce;
     // For calculating flick speed
-    private Vector2 L_lastStick;
-    private float L_lastTime;
-    private float L_lastFlickTime = -1f;
+    //private Vector2 L_lastStick;
+    //private float L_lastTime;
+    //private float L_lastFlickTime = -1f;
 
-    private Vector2 R_lastStick;
-    private float R_lastTime;
-    private float R_lastFlickTime = -1f;
+    //private Vector2 R_lastStick;
+    //private float R_lastTime;
+    //private float R_lastFlickTime = -1f;
 
     [SerializeField] private bool oneStick;
     // Update is called once per frame
@@ -162,7 +159,6 @@ public class HandAndBodyMovement : MonoBehaviour
         {
             L_isGripping = false;
             L_handRB.constraints = RigidbodyConstraints.None;
-            L_hasFlicked = false;
         }
         // Right Hand Grip Checks
         if (rightTrigger >= triggerDeadZone && rightShoulder < triggerDeadZone && R_canGripJug)
@@ -181,7 +177,6 @@ public class HandAndBodyMovement : MonoBehaviour
         {
             R_isGripping = false;
             R_handRB.constraints = RigidbodyConstraints.None;
-            R_hasFlicked = false;
         }
     }
 

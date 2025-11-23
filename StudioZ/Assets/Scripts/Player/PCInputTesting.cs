@@ -20,7 +20,7 @@ public class PCInputTesting : MonoBehaviour
     
 
     // Bool to check if the mouse is dragging the limb
-    private bool isDragging = false;
+    //private bool isDragging = false;
 
     private float armDistance;
     // The arm's and legs max reach
@@ -31,7 +31,7 @@ public class PCInputTesting : MonoBehaviour
 
     // For furture use change trigger deadzone so slight pressure doesn't activate grip
     // Higher deadzone means more pressure is needed
-    private float triggerDeadZone = 0.01f;
+    //private float triggerDeadZone = 0.01f;
 
     
     private void Awake()

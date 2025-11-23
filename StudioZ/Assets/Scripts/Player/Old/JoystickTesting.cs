@@ -34,7 +34,7 @@ public class JoystickTesting : MonoBehaviour
     [SerializeField] private float maxContratableAngle;
     [SerializeField] private float L_ContractedAngle;
     [SerializeField] private float R_ContractedAngle;
-    [SerializeField] private float relaxedAngle = 0f;
+    //[SerializeField] private float relaxedAngle = 0f;
     // Contraction settings used for when the muscle is contracting
     [SerializeField] private float contractionSpringForce = 0f;
     [SerializeField] private float springDamper = 10f;
