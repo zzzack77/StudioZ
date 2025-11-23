@@ -18,7 +18,7 @@ public class CameraMovement : NetworkBehaviour
 
     private void LateUpdate()
     {
-        var players = GameManager.instance?.playerGameObjects;
+        var players = GameManager.Instance?.playerGameObjects;
         if (players == null || players.Count == 0) return;
 
         // TEMP LIST (don't use a persistent list!)

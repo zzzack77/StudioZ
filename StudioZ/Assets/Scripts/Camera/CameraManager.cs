@@ -23,7 +23,7 @@ public class CameraManager : MonoBehaviour
     void Update()
     {
         float largestDistance = 0;
-        foreach (var p in GameManager.instance.trackedTargets)
+        foreach (var p in GameManager.Instance.trackedTargets)
         {
             dist = Vector3.Distance(p.transform.position, targetGroup.Sphere.position);
 

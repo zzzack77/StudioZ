@@ -369,7 +369,7 @@ MonoBehaviour:
   playerGameObjects: []
   trackedTargets: []
   setLevel: 1
-  level: 1
+  level: 6
 --- !u!114 &530605416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,6 +390,7 @@ MonoBehaviour:
   - {fileID: 1083858885749920868, guid: 5eab470043a093144966546cfe27913b, type: 3}
   - {fileID: 1122683889736158527, guid: dc2736e6280939f4cb121331ac717db2, type: 3}
   - {fileID: 8165474761427647458, guid: b38fe6039f5f0624195f59cd9db39584, type: 3}
+  - {fileID: 5994946538530998509, guid: b99f3cf2f29efab4a98ca0b5312d3690, type: 3}
 --- !u!114 &530605417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1772,8 +1773,7 @@ MonoBehaviour:
   jointBreakingSensitivity: 0.99
   shouldersInLine: 0
   invertGrippingInput: 1
-  currentCheckpoint: {x: 0, y: 0}
-  R_playerGrippedGameObject: {fileID: 0}
+  hasFinished: 0
   L_isGripping: 0
   R_isGripping: 0
   forceMultiplier: 15

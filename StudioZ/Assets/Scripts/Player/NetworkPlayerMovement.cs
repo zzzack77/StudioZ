@@ -58,7 +58,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
             if (potentialCheckPoint != value)
             {
                 potentialCheckPoint = value;
-                Debug.Log(potentialCheckPoint);
             }
         }
     }
@@ -401,9 +400,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
         {
             hasFinished = true;
             timerHandeler.isTimerRunning = false;
-            Debug.Log("Best Time: " + GameManager.instance.GetCurrentLevelTime());
-            GameManager.instance.setLevelTime(timerHandeler.timeElapsed);
-            Debug.Log("Time: " + timerHandeler.timeElapsed);
+            Debug.Log("Best Time: " + GameManager.Instance.GetCurrentLevelBestTime());
+            float timeDif = timerHandeler.timeElapsed - GameManager.Instance.GetCurrentLevelBestTime();
+            GameManager.Instance.setCurrentLevelTime(timerHandeler.timeElapsed);
+            Debug.Log("Time: " + timerHandeler.timeElapsed + ((timeDif > 0) ? "Time difference from best: +": "Time difference from best: ") + timeDif); 
 
         }
     }
@@ -412,7 +412,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (currentCheckpoint != potentialCheckPoint)
         {
             currentCheckpoint = potentialCheckPoint;
-            Debug.Log("Checkpoint Reached!");
         }
     }
     // Check distance between hand and body to create/destroy joint

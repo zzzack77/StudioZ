@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
-    public static GameManager instance;
-    private PlayerDataManager playerDataManager;
+    public static GameManager Instance;
     private LevelManager levelManager;
 
     public List<GameObject> playerGameObjects = new List<GameObject>();
@@ -18,13 +17,12 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private int level;
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else Destroy(gameObject);
 
-        playerDataManager = GetComponent<PlayerDataManager>();
         levelManager = GetComponent<LevelManager>();
     }
     private void Update()
@@ -35,16 +33,18 @@ public class GameManager : NetworkBehaviour
             LoadLevel(level);
         }
     }
-    public void setLevelTime(float time)
+    public void setCurrentLevelTime(float time)
     {
-        if (playerDataManager.GetSingleLevelTime(levelManager.CurrentLevelIndex) > time)
+        if (PlayerDataManager.Instance.GetSingleLevelTime(levelManager.CurrentLevelIndex) > time ||
+            PlayerDataManager.Instance.GetSingleLevelTime(levelManager.CurrentLevelIndex) == 0)
         {
-            playerDataManager.SetSingleLevelTime(levelManager.CurrentLevelIndex, time);
+            PlayerDataManager.Instance.SetSingleLevelTime(levelManager.CurrentLevelIndex, time);
         }
+        
     }
-    public float GetCurrentLevelTime()
+    public float GetCurrentLevelBestTime()
     {
-        return playerDataManager.GetSingleLevelTime(levelManager.CurrentLevelIndex);
+        return PlayerDataManager.Instance.GetSingleLevelTime(levelManager.CurrentLevelIndex);
     }
     public void LoadLevel(int index) 
     {
