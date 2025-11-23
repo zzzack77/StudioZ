@@ -369,7 +369,7 @@ MonoBehaviour:
   playerGameObjects: []
   trackedTargets: []
   setLevel: 1
-  level: 6
+  level: 4
 --- !u!114 &530605416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1771,7 +1771,6 @@ MonoBehaviour:
   R_shoulderPoint: {fileID: 224682707793680517}
   armLength: 4.2
   jointBreakingSensitivity: 0.99
-  shouldersInLine: 0
   invertGrippingInput: 1
   hasFinished: 0
   L_isGripping: 0

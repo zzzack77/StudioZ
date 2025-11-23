@@ -39,25 +39,30 @@ public class BasicCombatLogic : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TriggerEnter");
-        OpponentBodyRB = other.GetComponent<Rigidbody>();
+        // Commented this out as was throwing tones of errors because the the tag Arm...
+        // Also remove uneccissary debug logs which spam the console before pushing to main please 
+        // - Zack
 
-        if (OpponentBodyRB != null)
-        {
-            if (other.gameObject.CompareTag("Arm"))
-            {
-                Debug.Log("HitArm");
-            }
-            else
-            {
 
-                Debug.Log("HitPlayer");
-                forceDirection = (other.transform.position - transform.position).normalized;
-                OpponentBodyRB.AddForce(forceDirection * 30f, ForceMode.Impulse);
-                Debug.Log("ForceApplied");
-            }
+        //Debug.Log("TriggerEnter");
+        //OpponentBodyRB = other.GetComponent<Rigidbody>();
 
-        }
+        //if (OpponentBodyRB != null)
+        //{
+        //    if (other.gameObject.CompareTag("Arm"))
+        //    {
+        //        Debug.Log("HitArm");
+        //    }
+        //    else
+        //    {
+
+        //        Debug.Log("HitPlayer");
+        //        forceDirection = (other.transform.position - transform.position).normalized;
+        //        OpponentBodyRB.AddForce(forceDirection * 30f, ForceMode.Impulse);
+        //        Debug.Log("ForceApplied");
+        //    }
+
+        //}
     }
 }
 
