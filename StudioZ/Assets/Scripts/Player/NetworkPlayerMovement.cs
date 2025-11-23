@@ -403,7 +403,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
             Debug.Log("Best Time: " + GameManager.Instance.GetCurrentLevelBestTime());
             float timeDif = timerHandeler.timeElapsed - GameManager.Instance.GetCurrentLevelBestTime();
             GameManager.Instance.setCurrentLevelTime(timerHandeler.timeElapsed);
-            Debug.Log("Time: " + timerHandeler.timeElapsed + ((timeDif > 0) ? "Time difference from best: +": "Time difference from best: ") + timeDif); 
+            Debug.Log("Time: " + timerHandeler.timeElapsed + ((timeDif > 0) ? " Time difference from best: +": " Time difference from best: ") + timeDif); 
 
         }
     }
