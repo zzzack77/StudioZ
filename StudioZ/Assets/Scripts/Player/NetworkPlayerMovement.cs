@@ -23,11 +23,19 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private ConfigurableJoint R_currentJoint;
     [SerializeField] private float armLength = 4.2f;
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
+    [SerializeField] private float handMoveSpeed = 100;
 
     [Header("Player Settings")]
-    [SerializeField] private bool invertGrippingInput = true;
     private bool shouldRestartTimer = false;
+    [SerializeField] private bool invertGrippingInput = true;
     [SerializeField] private bool hasFinished;
+
+    // Vibration
+    private Coroutine GripVibrationCoroutine;
+    [SerializeField] private bool vibrationEnabled = true;
+    [SerializeField] private float vibrationDuration = 0.1f;
+    [SerializeField] private float vibrationStrengthLowFrequency = 0.5f;
+    [SerializeField] private float vibrationStrengthHighFrequency = 0.5f;
 
 
 
@@ -101,6 +109,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
     // Dead zones
     private float triggerDeadZone = 0.1f;
     private float joystickDeadZone = 0.2f;
+    // Vibration handelers
+    private bool L_hasVibrated;
+    private bool R_hasVibrated;
 
     [Header("Joystick Gripping Settings")]
     [SerializeField] float forceMultiplier = 15f;
@@ -128,6 +139,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (currentCheckpoint == Vector2.zero)
         {
             bodyRB.transform.position = new Vector2(spawnPoint.x, spawnPoint.y - armLength);
+            L_handRB.transform.position = L_shoulderPoint.transform.position;
+            R_handRB.transform.position = R_shoulderPoint.transform.position;
             timerHandeler.isTimerRunning = false;
             shouldRestartTimer = true;
             hasFinished = false;
@@ -135,6 +148,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         else
         {
             bodyRB.transform.position = new Vector2(currentCheckpoint.x, currentCheckpoint.y - armLength);
+            L_handRB.transform.position = L_shoulderPoint.transform.position;
+            R_handRB.transform.position = R_shoulderPoint.transform.position;
         }
     }
     private void ResetGrips()
@@ -247,16 +262,20 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 Mathf.Clamp(leftStick.x, -1, 1) * armLength,
                 Mathf.Clamp(leftStick.y, -1, 1) * armLength,
                 0f);
-            
-            L_handRB.transform.position = L_WorldOffset + L_shoulderPoint.transform.position;
+
+            Vector3 targetPos = L_WorldOffset + L_shoulderPoint.transform.position;
+            L_handRB.transform.position = Vector3.MoveTowards(L_handRB.transform.position, targetPos, handMoveSpeed * Time.deltaTime);
         }
-        if(!R_isGripping)
+
+        if (!R_isGripping)
         {
             Vector3 R_WorldOffset = new Vector3(
                 Mathf.Clamp(rightStick.x, -1, 1) * armLength,
                 Mathf.Clamp(rightStick.y, -1, 1) * armLength,
                 0f);
-            R_handRB.transform.position = R_WorldOffset + R_shoulderPoint.transform.position;
+
+            Vector3 targetPos = R_WorldOffset + R_shoulderPoint.transform.position;
+            R_handRB.transform.position = Vector3.MoveTowards(R_handRB.transform.position, targetPos, handMoveSpeed * Time.deltaTime);
         }
     }
     private void GrippingLogic()
@@ -274,20 +293,19 @@ public class NetworkPlayerMovement : NetworkBehaviour
             else if (L_canGripPlayer) { OnLPlayerGrip(); }
             else if (L_canGripJug && !leftShoulderPressed) OnLGrip();
             else if (L_canGripPocket && leftShoulderPressed) OnLGrip();
-            else if (!isRespawning) { L_isGripping = false; L_handRB.constraints = RigidbodyConstraints.None; }
+            else if (!isRespawning) { OnLGripRelease(); }
         }
         else if (leftShoulderPressed)
         {
             if (L_canGripFinish) { OnLGrip(); Finish(); }
             else if (L_canGripCheckpoint) { OnLGrip(); SetCheckPoint(); }
             else if (L_canGripCrimp && !leftTriggerPressed) OnLGrip();
-            else if (!isRespawning) { L_isGripping = false; L_handRB.constraints = RigidbodyConstraints.None; }
+            else if (!isRespawning) { OnLGripRelease(); }
         }
         else if (!isRespawning)
         {
             OnLPlayerLetGo();
-            L_isGripping = false;
-            L_handRB.constraints = RigidbodyConstraints.None;
+            OnLGripRelease();
         }
         // Right Hand Grip Logic
         if (rightTriggerPressed)
@@ -297,20 +315,19 @@ public class NetworkPlayerMovement : NetworkBehaviour
             else if (R_canGripPlayer) { OnRPlayerGrip(); }
             else if (R_canGripJug && !rightShoulderPressed) OnRGrip();
             else if (R_canGripPocket && rightShoulderPressed) OnRGrip();
-            else if (!isRespawning) { R_isGripping = false; R_handRB.constraints = RigidbodyConstraints.None; }
+            else if (!isRespawning) { OnRGripRelease(); }
         }
         else if (rightShoulderPressed)
         {
             if (R_canGripFinish) { OnRGrip(); Finish(); }
             else if (R_canGripCheckpoint) { OnRGrip(); SetCheckPoint(); }
             else if (R_canGripCrimp && !rightTriggerPressed) OnRGrip();
-            else if (!isRespawning) { R_isGripping = false; R_handRB.constraints = RigidbodyConstraints.None; }
+            else if (!isRespawning) { OnRGripRelease(); }
         }
         else if(!isRespawning)
         {
             OnRPlayerLetGo();
-            R_isGripping = false;
-            R_handRB.constraints = RigidbodyConstraints.None;
+            OnRGripRelease();
         }
     }
 
@@ -329,8 +346,20 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
             bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
         }
+        if (!L_hasVibrated && vibrationEnabled)
+        {
+            L_hasVibrated = true;
+            if (GripVibrationCoroutine != null) StopCoroutine(GripVibrationCoroutine);
+            GripVibrationCoroutine = StartCoroutine(DoGripVibration());
+        }
         L_isGripping = true;
         L_handRB.constraints = RigidbodyConstraints.FreezeAll;
+    }
+    private void OnLGripRelease()
+    {
+        L_hasVibrated = false;
+        L_isGripping = false; 
+        L_handRB.constraints = RigidbodyConstraints.None;
     }
     private void OnRGrip()
     {
@@ -347,10 +376,28 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
             bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
         }
+        if (!R_hasVibrated && vibrationEnabled)
+        {
+            R_hasVibrated = true;
+            if (GripVibrationCoroutine != null) StopCoroutine(GripVibrationCoroutine);
+            GripVibrationCoroutine = StartCoroutine(DoGripVibration());
+        }
+        
         R_isGripping = true;
         R_handRB.constraints = RigidbodyConstraints.FreezeAll;
     }
-    
+    private IEnumerator DoGripVibration()
+    {
+        Gamepad.current.SetMotorSpeeds(vibrationStrengthLowFrequency, vibrationStrengthHighFrequency);
+        yield return new WaitForSeconds(vibrationDuration);
+        Gamepad.current.SetMotorSpeeds(0, 0);
+    }
+    private void OnRGripRelease()
+    {
+        R_hasVibrated = false;
+        R_isGripping = false;
+        R_handRB.constraints = RigidbodyConstraints.None;
+    }
     private void OnLPlayerGrip()
     {
         if (!isRespawning && (L_playerGrippedGameObject != bodyRB.gameObject))

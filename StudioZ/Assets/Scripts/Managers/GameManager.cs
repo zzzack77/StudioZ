@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -35,8 +36,8 @@ public class GameManager : NetworkBehaviour
         if (setLevel)
         {
             setLevel = false;
-
-            RequestLoadLevel(level);
+            if (NetworkManager != null) RequestLoadLevel(level); 
+            else LoadLevel(level);
         }
     }
 
@@ -45,13 +46,15 @@ public class GameManager : NetworkBehaviour
     // --------------------------
     public void RequestLoadLevel(int index)
     {
-        LoadLevelServerRpc(index);
+        if (NetworkManager != null) LoadLevelServerRpc(index);
+        else LoadLevel(index);
     }
 
     // --------------------------
     //  SERVER loads level
     // --------------------------
     [ServerRpc(RequireOwnership = false)]
+
     private void LoadLevelServerRpc(int index)
     {
         LoadLevel(index);             // Server loads the level
