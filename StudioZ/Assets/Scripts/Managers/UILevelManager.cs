@@ -260,12 +260,21 @@ public class UILevelManager : MonoBehaviour
     private void MoveFocus(int delta)
     {
         int newIndex = currentIndex + delta;
-
         if (newIndex < 0 || newIndex >= focusables.Count)
             return;
-        Debug.Log(newIndex);
+
+        // Remove focus class from old
+        if (focusables[currentIndex] is VisualElement oldVe)
+            oldVe.RemoveFromClassList("LevelButtonsFocus");
+
         currentIndex = newIndex;
+
+        // Apply focus
         focusables[currentIndex].Focus();
+
+        // Add class to new
+        if (focusables[currentIndex] is VisualElement newVe)
+            newVe.AddToClassList("LevelButtonsFocus");
     }
 
     private void ActivateCurrent()

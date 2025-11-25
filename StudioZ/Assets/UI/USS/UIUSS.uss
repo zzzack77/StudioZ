@@ -100,3 +100,14 @@
     font-size: 28px;
     height: 25%;
 }
+
+.LevelButtonsFocus {
+    background-color: rgb(48, 45, 41);
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.25s;
+    scale: 1.03 1.03;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+}
