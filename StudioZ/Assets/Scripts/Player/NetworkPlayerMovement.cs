@@ -182,6 +182,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         InitializeGamepad(); // Read gamepad inputs
         ControllerMovement(); // Move hands based on joystick input
         GrippingLogic(); // Handle gripping logic
+
+        if (Input.GetKeyDown(KeyCode.Escape)) GameManager.Instance.SetUI(true);
     }
     private void FixedUpdate()
     {
@@ -218,6 +220,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
              currentCheckpoint = Vector2.zero;
              SpawnPlayer();
         }
+        if (gamepad.startButton.wasPressedThisFrame) GameManager.Instance.SetUI(true);
     }
     private void LGrippedHandMovement()
     {

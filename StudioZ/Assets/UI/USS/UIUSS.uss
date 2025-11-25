@@ -27,7 +27,7 @@
 }
 
 .LevelButtons:hover {
-    background-color: rgba(48, 45, 41, 0.84);
+    background-color: rgb(48, 45, 41);
     transition-timing-function: ease-in-out;
     transition-duration: 0.25s;
     scale: 1.03 1.03;
@@ -84,4 +84,19 @@
     transition-duration: 0.15s;
     text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.13);
     scale: 1.01 1.01;
+}
+
+.LevelText {
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/Rocky%20TTF.ttf?fileID=12800000&guid=293ee172a9915444aa8fa83f802436dd&type=3#Rocky TTF");
+    font-size: 70px;
+    color: rgb(255, 255, 255);
+    text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.51);
+    height: 50%;
+}
+
+.LevelBestTime {
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/Rocky%20TTF.ttf?fileID=12800000&guid=293ee172a9915444aa8fa83f802436dd&type=3#Rocky TTF");
+    color: rgb(202, 202, 202);
+    font-size: 28px;
+    height: 25%;
 }

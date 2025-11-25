@@ -7,6 +7,7 @@ public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance;
     private LevelManager levelManager;
+    [SerializeField] private GameObject LevelUI;
 
     public List<GameObject> playerGameObjects = new List<GameObject>();
     // A list for the tracked targets in the Cinemachine Target Group
@@ -48,6 +49,7 @@ public class GameManager : NetworkBehaviour
     {
         if (NetworkManager != null) LoadLevelServerRpc(index);
         else LoadLevel(index);
+        SetUI(false);
     }
 
     // --------------------------
@@ -114,6 +116,11 @@ public class GameManager : NetworkBehaviour
     public float GetCurrentLevelBestTime()
     {
         return PlayerDataManager.Instance.GetSingleLevelTime(levelManager.CurrentLevelIndex);
+    }
+
+    public void SetUI(bool UIEnabled)
+    {
+        LevelUI.SetActive(UIEnabled);
     }
 
     // --------------------------
