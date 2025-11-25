@@ -7,7 +7,7 @@ public class PlayerData
 {
     public string PlayerName;
     public int PlayerScore;
-    public float[] BestLevelTimes = new float[8];
+    public float[] BestLevelTimes = new float[13];
 }
 
 // Manager to handle saving and loading player data

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,6 +7,7 @@ public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance;
     private LevelManager levelManager;
+    [SerializeField] private GameObject LevelUI;
 
     public List<GameObject> playerGameObjects = new List<GameObject>();
     // A list for the tracked targets in the Cinemachine Target Group
@@ -35,8 +37,8 @@ public class GameManager : NetworkBehaviour
         if (setLevel)
         {
             setLevel = false;
-
-            RequestLoadLevel(level);
+            if (NetworkManager != null) RequestLoadLevel(level); 
+            else LoadLevel(level);
         }
     }
 
@@ -45,13 +47,16 @@ public class GameManager : NetworkBehaviour
     // --------------------------
     public void RequestLoadLevel(int index)
     {
-        LoadLevelServerRpc(index);
+        if (NetworkManager != null) LoadLevelServerRpc(index);
+        else LoadLevel(index);
+        SetUI(false);
     }
 
     // --------------------------
     //  SERVER loads level
     // --------------------------
     [ServerRpc(RequireOwnership = false)]
+
     private void LoadLevelServerRpc(int index)
     {
         LoadLevel(index);             // Server loads the level
@@ -111,6 +116,11 @@ public class GameManager : NetworkBehaviour
     public float GetCurrentLevelBestTime()
     {
         return PlayerDataManager.Instance.GetSingleLevelTime(levelManager.CurrentLevelIndex);
+    }
+
+    public void SetUI(bool UIEnabled)
+    {
+        LevelUI.SetActive(UIEnabled);
     }
 
     // --------------------------
