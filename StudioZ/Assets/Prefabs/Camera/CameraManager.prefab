@@ -48,7 +48,7 @@ MonoBehaviour:
   cineCam: {fileID: 0}
   targetGroup: {fileID: 0}
   defaultCameraSize: 25
-  zoomScalar: 0.9
+  zoomScalar: 0.6
 --- !u!114 &9107470225475643273
 MonoBehaviour:
   m_ObjectHideFlags: 0
