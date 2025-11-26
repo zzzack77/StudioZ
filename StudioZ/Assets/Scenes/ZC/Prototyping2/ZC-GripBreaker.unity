@@ -909,6 +909,7 @@ MonoBehaviour:
   - {fileID: 5994946538530998509, guid: b99f3cf2f29efab4a98ca0b5312d3690, type: 3}
   - {fileID: 1122683889736158527, guid: dc2736e6280939f4cb121331ac717db2, type: 3}
   - {fileID: 3177462170100047220, guid: 393ea97403fa9de4bac04e36af06d1a3, type: 3}
+  isBreakerLevel: 000000000000000001
 --- !u!114 &944555974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1633,14 +1634,14 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 1104803170}
-  - {fileID: 944555970}
+  - {fileID: 519420032}
+  - {fileID: 806443319}
   - {fileID: 1389198207}
+  - {fileID: 1104803170}
   - {fileID: 1719876935}
   - {fileID: 1515996948}
   - {fileID: 269805212}
   - {fileID: 808717191}
-  - {fileID: 806443319}
+  - {fileID: 944555970}
   - {fileID: 1926019100}
