@@ -1257,17 +1257,20 @@ MonoBehaviour:
   R_shoulderPoint: {fileID: 5767027807498401312}
   armLength: 4.2
   jointBreakingSensitivity: 0.99
-  shouldersInLine: 0
+  handMoveSpeed: 100
   invertGrippingInput: 1
-  currentCheckpoint: {x: 0, y: 0}
-  R_playerGrippedGameObject: {fileID: 0}
+  hasFinished: 0
+  vibrationEnabled: 1
+  vibrationDuration: 0.05
+  vibrationStrengthLowFrequency: 0.05
+  vibrationStrengthHighFrequency: 0.1
   L_isGripping: 0
   R_isGripping: 0
   forceMultiplier: 15
   downThreshold: -0.85
-  singleHandUpwardBoost: 1.8
-  doubleHandedUpwardBoost: 1.4
-  horizontalDamping: 0.5
+  singleHandUpwardBoost: 2
+  doubleHandedUpwardBoost: 1.6
+  horizontalDamping: 1
   swingDampening: 0.98
 --- !u!114 &6781876260613860221
 MonoBehaviour:
