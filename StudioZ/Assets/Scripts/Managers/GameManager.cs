@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class GameManager : NetworkBehaviour
     private LevelManager levelManager;
     [SerializeField] private GameObject LevelUI;
 
-    public List<GameObject> playerGameObjects = new List<GameObject>();
+    public Dictionary<ulong, GameObject> playerGameObjects = new Dictionary<ulong, GameObject>();
     // A list for the tracked targets in the Cinemachine Target Group
     public List<GameObject> trackedTargets = new List<GameObject>();
     [Header("Debug Level Loading (Editor Only)")]
@@ -82,7 +83,7 @@ public class GameManager : NetworkBehaviour
     private void LoadLevel(int index)
     {
         // Reset all player positions and respawn
-        foreach (GameObject gameObject in playerGameObjects)
+        foreach (GameObject gameObject in playerGameObjects.Values)
         {
             NetworkPlayerMovement networkPlayerMovement = gameObject.GetComponent<NetworkPlayerMovement>();
             if (networkPlayerMovement != null)
@@ -126,15 +127,15 @@ public class GameManager : NetworkBehaviour
     // --------------------------
     //  PLAYER REGISTRATION
     // --------------------------
-    public void RegisterPlayer(GameObject player)
+    public void RegisterPlayer(ulong playerID, GameObject player)
     {
-        if (!playerGameObjects.Contains(player))
-            playerGameObjects.Add(player);
+        if (!playerGameObjects.ContainsKey(playerID))
+            playerGameObjects[playerID] = player;
     }
 
-    public void UnregisterPlayer(GameObject player)
+    public void UnregisterPlayer(ulong playerID)
     {
-        if (playerGameObjects.Contains(player))
-            playerGameObjects.Remove(player);
+        if (playerGameObjects.ContainsKey(playerID))
+            playerGameObjects.Remove(playerID);
     }
 }

@@ -22,7 +22,7 @@ public class RegisterPlayer : NetworkBehaviour
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.RegisterPlayer(this.gameObject);
+            GameManager.Instance.RegisterPlayer(NetworkObject.OwnerClientId, this.gameObject);
             if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
             {
                 
@@ -37,7 +37,7 @@ public class RegisterPlayer : NetworkBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.UnregisterPlayer(gameObject);
+            GameManager.Instance.UnregisterPlayer(NetworkObject.OwnerClientId);
             if (targetGroup != null && GameManager.Instance.trackedTargets.Contains(this.gameObject))
             {
                 targetGroup.RemoveMember(transform);
@@ -50,7 +50,7 @@ public class RegisterPlayer : NetworkBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.RegisterPlayer(this.gameObject);
+            GameManager.Instance.RegisterPlayer(NetworkObject.OwnerClientId, this.gameObject);
         }
         if (targetGroup == null) Debug.LogError("Target group ref is null!");
         if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
