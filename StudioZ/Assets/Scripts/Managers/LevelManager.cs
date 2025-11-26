@@ -3,28 +3,25 @@ using UnityEngine;
 
 public class LevelManager : NetworkBehaviour
 {
-    //if (Input.GetKeyDown(KeyCode.F1)) LoadLevel(1);
-    //    if (Input.GetKeyDown(KeyCode.F2)) LoadLevel(2);
-    //    if (Input.GetKeyDown(KeyCode.F3)) LoadLevel(3);
-    //    if (Input.GetKeyDown(KeyCode.F4)) LoadLevel(4);
-    //    if (Input.GetKeyDown(KeyCode.F5)) LoadLevel(5);
     [Header("Level Prefabs (Order Matters)")]
     public GameObject[] levelPrefabs;
+
+    [Header("Breaker Level Settings")]
+    public bool[] isBreakerLevel;   // Mark which levels contain HoldBreakers
 
     private GameObject currentLevelInstance;
     private int currentLevelIndex = -1;
 
     public int CurrentLevelIndex => currentLevelIndex;
 
-    // No Update() input allowed — that caused desync!
-    // Level loading MUST be requested via GameManager RPC.
-
-    /// <summary>
-    /// Loads a level prefab by index on this client/server instance.
-    /// Must only be called by GameManager via ServerRpc or ClientRpc.
-    /// </summary>
     public void LoadLevel(int index)
     {
+        if (!IsServer)
+        {
+            Debug.LogError("LevelManager.LoadLevel MUST be called on the SERVER.");
+            return;
+        }
+
         if (index < 0 || index >= levelPrefabs.Length)
         {
             Debug.LogError("LevelManager: Invalid level index!");
@@ -35,19 +32,44 @@ public class LevelManager : NetworkBehaviour
         if (index == currentLevelIndex)
             return;
 
-        // Unload previous level
+        // Unload old level
         UnloadCurrentLevel();
 
-        // Instantiate the new level
+        // Instantiate new level (server-side)
         currentLevelInstance = Instantiate(levelPrefabs[index]);
         currentLevelIndex = index;
 
         Debug.Log($"[LevelManager] Loaded Level: {index}");
+
+        //
+        // --- NEW LOGIC: Spawn holds if this is a breaker level ---
+        //
+
+        if (isBreakerLevel.Length > index && isBreakerLevel[index])
+        {
+            SpawnBreakerHolds(currentLevelInstance);
+        }
     }
 
-    /// <summary>
-    /// Destroys the currently active level instance.
-    /// </summary>
+    private void SpawnBreakerHolds(GameObject levelRoot)
+    {
+        foreach (var hold in levelRoot.GetComponentsInChildren<HoldBreaker>(true))
+        {
+            var netObj = hold.GetComponent<NetworkObject>();
+
+            if (netObj != null && !netObj.IsSpawned)
+            {
+                netObj.Spawn(true);
+            }
+            else
+            {
+                Debug.LogWarning($"HoldBreaker {hold.name} has NO NetworkObject! Add one.");
+            }
+        }
+
+        Debug.Log("[LevelManager] Spawned all HoldBreakers in this level.");
+    }
+
     public void UnloadCurrentLevel()
     {
         if (currentLevelInstance != null)
@@ -59,9 +81,6 @@ public class LevelManager : NetworkBehaviour
         currentLevelIndex = -1;
     }
 
-    /// <summary>
-    /// Reloads the currently active level if one exists.
-    /// </summary>
     public void ReloadLevel()
     {
         if (currentLevelIndex != -1)
