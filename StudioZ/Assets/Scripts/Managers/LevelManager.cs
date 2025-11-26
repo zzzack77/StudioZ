@@ -17,10 +17,7 @@ public class LevelManager : NetworkBehaviour
     public void LoadLevel(int index)
     {
         if (!IsServer)
-        {
-            Debug.LogError("LevelManager.LoadLevel MUST be called on the SERVER.");
-            return;
-        }
+            return; // Only the server loads the level
 
         if (index < 0 || index >= levelPrefabs.Length)
         {
@@ -28,27 +25,21 @@ public class LevelManager : NetworkBehaviour
             return;
         }
 
-        // Ignore duplicate load request
         if (index == currentLevelIndex)
             return;
 
-        // Unload old level
         UnloadCurrentLevel();
 
-        // Instantiate new level (server-side)
-        currentLevelInstance = Instantiate(levelPrefabs[index]);
+        // Instantiate normally, as a regular GameObject
+        GameObject level = Instantiate(levelPrefabs[index]);
+
+        // IMPORTANT: Spawn the root level object so all clients receive it
+        level.GetComponent<NetworkObject>().Spawn();
+
+        currentLevelInstance = level;
         currentLevelIndex = index;
 
-        Debug.Log($"[LevelManager] Loaded Level: {index}");
-
-        //
-        // --- NEW LOGIC: Spawn holds if this is a breaker level ---
-        //
-
-        if (isBreakerLevel.Length > index && isBreakerLevel[index])
-        {
-            SpawnBreakerHolds(currentLevelInstance);
-        }
+        Debug.Log($"[LevelManager] Loaded Level {index}");
     }
 
     private void SpawnBreakerHolds(GameObject levelRoot)

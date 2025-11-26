@@ -806,9 +806,9 @@ GameObject:
   - component: {fileID: 944555970}
   - component: {fileID: 944555971}
   - component: {fileID: 944555969}
-  - component: {fileID: 944555972}
   - component: {fileID: 944555974}
   - component: {fileID: 944555973}
+  - component: {fileID: 944555972}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -908,7 +908,7 @@ MonoBehaviour:
   - {fileID: 8165474761427647458, guid: b38fe6039f5f0624195f59cd9db39584, type: 3}
   - {fileID: 5994946538530998509, guid: b99f3cf2f29efab4a98ca0b5312d3690, type: 3}
   - {fileID: 1122683889736158527, guid: dc2736e6280939f4cb121331ac717db2, type: 3}
-  - {fileID: 3177462170100047220, guid: 393ea97403fa9de4bac04e36af06d1a3, type: 3}
+  - {fileID: 3826538832940214895, guid: f760cddb13b6d9f438a0a0b49575f4aa, type: 3}
   isBreakerLevel: 000000000000000001
 --- !u!114 &944555974
 MonoBehaviour:
