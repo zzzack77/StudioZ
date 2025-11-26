@@ -60,7 +60,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 34
-    OrthographicSize: 20
+    OrthographicSize: 25
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -1668,7 +1668,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   targetGroup: {fileID: 0}
-  maxDistance: 10
+  maxDistance: 15
   playerCameraHandler: {fileID: 8735202720966013346}
 --- !u!65 &517347061133756013
 BoxCollider:
