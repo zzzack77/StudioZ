@@ -196,7 +196,7 @@ public class UILevelManager : MonoBehaviour
 
         // index : left, right, up, down
         nav[0] = new NavRule(-1, 1, -1, 2);
-        nav[1] = new NavRule(0, 2, -1, 4);
+        nav[1] = new NavRule(0, 2, -1, 5);
         nav[2] = new NavRule(0, 3, 0, 6);
         nav[3] = new NavRule(2, 4, 0, 7);
         nav[4] = new NavRule(3, 5, 1, 8);

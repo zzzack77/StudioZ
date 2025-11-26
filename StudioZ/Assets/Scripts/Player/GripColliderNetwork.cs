@@ -12,6 +12,25 @@ public class GripColliderNetwork : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsOwner) enabled = false;
     }
+    private void IsBreaker(Collider collider, bool isLeft, bool isGripping)
+    {
+        HoldBreaker holdBreaker = collider.gameObject.GetComponent<HoldBreaker>();
+        if (holdBreaker != null)
+        {
+            holdBreaker.GetPlayerReference(networkPlayerMovement);
+            if (isGripping)
+            {
+                if (isLeft) holdBreaker.OnLCollision();
+                else holdBreaker.OnRCollision();
+            }
+
+            else
+            {
+                if (isLeft) holdBreaker.EndLGrip();
+                else holdBreaker.EndRGrip();
+            }
+        }
+    }
     private void OnTriggerEnter(Collider collider)
     {
         // New system
@@ -36,14 +55,17 @@ public class GripColliderNetwork : NetworkBehaviour
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.L_canGripJug = true;
+                    IsBreaker(collider, true, true);
                 }
                 if (collider.gameObject.CompareTag("Crimp"))
                 {
                     networkPlayerMovement.L_canGripCrimp = true;
+                    IsBreaker(collider, true, true);
                 }
                 if (collider.gameObject.CompareTag("Pocket"))
                 {
                     networkPlayerMovement.L_canGripPocket = true;
+                    IsBreaker(collider, true, true);
                 }
             }
             if (this.name == "R Joystick Pos")
@@ -65,14 +87,17 @@ public class GripColliderNetwork : NetworkBehaviour
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.R_canGripJug = true;
+                    IsBreaker(collider, false, true);
                 }
                 if (collider.gameObject.CompareTag("Crimp"))
                 {
                     networkPlayerMovement.R_canGripCrimp = true;
+                    IsBreaker(collider, false, true);
                 }
                 if (collider.gameObject.CompareTag("Pocket"))
                 {
                     networkPlayerMovement.R_canGripPocket = true;
+                    IsBreaker(collider, false, true);
                 }
             }
         }
@@ -102,13 +127,16 @@ public class GripColliderNetwork : NetworkBehaviour
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.L_canGripJug = false;
+                    IsBreaker(collider, true, false);
                 }
                 if (collider.gameObject.CompareTag("Crimp"))
                 {
+                    IsBreaker(collider, true, false);
                     networkPlayerMovement.L_canGripCrimp = false;
                 }
                 if (collider.gameObject.CompareTag("Pocket"))
                 {
+                    IsBreaker(collider, true, false);
                     networkPlayerMovement.L_canGripPocket = false;
                 }
             }
@@ -130,14 +158,17 @@ public class GripColliderNetwork : NetworkBehaviour
                 if (collider.gameObject.CompareTag("Jug"))
                 {
                     networkPlayerMovement.R_canGripJug = false;
+                    IsBreaker(collider, false, false);
                 }
                 if (collider.gameObject.CompareTag("Crimp"))
                 {
                     networkPlayerMovement.R_canGripCrimp = false;
+                    IsBreaker(collider, false, false);
                 }
                 if (collider.gameObject.CompareTag("Pocket"))
                 {
                     networkPlayerMovement.R_canGripPocket = false;
+                    IsBreaker(collider, false, false);
                 }
             }
         }
