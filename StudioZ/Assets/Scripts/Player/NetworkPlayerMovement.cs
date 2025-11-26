@@ -76,6 +76,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private Vector3 R_distanceFromHandToGrippedObject;
     private bool L_isGrippingPlayer;
     private bool R_isGrippingPlayer;
+    // Breaker holds 
+
+
     // Left Grips
     public bool L_canGripFinish { get; set; }
     public bool L_canGripCheckpoint { get; set; }
@@ -83,6 +86,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool L_canGripJug { get; set; }
     public bool L_canGripCrimp { get; set; }
     public bool L_canGripPocket { get; set; }
+    public bool L_canGripBreaker { get; set; }
+
     // Right Grips
     public bool R_canGripFinish     { get; set; }
     public bool R_canGripCheckpoint { get; set; }
@@ -92,8 +97,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool R_canGripPocket     { get; set; }
 
     [Header("Grip Settings")]
-    [SerializeField] private bool L_isGripping = false;
-    [SerializeField] private bool R_isGripping = false;
+    public bool L_isGripping = false;
+    public bool R_isGripping = false;
 
     // ---- Gamepad Input Values ----
 

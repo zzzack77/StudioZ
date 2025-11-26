@@ -1,0 +1,148 @@
+using UnityEngine;
+
+public class HoldBreaker : MonoBehaviour
+{
+    private NetworkPlayerMovement networkPlayerMovement;
+    [Header("Settings")]
+    [SerializeField] private float gripRequiredTime = 2f;   // Time player must grip before disable
+    [SerializeField] private float disableDuration = 5f;    // How long object stays disabled
+    [SerializeField] private float fadedOpacity = 0.4f;
+
+    private SpriteRenderer spriteRenderer;
+    private Collider selfCollider;
+
+    // Components to disable when triggered
+    public Behaviour[] componentsToDisable;
+
+    private float originalOpacity;
+    [SerializeField] private bool isLDisabled = false;
+    [SerializeField] private bool LhasCollided = false;
+    [SerializeField] private bool LalreadyLetGo = false;
+    [SerializeField] private bool L_startTimer = false;
+    [SerializeField] private float LgripTimer = 0f;
+
+    private bool isRDisabled = false;
+    private bool isRGripping = false;
+    private float RgripTimer = 0f;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        selfCollider = GetComponent<Collider>();
+        originalOpacity = spriteRenderer.color.a;
+
+    }
+
+    private void Update()
+    {
+        if (LhasCollided && (networkPlayerMovement != null))
+        {
+            if (networkPlayerMovement.L_isGripping)
+            {
+                if (!L_startTimer)
+                {
+                    L_startTimer = true;
+                }
+
+            }
+        }
+        if (L_startTimer)
+        {
+            LgripTimer += Time.deltaTime;
+
+            if (LgripTimer >= gripRequiredTime)
+            {
+                StartCoroutine(LDisableRoutine());
+            }
+        }
+
+
+
+        // Only count grip if not already disabled
+        //if (LhasCollided && !isLDisabled)
+        //{
+        //    LgripTimer += Time.deltaTime;
+
+        //    if (LgripTimer >= gripRequiredTime)
+        //    {
+        //        StartCoroutine(LDisableRoutine());
+        //    }
+        //}
+        //if (isRGripping && !isRDisabled) {
+        //    RgripTimer += Time.deltaTime;
+        //    if (RgripTimer >= gripRequiredTime)
+        //    {
+        //        //StartCoroutine();
+        //    }
+        //}
+    }
+    public void GetPlayerReference(NetworkPlayerMovement player)
+    {
+        if (player != null)
+        {
+            networkPlayerMovement = player;
+        }
+    }
+
+    public void OnLCollision()
+    {
+        if (!isLDisabled)
+        {
+            LhasCollided = true;
+            LalreadyLetGo = false;
+        }
+    }
+    public void StartRGrip()
+    {
+        if (!isRGripping)
+        {
+            isRGripping = true;
+            RgripTimer = 0f;
+        }
+    }
+
+
+    public void EndLGrip()
+    {
+        LhasCollided = false;
+        LalreadyLetGo = true;
+        
+        //
+    }
+
+    private System.Collections.IEnumerator LDisableRoutine()
+    {
+        isLDisabled = true;
+        LhasCollided = false;
+        L_startTimer = false;
+        selfCollider.enabled = false;
+
+        if (!LalreadyLetGo)
+        {
+            networkPlayerMovement.L_canGripJug = false;
+            networkPlayerMovement.L_canGripCrimp = false;
+            networkPlayerMovement.L_canGripPocket = false;
+        }
+
+        // Fade sprite
+        SetOpacity(fadedOpacity);
+
+        yield return new WaitForSeconds(disableDuration);
+
+        SetOpacity(originalOpacity);
+
+        selfCollider.enabled = true;
+        L_startTimer = false;
+
+        LgripTimer = 0f;
+
+        isLDisabled = false;
+    }
+
+    private void SetOpacity(float value)
+    {
+        Color c = spriteRenderer.color;
+        c.a = value;
+        spriteRenderer.color = c;
+    }
+}
