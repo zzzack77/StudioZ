@@ -14,19 +14,15 @@ public class HoldBreaker : MonoBehaviour
     private Collider selfCollider;
     private float originalOpacity;
 
-    // components you might want to disable (unused in this example, left for compatibility)
-    public Behaviour[] componentsToDisable;
-
-    // Shared timer state (single timer for both hands)
+    // Timer
     private bool timerRunning = false;
     private float gripTimer = 0f;
 
-    // Per-hand collision / state tracking - used to decide which hand(s) to modify when disabling
+    // Is either hand currently in the collision box
     private bool LhasCollided = false;
-    private bool LalreadyLetGo = false; // true if left let go before disable
     private bool RhasCollided = false;
-    private bool RalreadyLetGo = false; // true if right let go before disable
-
+    
+    // is the hold disabled currently
     private bool isDisabled = false;
 
     private void Awake()
@@ -50,20 +46,18 @@ public class HoldBreaker : MonoBehaviour
             if ((LhasCollided && networkPlayerMovement.L_isGripping) ||
                 (RhasCollided && networkPlayerMovement.R_isGripping))
             {
+                
                 timerRunning = true;
                 gripTimer = 0f;
             }
         }
 
-        // if timer is running, advance it regardless of release
         if (timerRunning)
         {
             gripTimer += Time.deltaTime;
 
             if (gripTimer >= gripRequiredTime)
             {
-                // whichever hand(s) were holding this hold when the timer finishes
-                // will be subject to having their canGrip flags cleared.
                 StartCoroutine(DisableRoutine());
             }
         }
@@ -75,92 +69,56 @@ public class HoldBreaker : MonoBehaviour
         if (player != null)
             networkPlayerMovement = player;
     }
-
-    // ---------- External API (kept for compatibility) ----------
-    // original code used OnLCollision and StartRGrip / EndLGrip etc.
-    // Provide both left and right entry points.
-
+   
     public void OnLCollision()
     {
         if (isDisabled) return;
-
         LhasCollided = true;
-        LalreadyLetGo = false;
     }
 
     public void OnRCollision()
     {
         if (isDisabled) return;
-
         RhasCollided = true;
-        RalreadyLetGo = false;
-    }
-
-    // Called when left starts gripping (if you call this externally)
-    public void StartLGrip()
-    {
-        if (isDisabled) return;
-
-        // If left starts gripping while colliding, ensure collision state is true.
-        // But main timer-start uses networkPlayerMovement.L_isGripping, so this is optional.
-        LhasCollided = LhasCollided || true;
-        // do not reset timers here; Update handles starting.
-    }
-
-    // Called when right starts gripping (original had StartRGrip)
-    public void StartRGrip()
-    {
-        if (isDisabled) return;
-
-        RhasCollided = RhasCollided || true;
     }
 
     // Called when left stops gripping
     public void EndLGrip()
     {
-        // If left lets go, mark that left already let go so that when disabling occurs
-        // we won't clear left's canGrip flags if they moved to another hold.
         LhasCollided = false;
-        LalreadyLetGo = true;
-        // Note: do not stop the shared timer here. Timer should continue once started.
     }
 
     // Called when right stops gripping
     public void EndRGrip()
     {
         RhasCollided = false;
-        RalreadyLetGo = true;
     }
 
     // ---------- Disable routine ----------
     private IEnumerator DisableRoutine()
     {
-        // guard to ensure we only disable once per cycle
+        // Only disable once per cycle
         if (isDisabled)
             yield break;
 
         isDisabled = true;
-        timerRunning = false; // stop counting further
+        timerRunning = false;
         gripTimer = 0f;
 
-        // turn off collider so no one can grab this hold while disabled
+        // turn off collider
         selfCollider.enabled = false;
 
         // fade sprite
         SetOpacity(fadedOpacity);
 
-        // Only clear the player's grip abilities for the hand(s) that were still holding this hold
-        // at the moment the timer finished. This restores the original check behavior.
-        // Left hand
-        if (!LalreadyLetGo && networkPlayerMovement != null)
+        // If hand is still in collision, ungrip hands
+        if (LhasCollided && networkPlayerMovement != null)
         {
             networkPlayerMovement.L_canGripJug = false;
             networkPlayerMovement.L_canGripCrimp = false;
             networkPlayerMovement.L_canGripPocket = false;
         }
-
-        // Right hand
-        if (!RalreadyLetGo && networkPlayerMovement != null)
+        if (RhasCollided && networkPlayerMovement != null)
         {
             networkPlayerMovement.R_canGripJug = false;
             networkPlayerMovement.R_canGripCrimp = false;
@@ -169,16 +127,11 @@ public class HoldBreaker : MonoBehaviour
 
         yield return new WaitForSeconds(disableDuration);
 
-        // re-enable
+        // Reset values
         SetOpacity(originalOpacity);
         selfCollider.enabled = true;
-
-        // reset per-hand flags so future interactions behave normally
         LhasCollided = false;
         RhasCollided = false;
-        LalreadyLetGo = false;
-        RalreadyLetGo = false;
-
         isDisabled = false;
     }
 
