@@ -225,6 +225,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
              currentCheckpoint = Vector2.zero;
              SpawnPlayer();
         }
+        if (gamepad.buttonSouth.wasPressedThisFrame && hasFinished) GameManager.Instance.SetUI(true);
         if (gamepad.startButton.wasPressedThisFrame) GameManager.Instance.SetUI(true);
     }
     private void LGrippedHandMovement()

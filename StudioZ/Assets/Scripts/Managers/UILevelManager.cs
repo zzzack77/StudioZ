@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -10,44 +12,72 @@ public class UILevelManager : MonoBehaviour
     private VisualElement root;
 
     private List<Focusable> focusables = new List<Focusable>();
-    private int currentIndex = 0;
+    private int currentIndex = 2;
 
     private const string BackButtonName = "BackButton";
     private const string LeaderboardButtonName = "LeaderboardButton";
 
     [SerializeField] private float[] BTDTime;
 
+    private bool controllerActive = true;
+    private Vector2 lastMousePos;
+    private float mouseMoveThreshold = 0.5f; // pixels (tiny movement switches control)
+
+
     private void OnEnable()
     {
         var uiDocument = GetComponent<UIDocument>();
         root = uiDocument.rootVisualElement;
-
-        //HookUpBackButton();
-        //HookUpLeaderboardButton();
+        root.RegisterCallback<MouseMoveEvent>(OnMouseMoved);
+    
+    //HookUpBackButton();
+    //HookUpLeaderboardButton();
         HookUpLevelButtons();
 
         BuildNavigationList();
         FocusInitial();
     }
-
-    // Back Button
-    private void HookUpBackButton()
+    private void FocusInitial()
     {
-        Button back = root.Q<Button>(BackButtonName);
-        if (back != null)
-            back.clicked += () => Debug.Log("Back button clicked!");
-
-        back.focusable = true;
+        TryMove(2);
     }
-
-    // Leaderboard Button
-    private void HookUpLeaderboardButton()
+    private void OnMouseMoved(MouseMoveEvent evt)
     {
-        Button leaderboard = root.Q<Button>(LeaderboardButtonName);
-        if (leaderboard != null)
-            leaderboard.clicked += () => Debug.Log("Leaderboard button clicked!");
+        Vector2 pos = evt.mousePosition;
 
-        //leaderboard.focusable = true;
+        if ((pos - lastMousePos).sqrMagnitude > mouseMoveThreshold * mouseMoveThreshold)
+        {
+            if (controllerActive)
+            {
+                controllerActive = false;
+                ShowMouse();
+                RemoveControllerFocus();
+            }
+        }
+
+        lastMousePos = pos;
+    }
+    private void RemoveControllerFocus()
+    {
+        if (currentIndex >= 0 && currentIndex < focusables.Count)
+        {
+            if (focusables[currentIndex] is VisualElement ve)
+                ve.RemoveFromClassList("LevelButtonsFocus");
+        }
+
+        // Stop UI Toolkit from keeping the element focused
+        root.Focus(); // moves focus off all focusables safely
+    }
+    private void HideMouse()
+    {
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+    }
+    
+
+    private void ShowMouse()
+    {
+        UnityEngine.Cursor.visible = true;
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
     }
 
     // Level Buttons 1,2...12
@@ -169,14 +199,6 @@ public class UILevelManager : MonoBehaviour
         BuildNavRules();
     }
 
-    private void FocusInitial()
-    {
-        if (focusables.Count > 0)
-        {
-            focusables[0].Focus();
-            currentIndex = 0;
-        }
-    }
     private struct NavRule
     {
         public int left, right, up, down;
@@ -235,9 +257,30 @@ public class UILevelManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0)) ShowMouse();
+        if (Input.GetMouseButtonDown(1)) ShowMouse();
         var gamepad = Gamepad.current;
         if (gamepad == null) return;
 
+        // detect controller movement
+        if (gamepad.leftStick.ReadValue().sqrMagnitude > 0.1f ||
+            gamepad.dpad.ReadValue() != Vector2.zero ||
+            gamepad.buttonSouth.wasPressedThisFrame)
+        {
+            if (!controllerActive)
+            {
+                controllerActive = true;
+                HideMouse();
+            }
+        }
+
+        // controller inactive? mouse is in control → do not run navigation
+        if (!controllerActive)
+            return;
+
+        // -----------------------------
+        // Controller NAVIGATION LOGIC
+        // -----------------------------
         var r = nav[currentIndex];
 
         if (gamepad.dpad.left.wasPressedThisFrame || gamepad.leftStick.left.wasPressedThisFrame)
@@ -259,20 +302,20 @@ public class UILevelManager : MonoBehaviour
 
     private void MoveFocus(int delta)
     {
+        if (!controllerActive)
+            return;
+
         int newIndex = currentIndex + delta;
         if (newIndex < 0 || newIndex >= focusables.Count)
             return;
 
-        // Remove focus class from old
         if (focusables[currentIndex] is VisualElement oldVe)
             oldVe.RemoveFromClassList("LevelButtonsFocus");
 
         currentIndex = newIndex;
 
-        // Apply focus
         focusables[currentIndex].Focus();
 
-        // Add class to new
         if (focusables[currentIndex] is VisualElement newVe)
             newVe.AddToClassList("LevelButtonsFocus");
     }
