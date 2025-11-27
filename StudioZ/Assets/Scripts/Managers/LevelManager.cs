@@ -7,7 +7,7 @@ public class LevelManager : NetworkBehaviour
     public GameObject[] levelPrefabs;
 
     [Header("Breaker Level Settings")]
-    public bool[] isBreakerLevel;   // Mark which levels contain HoldBreakers
+    public bool[] isBreakerLevel;
 
     private GameObject currentLevelInstance;
     private int currentLevelIndex = -1;
@@ -16,9 +16,9 @@ public class LevelManager : NetworkBehaviour
 
     public void LoadLevel(int index)
     {
-        if (!IsServer)
-            return; // Only the server loads the level
-
+        // ------------------------------------------------------
+        // VALIDATION
+        // ------------------------------------------------------
         if (index < 0 || index >= levelPrefabs.Length)
         {
             Debug.LogError("LevelManager: Invalid level index!");
@@ -30,35 +30,41 @@ public class LevelManager : NetworkBehaviour
 
         UnloadCurrentLevel();
 
-        // Instantiate normally, as a regular GameObject
+        // ------------------------------------------------------
+        // SINGLE-PLAYER MODE (NO NETWORKING)
+        // ------------------------------------------------------
+        if (!GameMode.IsMultiplayer)
+        {
+            currentLevelInstance = Instantiate(levelPrefabs[index]);
+            currentLevelIndex = index;
+
+            Debug.Log($"[LevelManager] (SP) Loaded Level {index}");
+            return;
+        }
+
+        // ------------------------------------------------------
+        // MULTIPLAYER MODE (SERVER LOADS)
+        // ------------------------------------------------------
+        if (!IsServer)
+            return; // clients do nothing
+
         GameObject level = Instantiate(levelPrefabs[index]);
 
-        // IMPORTANT: Spawn the root level object so all clients receive it
-        level.GetComponent<NetworkObject>().Spawn();
+        // Every root-level object needs a NetworkObject
+        var netObj = level.GetComponent<NetworkObject>();
+        if (netObj != null)
+        {
+            netObj.Spawn();
+        }
+        else
+        {
+            Debug.LogError("Level prefab needs a NetworkObject root for multiplayer!");
+        }
 
         currentLevelInstance = level;
         currentLevelIndex = index;
 
-        Debug.Log($"[LevelManager] Loaded Level {index}");
-    }
-
-    private void SpawnBreakerHolds(GameObject levelRoot)
-    {
-        foreach (var hold in levelRoot.GetComponentsInChildren<HoldBreaker>(true))
-        {
-            var netObj = hold.GetComponent<NetworkObject>();
-
-            if (netObj != null && !netObj.IsSpawned)
-            {
-                netObj.Spawn(true);
-            }
-            else
-            {
-                Debug.LogWarning($"HoldBreaker {hold.name} has NO NetworkObject! Add one.");
-            }
-        }
-
-        Debug.Log("[LevelManager] Spawned all HoldBreakers in this level.");
+        Debug.Log($"[LevelManager] (MP) Loaded Level {index}");
     }
 
     public void UnloadCurrentLevel()

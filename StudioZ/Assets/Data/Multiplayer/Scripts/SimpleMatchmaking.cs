@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Security;
 using System.Threading.Tasks;
+#if UNITY_EDITOR && !UNITY_CLOUD_BUILD
 using ParrelSync;
+#endif
+
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Authentication;

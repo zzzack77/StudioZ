@@ -1430,6 +1430,7 @@ GameObject:
   - component: {fileID: 8333296495371975879}
   - component: {fileID: 1594576947348576724}
   - component: {fileID: 6651241743053351722}
+  - component: {fileID: 9030173879530450653}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -1586,6 +1587,22 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &9030173879530450653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8089523904409119797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc795902c51142147b2fc5915fec0e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  targetGroup: {fileID: 0}
+  maxDistance: 10
+  playerCameraHandler: {fileID: 3556886166474777681}
 --- !u!1 &8515714270761322291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1598,7 +1615,7 @@ GameObject:
   - component: {fileID: 6529204274099170638}
   - component: {fileID: 3424962266102083954}
   - component: {fileID: 5882256552943284364}
-  - component: {fileID: 5456846870518501237}
+  - component: {fileID: 3556886166474777681}
   m_Layer: 0
   m_Name: ProgrammerPlayer
   m_TagString: Untagged
@@ -1701,7 +1718,7 @@ MonoBehaviour:
   isTimerRunning: 0
   timeElapsed: 0
   totalTime: 0
---- !u!114 &5456846870518501237
+--- !u!114 &3556886166474777681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1710,13 +1727,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8515714270761322291}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc795902c51142147b2fc5915fec0e87, type: 3}
+  m_Script: {fileID: 11500000, guid: b1df0f2f2708e7b40b683515cfcb9a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  targetGroup: {fileID: 0}
-  maxDistance: 10
-  playerCameraHandler: {fileID: 0}
+  playerCamera: {fileID: 0}
+  cineCam: {fileID: 0}
 --- !u!1 &8940689159965420683
 GameObject:
   m_ObjectHideFlags: 0
