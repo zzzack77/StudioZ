@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1194187722101663855
+--- !u!1 &5110424462658537383
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4036181771869157172}
-  - component: {fileID: 6766384479785885398}
-  - component: {fileID: 24131321236844326}
+  - component: {fileID: 5637701689808668403}
+  - component: {fileID: 3613655197605815837}
+  - component: {fileID: 3414849717630072520}
   m_Layer: 0
   m_Name: CrimpL_00
   m_TagString: Crimp
@@ -18,13 +18,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4036181771869157172
+--- !u!4 &5637701689808668403
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194187722101663855}
+  m_GameObject: {fileID: 5110424462658537383}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,13 +33,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &6766384479785885398
+--- !u!212 &3613655197605815837
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194187722101663855}
+  m_GameObject: {fileID: 5110424462658537383}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -77,24 +77,24 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2895585107668747984, guid: 96b159b3486dc4e43a6212049407b86b, type: 3}
+  m_Sprite: {fileID: -2895585107668747984, guid: 6831451dc32217a47983ad02e7dc1fe6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.31, y: 0.91}
+  m_Size: {x: 2.33, y: 0.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &24131321236844326
+--- !u!136 &3414849717630072520
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194187722101663855}
+  m_GameObject: {fileID: 5110424462658537383}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -107,7 +107,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.20229048
-  m_Height: 2.2846987
+  m_Radius: 0.31849065
+  m_Height: 2.2772636
   m_Direction: 0
-  m_Center: {x: -0.01743114, y: 0.10081154, z: 0}
+  m_Center: {x: 0.026368141, y: 0.029097587, z: 0}
