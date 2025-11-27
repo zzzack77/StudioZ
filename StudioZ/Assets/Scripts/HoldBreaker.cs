@@ -7,7 +7,7 @@ public class HoldBreaker : MonoBehaviour
     private NetworkPlayerMovement networkPlayerMovement;
 
     [Header("Settings")]
-    [SerializeField] private float gripRequiredTime = 2f;
+    [SerializeField] private float gripTime = 2f;
     [SerializeField] private float disableDuration = 5f;
     [SerializeField] private float fadedOpacity = 0.4f;
 
@@ -19,8 +19,8 @@ public class HoldBreaker : MonoBehaviour
     private bool LhasCollided = false;
     private bool RhasCollided = false;
 
-    private bool timerRunning = false;
-    private float gripTimer = 0f;
+     private bool timerRunning = false;
+     private float gripTimer = 0f;
 
     private void Awake()
     {
@@ -32,7 +32,8 @@ public class HoldBreaker : MonoBehaviour
     private void Start()
     {
         // register this hold with the manager
-        holdIndex = GripBreakerManager.Instance.RegisterHold(this);
+        if (GripBreakerManager.Instance != null) holdIndex = GripBreakerManager.Instance.RegisterHold(this);
+        else Debug.LogWarning("GripBreakerManager is not currently in this scene, if you want multiplayer gripbreaker add GripBreakerManager Script to the level root.");
     }
 
     private void Update()
@@ -54,9 +55,10 @@ public class HoldBreaker : MonoBehaviour
         {
             gripTimer += Time.deltaTime;
 
-            if (gripTimer >= gripRequiredTime)
+            if (gripTimer >= gripTime)
             {
-                GripBreakerManager.Instance.RequestDisableHoldServerRpc(holdIndex);
+                if (GripBreakerManager.Instance != null) GripBreakerManager.Instance.RequestDisableHoldServerRpc(holdIndex);
+                else StartCoroutine(DisableRoutine());
                 timerRunning = false;
             }
         }
