@@ -14,6 +14,7 @@ public class HoldBreaker : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Collider selfCollider;
     private float originalOpacity;
+    private Animator Animator;
 
     private bool isDisabled = false;
     private bool LhasCollided = false;
@@ -27,6 +28,8 @@ public class HoldBreaker : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         selfCollider = GetComponent<Collider>();
         originalOpacity = spriteRenderer.color.a;
+        Animator = GetComponent<Animator>();
+
     }
 
     private void Start()
@@ -46,6 +49,18 @@ public class HoldBreaker : MonoBehaviour
             if ((LhasCollided && networkPlayerMovement.L_isGripping) ||
                 (RhasCollided && networkPlayerMovement.R_isGripping))
             {
+                if (gripTime < 1f)
+                {
+                    //Set Ani Bool active
+                    Animator.SetBool("IsBShake", true);
+                }
+                else
+                {
+                    //Set Ani Bool active
+                    Animator.SetBool("IsShake", true);
+                }
+
+
                 timerRunning = true;
                 gripTimer = 0f;
             }
@@ -77,6 +92,9 @@ public class HoldBreaker : MonoBehaviour
     {
         isDisabled = true;
         timerRunning = false;
+
+        Animator.SetBool("IsBShake", false);
+        Animator.SetBool("IsShake", false);
 
         selfCollider.enabled = false;
         SetOpacity(fadedOpacity);
