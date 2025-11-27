@@ -1,7 +1,6 @@
 using System.Globalization;
 using Unity.Cinemachine;
 using Unity.Netcode;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class RegisterPlayer : NetworkBehaviour
