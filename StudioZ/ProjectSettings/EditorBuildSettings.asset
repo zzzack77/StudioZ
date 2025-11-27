@@ -5,37 +5,37 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
+  - enabled: 0
     path: Assets/Data/Multiplayer/MultiplayerScene.unity
     guid: ce6566fffe632ef41b1d604414ef9421
-  - enabled: 1
+  - enabled: 0
     path: Assets/Data/Multiplayer/LobbyScene.unity
     guid: f1706b043100554429607d5a45ee08bb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BA-TestLevel.unity
     guid: cf57227eac8dc4b42a6e46b48b77d072
-  - enabled: 1
+  - enabled: 0
     path: Assets/Data/Multiplayer/EasyLobbyScene.unity
     guid: 4de1006fbefa5234d9df95157a4cfd9b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BW/BWLobbyScene.unity
     guid: e89b51e55717d0940a2b00a2c7c90451
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ZC/Prototyping2/ZC-LevelSelector.unity
     guid: 0e700a030da059f448654ddfee053217
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BW/SceneTest2.unity
     guid: 362713e53ee6a314e8569decec623884
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BW/BWSceneLoadTest.unity
     guid: 9c0dfd71aaa44b449b597f67faf140e0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BW/SceneTest3.unity
     guid: 320042c3f8d025e40afcca549e7b22e5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BW/SceneTest4.unity
     guid: 8141f5120b3836a4e8de719505916243
   - enabled: 1
