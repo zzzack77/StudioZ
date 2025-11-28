@@ -15,7 +15,7 @@
     border-right-color: rgb(36, 29, 21);
     border-top-color: rgb(36, 29, 21);
     border-bottom-color: rgb(36, 29, 21);
-    border-top-width: 5px;
+    border-top-width: 0;
     border-right-width: 5px;
     border-bottom-width: 5px;
     border-left-width: 5px;
@@ -23,11 +23,12 @@
     border-top-right-radius: 13px;
     border-bottom-right-radius: 13px;
     border-bottom-left-radius: 13px;
-    background-color: rgb(69, 53, 96);
+    background-color: rgb(29, 7, 24);
+    color: rgba(27, 27, 27, 0);
 }
 
 .LevelButtons:hover {
-    background-color: rgb(125, 94, 28);
+    background-color: rgb(88, 50, 113);
     transition-timing-function: ease-in-out;
     transition-duration: 0.25s;
     scale: 1.03 1.03;
@@ -35,14 +36,17 @@
     border-right-color: rgb(0, 0, 0);
     border-top-color: rgb(0, 0, 0);
     border-bottom-color: rgb(0, 0, 0);
-    color: rgb(214, 157, 39);
-    font-size: 53px;
-    -unity-text-outline-width: 2px;
-    -unity-text-outline-color: rgb(0, 0, 0);
+    color: rgb(29, 7, 24);
+    font-size: 78px;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgba(255, 255, 255, 0.53);
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
+    text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.51);
 }
 
 .LevelButtons:active {
-    background-color: rgb(67, 63, 58);
+    background-color: rgb(53, 14, 44);
     transition-timing-function: ease-in-out;
     transition-duration: 0.1s;
     border-left-color: rgb(36, 29, 21);
@@ -63,53 +67,59 @@
 .MenuButtons {
     width: 100%;
     height: 100%;
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/Rocky%20TTF.ttf?fileID=12800000&guid=293ee172a9915444aa8fa83f802436dd&type=3#Rocky TTF");
-    font-size: 47px;
-    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
+    font-size: 61px;
     color: rgb(82, 77, 71);
     transition-duration: 0.15s;
     text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.13);
     background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    -unity-font-style: bold;
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: rgb(0, 0, 0);
 }
 
 .MenuButtons:hover {
-    color: rgb(214, 157, 39);
+    color: rgb(152, 106, 183);
     transition-duration: 0.25s;
-    scale: 1.07 1.07;
-    font-size: 53px;
-    -unity-text-outline-width: 2px;
+    scale: 1.1 1.1;
+    -unity-text-outline-width: 3px;
     -unity-text-outline-color: rgb(0, 0, 0);
 }
 
 .MenuButtons:active {
     width: 100%;
     height: 100%;
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/Rocky%20TTF.ttf?fileID=12800000&guid=293ee172a9915444aa8fa83f802436dd&type=3#Rocky TTF");
-    font-size: 47px;
-    -unity-font-style: bold;
-    color: rgb(82, 77, 71);
     transition-duration: 0.15s;
-    text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.13);
     scale: 1.01 1.01;
 }
 
 .LevelText {
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/Rocky%20TTF.ttf?fileID=12800000&guid=293ee172a9915444aa8fa83f802436dd&type=3#Rocky TTF");
-    font-size: 70px;
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
+    font-size: 39px;
     color: rgb(255, 255, 255);
     text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.51);
     height: 50%;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
 }
 
 .LevelBestTime {
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/Rocky%20TTF.ttf?fileID=12800000&guid=293ee172a9915444aa8fa83f802436dd&type=3#Rocky TTF");
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
     color: rgb(202, 202, 202);
-    font-size: 28px;
+    font-size: 33px;
     height: 25%;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.19);
 }
 
 .LevelButtonsFocus {
-    background-color: rgb(125, 94, 28);
+    background-color: rgb(88, 50, 113);
     transition-timing-function: ease-in-out;
     transition-duration: 0.25s;
     scale: 1.03 1.03;
@@ -117,8 +127,23 @@
     border-right-color: rgb(0, 0, 0);
     border-top-color: rgb(0, 0, 0);
     border-bottom-color: rgb(0, 0, 0);
-    color: rgb(214, 157, 39);
-    font-size: 53px;
-    -unity-text-outline-width: 2px;
-    -unity-text-outline-color: rgb(0, 0, 0);
+    color: rgb(152, 106, 183);
+}
+
+.SingleMultiFocus {
+    background-color: rgb(88, 50, 113);
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.25s;
+    scale: 1.03 1.03;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    color: rgb(29, 7, 24);
+    font-size: 78px;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgba(255, 255, 255, 0.53);
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
+    text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.51);
 }

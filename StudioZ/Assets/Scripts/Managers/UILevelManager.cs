@@ -6,8 +6,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class UILevelManager : MonoBehaviour
+public class PlayerSelectorManager : MonoBehaviour
 {
+    [SerializeField] private GameObject MainMenuUIGameobject;
     [SerializeField] private GameObject LevelUI;
     private VisualElement root;
 
@@ -30,7 +31,7 @@ public class UILevelManager : MonoBehaviour
         root = uiDocument.rootVisualElement;
         root.RegisterCallback<MouseMoveEvent>(OnMouseMoved);
     
-    //HookUpBackButton();
+        HookUpBackButton();
     //HookUpLeaderboardButton();
         HookUpLevelButtons();
 
@@ -40,6 +41,23 @@ public class UILevelManager : MonoBehaviour
     private void FocusInitial()
     {
         TryMove(2);
+    }
+    // BACK BUTTON HOOK
+    private void HookUpBackButton()
+    {
+        Button back = root.Q<Button>(BackButtonName);
+
+        if (back != null)
+        {
+            back.clicked += OnBackPressed;
+        }
+    }
+
+    // WHAT HAPPENS WHEN BACK IS PRESSED
+    private void OnBackPressed()
+    {
+        MainMenuUIGameobject.SetActive(true);
+        this.gameObject.SetActive(false);
     }
     private void OnMouseMoved(MouseMoveEvent evt)
     {
@@ -257,8 +275,12 @@ public class UILevelManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) ShowMouse();
-        if (Input.GetMouseButtonDown(1)) ShowMouse();
+        if (Mouse.current.delta.ReadValue().sqrMagnitude > 0.1f)
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
+            RemoveControllerFocus();
+        }
         var gamepad = Gamepad.current;
         if (gamepad == null) return;
 

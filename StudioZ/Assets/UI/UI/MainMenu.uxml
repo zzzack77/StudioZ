@@ -1,0 +1,24 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3#UIUSS" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(234, 233, 238);">
+        <ui:VisualElement style="flex-grow: 1; height: 75%; align-self: center; justify-content: center;">
+            <ui:Label text="Climbers Calamity" style="-unity-text-align: middle-center; font-size: 187px; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&amp;guid=098d1b32e22c13a49aa7ce762fef2292&amp;type=3#adamwarrenpro&quot;); -unity-font-style: normal; color: rgb(152, 106, 183); -unity-text-outline-width: 6px; -unity-text-outline-color: rgb(0, 0, 0); text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.23);" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 25%; flex-direction: row;">
+            <ui:VisualElement style="flex-grow: 1; width: 25%; padding-top: 54px; padding-right: 160px; padding-bottom: 54px; padding-left: 0;">
+                <ui:Button text="Exit" name="0" class="MenuButtons" style="-unity-text-align: middle-center; padding-right: 76px; background-color: rgba(0, 0, 0, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 50%; padding-top: 2px; padding-right: 200px; padding-bottom: 0; padding-left: 200px; justify-content: center;">
+                <ui:Button text="Start" name="1" class="MenuButtons" style="font-size: 178px; justify-content: flex-end; align-self: center; align-content: center; align-items: center; -unity-font-style: normal; background-color: rgba(0, 0, 0, 0); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 25%; padding-right: 41px;">
+                <ui:VisualElement style="flex-grow: 1; height: 50%;">
+                    <ui:Button text="Settings" name="2" class="MenuButtons" style="-unity-text-align: middle-right; background-color: rgba(0, 0, 0, 0); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; height: 50%;">
+                    <ui:Button text="How to Play" name="3" class="MenuButtons" style="-unity-text-align: middle-right; background-color: rgba(0, 0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
