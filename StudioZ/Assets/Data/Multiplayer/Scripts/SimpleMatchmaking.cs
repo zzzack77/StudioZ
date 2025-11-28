@@ -84,7 +84,7 @@ public class SimpleMatchmaking : MonoBehaviour
 
             NetworkManager.Singleton.StartHost();
             
-            Debug.Log($"Private lobby created. Join code: {relayJoinCode}");
+            Debug.Log($"Private lobby created. Join code: {connectedLoby.LobbyCode}");
         }
         catch (Exception e)
         {
