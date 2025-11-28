@@ -23,15 +23,30 @@ public class SimpleMatchmaking : MonoBehaviour
 {
     [SerializeField] private GameObject buttons;
 
+    public static SimpleMatchmaking Instance;
+
     private Lobby connectedLoby;
     private QueryResponse lobbies;
     private UnityTransport transport;
     private const string JoinCodeKey = "j";
     private string playerId;
-    
-   
-    void Awake() => transport = FindFirstObjectByType<UnityTransport>();
 
+
+    void Awake()
+    {
+        // Singleton setup
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
+        transport = FindFirstObjectByType<UnityTransport>();
+
+
+    }
     public async void CreateOrJoinLobby()
     {
         await Authenticate();
