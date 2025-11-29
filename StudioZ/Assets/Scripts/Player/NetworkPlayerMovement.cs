@@ -18,21 +18,20 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private Transform R_shoulderPoint;
 
 
-    [Header("Arm and joint settings")]
+    // Joints between body and hands when armLength is exceeded
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
+    [Header("Arm and joint settings")]
     [SerializeField] private float armLength = 4.2f;
     [SerializeField] private float handMoveSpeed = 100;
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
     [SerializeField] private float jointSpring = 500f;
     [SerializeField] private float jointDamper = 80f;
-    [SerializeField] private float projectionDistance = 0.1f;
-    [SerializeField] private float projectionAngle = 5f;
 
     [Header("Player Settings")]
-    private bool shouldRestartTimer = false;
     [SerializeField] private bool invertGrippingInput = true;
     [SerializeField] private bool hasFinished;
+    private bool shouldRestartTimer = false;
 
     // Vibration
     private Coroutine GripVibrationCoroutine;
@@ -115,9 +114,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
     // Joystick values
     private Vector2 leftStick;
     private Vector2 rightStick;
+    private bool L_stickIsZero;
+    private bool R_stickIsZero;
     // Dead zones
     private float triggerDeadZone = 0.1f;
-    private float joystickDeadZone = 0.2f;
+    private float joystickDeadZone = 0.05f;
     // Vibration handelers
     private bool L_hasVibrated;
     private bool R_hasVibrated;
@@ -199,6 +200,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         // Apply swinging forces based on joystick input when gripping
         LGrippedHandMovement();
         RGrippedHandMovement();
+        RagdollArmsAndSwingDampening();
     }
     private void InitializeGamepad()
     {
@@ -260,24 +262,59 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyVelocity.x *= swingDampening;
             bodyRB.linearVelocity = bodyVelocity;
         }
-
         // Apply force
         if (invertGrippingInput) bodyRB.AddForce(-joyStick * forceMultiplier, ForceMode.Acceleration);
         else bodyRB.AddForce(joyStick * forceMultiplier, ForceMode.Acceleration);
         //Debug.Log(bodyRB.GetAccumulatedForce());
     }
+    private void RagdollArmsAndSwingDampening()
+    {
+        if (L_isGripping && R_isGripping)
+        {
+            // Body dampening if L and R isnt moving
+        }
+        if (L_isGripping && !R_isGripping)
+        {
+            // Body dampening if L stick isnt moving
+
+            // R ragdoll if R isnt moving
+        }
+        if (!L_isGripping && R_isGripping)
+        {
+            // Body dampening if R stick isnt moving
+
+            // L ragodll if L isdnt moving
+        }
+        if (!L_isGripping && !R_isGripping)
+        {
+            if (leftStick.x < joystickDeadZone && leftStick.x > -joystickDeadZone && 
+                leftStick.y < joystickDeadZone && leftStick.y > -joystickDeadZone)
+            {
+                Debug.Log("null");
+            }
+        }
+    }
     // Move hand based on joystick input and handle gripping
     private void ControllerMovement()
     {
+        L_stickIsZero = (leftStick.x < joystickDeadZone && leftStick.x > -joystickDeadZone &&
+                         leftStick.y < joystickDeadZone && leftStick.y > -joystickDeadZone);
         if (!L_isGripping)
         {
-            Vector3 L_WorldOffset = new Vector3(
+            if (!L_stickIsZero)
+            {
+                Vector3 L_WorldOffset = new Vector3(
                 Mathf.Clamp(leftStick.x, -1, 1) * armLength,
                 Mathf.Clamp(leftStick.y, -1, 1) * armLength,
                 0f);
 
-            Vector3 targetPos = L_WorldOffset + L_shoulderPoint.transform.position;
-            L_handRB.transform.position = Vector3.MoveTowards(L_handRB.transform.position, targetPos, handMoveSpeed * Time.deltaTime);
+                L_handRB.mass = 1;
+                L_handRB.linearVelocity = Vector2.zero;
+                L_handRB.useGravity = false;
+
+                Vector3 targetPos = L_WorldOffset + L_shoulderPoint.transform.position;
+                L_handRB.transform.position = Vector3.MoveTowards(L_handRB.transform.position, targetPos, handMoveSpeed * Time.deltaTime);
+            }
         }
 
         if (!R_isGripping)
@@ -474,18 +511,25 @@ public class NetworkPlayerMovement : NetworkBehaviour
     // Check distance between hand and body to create/destroy joint
     private void JointChecking()
     {
-        if (L_isGripping)
+        if (L_isGripping || L_stickIsZero)
         {
-            float distance = Vector3.Distance(bodyRB.position, L_handRB.position);
+            if (L_stickIsZero)
+            {
+                L_handRB.angularDamping = 3f;
+                L_handRB.mass = 0.1f;
+                L_handRB.useGravity = true;
+                //L_handRB.linearVelocity = L_handRB.linearVelocity * 0.99f;
+            }
+            float L_handDistanceFromShoulder = Vector3.Distance(L_shoulderPoint.position, L_handRB.position);
 
             // When hand is beyond arm length and no joint exists create joint
-            if (L_currentJoint == null && distance >= armLength)
+            if (L_currentJoint == null && L_handDistanceFromShoulder >= armLength)
             {
                 CreateLeftJoint();
             }
 
             // When hand comes back within range remove joint
-            if (L_currentJoint != null && distance < armLength * jointBreakingSensitivity)
+            if (L_currentJoint != null && L_handDistanceFromShoulder < armLength * jointBreakingSensitivity)
             {
                 Destroy(L_currentJoint);
                 L_currentJoint = null;
@@ -501,14 +545,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
         if (R_isGripping)
         {
-            float distance = Vector3.Distance(bodyRB.position, R_handRB.position);
+            float R_handDistanceFromShoulder = Vector3.Distance(R_shoulderPoint.position, R_handRB.position);
             // When hand is beyond arm length and no joint exists create joint
-            if (R_currentJoint == null && distance >= armLength)
+            if (R_currentJoint == null && R_handDistanceFromShoulder >= armLength)
             {
                 CreateRightJoint();
             }
             // When hand comes back within range remove joint
-            if (R_currentJoint != null && distance < armLength * jointBreakingSensitivity)
+            if (R_currentJoint != null && R_handDistanceFromShoulder < armLength * jointBreakingSensitivity)
             {
                 Destroy(R_currentJoint);
                 R_currentJoint = null;
@@ -540,8 +584,16 @@ public class NetworkPlayerMovement : NetworkBehaviour
         L_currentJoint.yMotion = ConfigurableJointMotion.Limited;
         L_currentJoint.zMotion = ConfigurableJointMotion.Limited;
 
-        // Spring to arm to reduce jitering when swinging
+        // Stops rotation hopfully
+        JointDrive angDrive = new JointDrive();
+        angDrive.positionSpring = 0f;   // we don’t force angles, only damp swing
+        angDrive.positionDamper = 80f;  // this stops flailing
+        angDrive.maximumForce = Mathf.Infinity;
 
+        L_currentJoint.angularXDrive = angDrive;
+        L_currentJoint.angularYZDrive = angDrive;
+
+        // Spring to arm to reduce jitering when swinging
         SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
         linearSpring.spring = jointSpring;
         linearSpring.damper = jointDamper;
@@ -570,7 +622,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
         linearSpring.spring = jointSpring;
         linearSpring.damper = jointDamper;
-        L_currentJoint.linearLimitSpring = linearSpring;
+        R_currentJoint.linearLimitSpring = linearSpring;
 
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
