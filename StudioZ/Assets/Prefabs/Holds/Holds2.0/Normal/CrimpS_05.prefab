@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5136092956634102676}
   - component: {fileID: 4622284409591173595}
   - component: {fileID: 4841486898401323591}
+  - component: {fileID: 5104650713684104089}
   m_Layer: 0
   m_Name: CrimpS_05
   m_TagString: Crimp
@@ -110,4 +111,26 @@ CapsuleCollider:
   m_Radius: 0.36989525
   m_Height: 1.1668711
   m_Direction: 0
-  m_Center: {x: -0.00091171265, y: -0.00040313601, z: 0}
+  m_Center: {x: -0.00091171265, y: 0.06057608, z: 0}
+--- !u!95 &5104650713684104089
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3238982680938009860}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 73c8ea7dd8de8934c93210ceffddb571, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

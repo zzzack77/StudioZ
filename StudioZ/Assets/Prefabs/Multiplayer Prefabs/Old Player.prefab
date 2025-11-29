@@ -1368,6 +1368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  cineCam: {fileID: 9205927917658421153}
   timerHandeler: {fileID: 6781876260613860221}
   bodyRB: {fileID: 3080690037391331093}
   L_handRB: {fileID: 766306367707682103}
@@ -1375,8 +1376,12 @@ MonoBehaviour:
   L_shoulderPoint: {fileID: 4709813746622957810}
   R_shoulderPoint: {fileID: 5767027807498401312}
   armLength: 4.2
-  jointBreakingSensitivity: 0.99
   handMoveSpeed: 100
+  jointBreakingSensitivity: 0.99
+  jointSpring: 500
+  jointDamper: 80
+  projectionDistance: 0.1
+  projectionAngle: 5
   invertGrippingInput: 1
   hasFinished: 0
   vibrationEnabled: 1

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4724056463370743157}
   - component: {fileID: 6369757666949738804}
   - component: {fileID: 4299192429041609977}
+  - component: {fileID: 4801089515488580624}
   m_Layer: 0
   m_Name: PockM_00
   m_TagString: Pocket
@@ -111,3 +112,25 @@ CapsuleCollider:
   m_Height: 0.45768356
   m_Direction: 1
   m_Center: {x: -0.009458065, y: 0.14674854, z: 0}
+--- !u!95 &4801089515488580624
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033449229136960597}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 73c8ea7dd8de8934c93210ceffddb571, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
