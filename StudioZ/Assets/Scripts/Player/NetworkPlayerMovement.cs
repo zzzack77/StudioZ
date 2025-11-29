@@ -570,7 +570,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
         linearSpring.spring = jointSpring;
         linearSpring.damper = jointDamper;
-        L_currentJoint.linearLimitSpring = linearSpring;
+        R_currentJoint.linearLimitSpring = linearSpring;
 
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
