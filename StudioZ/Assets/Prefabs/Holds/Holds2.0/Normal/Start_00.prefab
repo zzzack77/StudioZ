@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 884294636868208993}
   - component: {fileID: 7632321650943502626}
   m_Layer: 0
-  m_Name: CheckPoint
+  m_Name: Start_00
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -356524246306478566, guid: 4cdfe0ba242318440bba5a2d1ed79e8e, type: 3}
+  m_Sprite: {fileID: -7869400084748623779, guid: 2fbc75f17b6f42b49a9bd0876a799069, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

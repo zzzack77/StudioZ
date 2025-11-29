@@ -53,16 +53,20 @@ PrefabInstance:
       value: JugM_01 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5346814977500668814, guid: 8c897ac52cfe87a479ccdb10b5a59793, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4330589561751276434, guid: 094382a8dc9797b448f80f8691b725c2, type: 3}
+    - target: {fileID: 5346814977500668814, guid: 8c897ac52cfe87a479ccdb10b5a59793, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5346814977500668814, guid: 8c897ac52cfe87a479ccdb10b5a59793, type: 3}
       propertyPath: m_Color.g
-      value: 0.61184555
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5346814977500668814, guid: 8c897ac52cfe87a479ccdb10b5a59793, type: 3}
       propertyPath: m_Color.r
-      value: 0.33490568
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

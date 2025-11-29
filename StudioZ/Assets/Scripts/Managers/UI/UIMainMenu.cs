@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class MainMenu : MonoBehaviour
+public class UIMainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject playerSelector;
     private VisualElement root;

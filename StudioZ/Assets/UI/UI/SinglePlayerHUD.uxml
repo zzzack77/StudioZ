@@ -1,0 +1,18 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3#UIUSS" />
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:VisualElement style="flex-grow: 1; height: 20%; flex-direction: row;">
+            <ui:VisualElement style="flex-grow: 1; padding-top: 40px; padding-right: 328px; padding-bottom: 40px; padding-left: 40px; min-width: 50%; height: 100%;">
+                <ui:Label text="Level #1" name="Level" class="HUD" style="-unity-text-align: upper-center; height: 50%;" />
+                <ui:Label text="BTD! - 00:00.00" name="BTD" class="HUD" style="-unity-text-align: upper-center; height: 50%;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; min-width: 50%; padding-top: 40px; padding-right: 40px; padding-bottom: 40px; padding-left: 40px; justify-content: center;">
+                <ui:Label text="Best Time 00:00.00" name="BestTime" class="HUD" style="-unity-text-align: middle-right;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 70%;" />
+        <ui:VisualElement style="flex-grow: 1; height: 10%; justify-content: center; padding-left: 774px;">
+            <ui:Label text="00:00.00" name="Time" class="HUD" style="-unity-text-align: upper-left;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

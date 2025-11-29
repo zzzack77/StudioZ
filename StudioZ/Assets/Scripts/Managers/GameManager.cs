@@ -127,6 +127,10 @@ public class GameManager : NetworkBehaviour
     {
         return PlayerDataManager.Instance.GetSingleLevelTime(levelManager.CurrentLevelIndex);
     }
+    public int GetCurrentLevel()
+    {
+        return levelManager.CurrentLevelIndex;
+    }
 
     public void SetUI(bool UIEnabled)
     {

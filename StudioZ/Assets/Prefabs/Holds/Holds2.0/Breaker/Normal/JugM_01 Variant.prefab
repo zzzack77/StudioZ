@@ -53,12 +53,16 @@ PrefabInstance:
       value: JugM_01 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5346814977500668814, guid: 8c897ac52cfe87a479ccdb10b5a59793, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2711791855516017559, guid: de7f3eeeb34daf44b8913bec98360d06, type: 3}
+    - target: {fileID: 5346814977500668814, guid: 8c897ac52cfe87a479ccdb10b5a59793, type: 3}
       propertyPath: m_Color.b
-      value: 0.4292453
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5346814977500668814, guid: 8c897ac52cfe87a479ccdb10b5a59793, type: 3}
       propertyPath: m_Color.g
-      value: 0.4292453
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5346814977500668814, guid: 8c897ac52cfe87a479ccdb10b5a59793, type: 3}
       propertyPath: m_Color.r
