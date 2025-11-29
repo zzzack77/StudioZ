@@ -158,6 +158,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
             cineCam.OnTargetObjectWarped(this.transform, new Vector3(currentCheckpoint.x, currentCheckpoint.y, cineCam.transform.position.z) -transform.position);
 
+            timerHandeler.timeElapsed = 0;
             timerHandeler.isTimerRunning = false;
             shouldRestartTimer = true;
             hasFinished = false;
