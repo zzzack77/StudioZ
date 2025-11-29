@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public class NetworkPlayerMovement : NetworkBehaviour
 {
+    [SerializeField] private CinemachineCamera cineCam;
     [SerializeField] private TimerHandeler timerHandeler;
 
     [Header("Rigidbodys")]
@@ -150,6 +152,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyRB.transform.position = new Vector2(spawnPoint.x, spawnPoint.y - armLength);
             L_handRB.transform.position = L_shoulderPoint.transform.position;
             R_handRB.transform.position = R_shoulderPoint.transform.position;
+            
+
+            cineCam.OnTargetObjectWarped(this.transform, new Vector3(currentCheckpoint.x, currentCheckpoint.y, cineCam.transform.position.z) -transform.position);
+
             timerHandeler.isTimerRunning = false;
             shouldRestartTimer = true;
             hasFinished = false;
@@ -159,6 +165,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyRB.transform.position = new Vector2(currentCheckpoint.x, currentCheckpoint.y - armLength);
             L_handRB.transform.position = L_shoulderPoint.transform.position;
             R_handRB.transform.position = R_shoulderPoint.transform.position;
+
+            cineCam.OnTargetObjectWarped(this.transform, new Vector3(currentCheckpoint.x, currentCheckpoint.y, cineCam.transform.position.z) - transform.position);
         }
     }
     private void ResetGrips()
