@@ -5,6 +5,8 @@ using System.Net.Security;
 using System.Threading.Tasks;
 #if UNITY_EDITOR && !UNITY_CLOUD_BUILD
 using ParrelSync;
+using TMPro;
+
 #endif
 
 using Unity.Netcode;
@@ -21,15 +23,30 @@ public class SimpleMatchmaking : MonoBehaviour
 {
     [SerializeField] private GameObject buttons;
 
+    public static SimpleMatchmaking Instance;
+
     private Lobby connectedLoby;
     private QueryResponse lobbies;
     private UnityTransport transport;
     private const string JoinCodeKey = "j";
     private string playerId;
-    
-   
-    void Awake() => transport = FindFirstObjectByType<UnityTransport>();
 
+
+    void Awake()
+    {
+        // Singleton setup
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
+        transport = FindFirstObjectByType<UnityTransport>();
+
+
+    }
     public async void CreateOrJoinLobby()
     {
         await Authenticate();
@@ -38,6 +55,91 @@ public class SimpleMatchmaking : MonoBehaviour
         
         if(connectedLoby != null) buttons.SetActive(false);
     }
+
+    public async void CreatePrivateLobby()
+    {
+        await Authenticate();
+
+        const int maxPlayers = 4;
+
+        try
+        {
+            //Create Realay allocation
+            var allocation = await RelayService.Instance.CreateAllocationAsync(maxPlayers);
+            var relayJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
+            // Create Private lobby options
+            var options = new CreateLobbyOptions
+            {
+                IsPrivate = true,
+                Data = new Dictionary<string, DataObject>
+                {
+                    { JoinCodeKey, new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode) }
+                }
+            };
+
+            // Create lobby
+            connectedLoby = await LobbyService.Instance.CreateLobbyAsync(
+                "PrivateLobby",
+                maxPlayers,
+                options
+            );
+
+            // Heartbeat to keep the loby alive
+            StartCoroutine(HeartBeatLobbyCoroutine(connectedLoby.Id, 15));
+
+            // Configure NGO Host Transport
+            transport.SetHostRelayData(
+                allocation.RelayServer.IpV4,
+                (ushort)allocation.RelayServer.Port,
+                allocation.AllocationIdBytes,
+                allocation.Key,
+                allocation.ConnectionData
+            );
+
+            NetworkManager.Singleton.StartHost();
+            
+            Debug.Log($"Private lobby created. Join code: {connectedLoby.LobbyCode}");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to create private lobby {e}");
+        }
+    }
+
+    public async void JoinPrivateLobbyWithCode(string joinCode)
+    {
+        await Authenticate();
+
+        try
+        {
+            // Look up the lobby using the join code
+            var lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(joinCode);
+
+            // get Relay join code from lobby data
+            string relayCode = lobby.Data[JoinCodeKey].Value;
+
+            //join Relay
+            var allocation = await RelayService.Instance.JoinAllocationAsync(relayCode);
+
+            SetTransportAsClient(allocation);
+
+            //Start NGO client
+            NetworkManager.Singleton.StartClient();
+
+            connectedLoby = lobby;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to join private lobby: {e}");
+        }
+    }
+
+    public void JoinPrivateLobbyFromInput(TMP_InputField input)
+    {
+        JoinPrivateLobbyWithCode(input.text);
+    }
+
 
     private async Task Authenticate()
     {
@@ -60,7 +162,7 @@ public class SimpleMatchmaking : MonoBehaviour
 
             var a = await RelayService.Instance.JoinAllocationAsync(lobby.Data[JoinCodeKey].Value);
 
-            SetTransfromAsClient(a);
+            SetTransportAsClient(a);
 
             NetworkManager.Singleton.StartClient();
             return lobby;
@@ -76,7 +178,7 @@ public class SimpleMatchmaking : MonoBehaviour
     {
         try
         {
-            const int maxPlayers = 10;
+            const int maxPlayers = 4;
 
             var a = await RelayService.Instance.CreateAllocationAsync(maxPlayers);
             var joinCode = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
@@ -103,11 +205,12 @@ public class SimpleMatchmaking : MonoBehaviour
         }
     }
 
-    private void SetTransfromAsClient(JoinAllocation a)
+    private void SetTransportAsClient(JoinAllocation a)
     {
         transport.SetClientRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key,a.ConnectionData,a.HostConnectionData);
     }
 
+    // Tells Unity Services that the lobby is alive (deletes itself after 30sec without this)
     private static IEnumerator HeartBeatLobbyCoroutine(string lobbyId, int waitTimeSeconds)
     {
         var delay = new WaitForSecondsRealtime(waitTimeSeconds);

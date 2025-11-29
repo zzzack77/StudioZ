@@ -41,6 +41,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ZC/Prototyping2/ZC-GripBreaker.unity
     guid: 1d99cf4ca907fe344a33137b74041a27
+  - enabled: 1
+    path: Assets/Scenes/BW/BW-LobbyTest.unity
+    guid: 1ed19087a82fbef42aec6ee92d57f3b6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

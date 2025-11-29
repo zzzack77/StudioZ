@@ -36,7 +36,7 @@ public class HoldBreaker : MonoBehaviour
     {
         // register this hold with the manager
         if (GripBreakerManager.Instance != null) holdIndex = GripBreakerManager.Instance.RegisterHold(this);
-        else Debug.LogWarning("GripBreakerManager is not currently in this scene, if you want multiplayer gripbreaker add GripBreakerManager Script to the level root.");
+        else if (GameMode.IsMultiplayer) Debug.LogWarning("GripBreakerManager is not currently in this scene, if you want multiplayer gripbreaker add GripBreakerManager Script to the level root.");
     }
 
     private void Update()

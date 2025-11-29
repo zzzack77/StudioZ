@@ -1,0 +1,23 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3#UIUSS" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(234, 233, 238);">
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 15%;">
+            <ui:VisualElement style="flex-grow: 1; width: 20%; padding-left: 18px;">
+                <ui:Button text="Back" name="0" class="MenuButtons" style="-unity-text-align: middle-left; background-color: rgba(88, 50, 113, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 80%;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 85%; flex-direction: row;">
+            <ui:VisualElement style="flex-grow: 1; padding-top: 85px; padding-right: 85px; padding-bottom: 85px; padding-left: 85px; width: 50%;">
+                <ui:Button text="Play" name="1" class="LevelButtons" style="height: 100%;">
+                    <ui:Label text="Race" class="LevelText" style="font-size: 95px; text-shadow: 12px 12px 0 rgba(91, 91, 91, 0.51); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0);" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 50%; padding-top: 85px; padding-right: 85px; padding-bottom: 85px; padding-left: 85px;">
+                <ui:Button text="Play" name="2" class="LevelButtons" style="height: 100%; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&amp;guid=098d1b32e22c13a49aa7ce762fef2292&amp;type=3#adamwarrenpro&quot;);">
+                    <ui:Label text="Breakaway" class="LevelText" style="font-size: 95px; text-shadow: 12px 12px 0 rgba(91, 91, 91, 0.48); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0);" />
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
