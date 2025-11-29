@@ -18,9 +18,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private Transform R_shoulderPoint;
 
 
-    [Header("Arm and joint settings")]
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
+    [Header("Arm and joint settings")]
     [SerializeField] private float armLength = 4.2f;
     [SerializeField] private float handMoveSpeed = 100;
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
@@ -30,9 +30,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float projectionAngle = 5f;
 
     [Header("Player Settings")]
-    private bool shouldRestartTimer = false;
     [SerializeField] private bool invertGrippingInput = true;
     [SerializeField] private bool hasFinished;
+    [SerializeField] private float maxVelocity = 25f;
+    [SerializeField] private float maxLinearDampening = 1;
+    private bool shouldRestartTimer = false;
 
     // Vibration
     private Coroutine GripVibrationCoroutine;
@@ -199,6 +201,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
         // Apply swinging forces based on joystick input when gripping
         LGrippedHandMovement();
         RGrippedHandMovement();
+        if (bodyRB.linearVelocity.magnitude > maxVelocity)
+        {
+            bodyRB.linearVelocity = bodyRB.linearVelocity.normalized * maxVelocity;
+
+        }
+        Debug.Log(bodyRB.linearVelocity.magnitude);   
     }
     private void InitializeGamepad()
     {
@@ -476,7 +484,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     {
         if (L_isGripping)
         {
-            float distance = Vector3.Distance(bodyRB.position, L_handRB.position);
+            float distance = Vector3.Distance(L_shoulderPoint.position, L_handRB.position);
 
             // When hand is beyond arm length and no joint exists create joint
             if (L_currentJoint == null && distance >= armLength)
@@ -501,7 +509,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
         if (R_isGripping)
         {
-            float distance = Vector3.Distance(bodyRB.position, R_handRB.position);
+            float distance = Vector3.Distance(R_shoulderPoint.position, R_handRB.position);
             // When hand is beyond arm length and no joint exists create joint
             if (R_currentJoint == null && distance >= armLength)
             {
@@ -542,10 +550,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         // Spring to arm to reduce jitering when swinging
 
-        SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
-        linearSpring.spring = jointSpring;
-        linearSpring.damper = jointDamper;
-        L_currentJoint.linearLimitSpring = linearSpring;
+        //SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
+        //linearSpring.spring = jointSpring;
+        //linearSpring.damper = jointDamper;
+        //L_currentJoint.linearLimitSpring = linearSpring;
 
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
@@ -567,10 +575,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
         R_currentJoint.zMotion = ConfigurableJointMotion.Limited;
 
         // Spring to arm to reduce jitering when swinging
-        SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
-        linearSpring.spring = jointSpring;
-        linearSpring.damper = jointDamper;
-        R_currentJoint.linearLimitSpring = linearSpring;
+        //SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
+        //linearSpring.spring = jointSpring;
+        //linearSpring.damper = jointDamper;
+        //R_currentJoint.linearLimitSpring = linearSpring;
 
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
