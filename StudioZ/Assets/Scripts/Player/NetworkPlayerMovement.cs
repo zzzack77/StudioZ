@@ -22,8 +22,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
     [SerializeField] private float armLength = 4.2f;
-    [SerializeField] private float jointBreakingSensitivity = 0.99f;
     [SerializeField] private float handMoveSpeed = 100;
+    [SerializeField] private float jointBreakingSensitivity = 0.99f;
+    [SerializeField] private float jointSpring = 500f;
+    [SerializeField] private float jointDamper = 80f;
+    [SerializeField] private float projectionDistance = 0.1f;
+    [SerializeField] private float projectionAngle = 5f;
 
     [Header("Player Settings")]
     private bool shouldRestartTimer = false;
@@ -520,7 +524,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
     }
     // Create a configurable joint between body and hand
-    void CreateLeftJoint()
+    private void CreateLeftJoint()
     {
         L_currentJoint = bodyRB.gameObject.AddComponent<ConfigurableJoint>();
         L_currentJoint.connectedBody = L_handRB;
@@ -536,6 +540,13 @@ public class NetworkPlayerMovement : NetworkBehaviour
         L_currentJoint.yMotion = ConfigurableJointMotion.Limited;
         L_currentJoint.zMotion = ConfigurableJointMotion.Limited;
 
+        // Spring to arm to reduce jitering when swinging
+
+        SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
+        linearSpring.spring = jointSpring;
+        linearSpring.damper = jointDamper;
+        L_currentJoint.linearLimitSpring = linearSpring;
+
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
         L_currentJoint.linearLimit = linearLimit;
@@ -544,14 +555,23 @@ public class NetworkPlayerMovement : NetworkBehaviour
     {
         R_currentJoint = bodyRB.gameObject.AddComponent<ConfigurableJoint>();
         R_currentJoint.connectedBody = R_handRB;
+
         // Prevent Unity from auto adjusting anchor positions
         R_currentJoint.autoConfigureConnectedAnchor = false;
         R_currentJoint.anchor = R_shoulderPoint.localPosition;
         R_currentJoint.connectedAnchor = Vector3.zero;
+
         // Limit motion to simulate a rope/arm constraint
         R_currentJoint.xMotion = ConfigurableJointMotion.Limited;
         R_currentJoint.yMotion = ConfigurableJointMotion.Limited;
         R_currentJoint.zMotion = ConfigurableJointMotion.Limited;
+
+        // Spring to arm to reduce jitering when swinging
+        SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
+        linearSpring.spring = jointSpring;
+        linearSpring.damper = jointDamper;
+        L_currentJoint.linearLimitSpring = linearSpring;
+
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
         R_currentJoint.linearLimit = linearLimit;
