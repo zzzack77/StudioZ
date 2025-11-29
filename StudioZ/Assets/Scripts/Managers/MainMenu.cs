@@ -17,6 +17,8 @@ public class MainMenu : MonoBehaviour
     private bool controllerActive = true;
     private Vector2 lastMouse;
 
+    private bool controllerJustConnected = false;
+
     private void OnEnable()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -49,8 +51,6 @@ public class MainMenu : MonoBehaviour
 
         controllerActive = Gamepad.current != null;
 
-        if (controllerActive)
-            Move(0);  // focus first button
     }
 
 
@@ -76,17 +76,28 @@ public class MainMenu : MonoBehaviour
             root.Focus();
         }
         var pad = Gamepad.current;
-        if (pad == null) return;
-
+        if (pad == null)
+        {
+            controllerJustConnected = false;
+            return;
+        }
+        if (pad != null && !controllerJustConnected)
+        {
+            controllerJustConnected = true;
+            buttons[current].Focus();
+            buttons[current].AddToClassList("LevelButtonsFocus");
+        }
         // controller takes control
         if (pad.leftStick.ReadValue().sqrMagnitude > 0.3f ||
-            pad.dpad.ReadValue() != Vector2.zero)
+            pad.dpad.ReadValue() != Vector2.zero || pad.buttonSouth.wasPressedThisFrame)
         {
             if (!controllerActive)
             {
                 controllerActive = true;
                 UnityEngine.Cursor.visible = false;
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+                buttons[current].Focus();
+                buttons[current].AddToClassList("LevelButtonsFocus");
             }
         }
 
@@ -107,6 +118,8 @@ public class MainMenu : MonoBehaviour
             Move(-1);
         if ((pad.dpad.down.wasPressedThisFrame || pad.leftStick.down.wasPressedThisFrame) && current == 2)
             Move(+1);
+        else if (pad.dpad.down.wasPressedThisFrame || pad.leftStick.down.wasPressedThisFrame)
+            Focus(1);
         if (pad.buttonSouth.wasPressedThisFrame)
             Activate();
 
@@ -152,6 +165,7 @@ public class MainMenu : MonoBehaviour
 
     private void StartGame()
     {
+        controllerJustConnected = false;
         playerSelector.SetActive(true);
         this.gameObject.SetActive(false);
     }

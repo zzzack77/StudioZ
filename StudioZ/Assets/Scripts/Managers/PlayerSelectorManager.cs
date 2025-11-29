@@ -22,32 +22,39 @@ public class UIMenuManager : MonoBehaviour
         var uiDocument = GetComponent<UIDocument>();
         root = uiDocument.rootVisualElement;
 
-        // Re-query all buttons to avoid stale references
+        // Assign buttons
         backButton = root.Q<Button>("0");
         singleButton = root.Q<Button>("1");
         multiButton = root.Q<Button>("2");
 
-        // -------- FIX: remove old callbacks --------
+        // Remove old callbacks
         backButton.clicked -= OnBackButtonPress;
         singleButton.clicked -= OnSinglePlayerButtonPress;
         multiButton.clicked -= OnMultiPlayerButtonPress;
 
-        // -------- FIX: add fresh callbacks --------
+        // Button click events
         backButton.clicked += OnBackButtonPress;
         singleButton.clicked += OnSinglePlayerButtonPress;
         multiButton.clicked += OnMultiPlayerButtonPress;
 
-        // Clear highlight classes (important when re-opening)
+        // Clear highlight classes (used for a bug fix where highlighting would stay after a re-enable
         backButton.RemoveFromClassList("LevelButtonsFocus");
         singleButton.RemoveFromClassList("SingleMultiFocus");
         multiButton.RemoveFromClassList("SingleMultiFocus");
 
         // Reset focus state
         usingController = Gamepad.current != null;
-        currentFocusing = 1;
+        if (usingController)
+        {
+            currentFocusing = 1;
 
-        singleButton.Focus();
-        singleButton.AddToClassList("SingleMultiFocus");
+            singleButton.Focus();
+            singleButton.AddToClassList("SingleMultiFocus");
+        }
+        else
+        {
+            root.Focus();
+        }
     }
 
     private void Update()
@@ -60,13 +67,12 @@ public class UIMenuManager : MonoBehaviour
         var pad = Gamepad.current;
         if (pad == null) return;
 
-        // --- NEW directional "pressed this frame" logic ---
+        // Reads joystick input and dpad input
         bool left = pad.dpad.left.wasPressedThisFrame || pad.leftStick.left.wasPressedThisFrame;
         bool right = pad.dpad.right.wasPressedThisFrame || pad.leftStick.right.wasPressedThisFrame;
         bool up = pad.dpad.up.wasPressedThisFrame || pad.leftStick.up.wasPressedThisFrame;
         bool down = pad.dpad.down.wasPressedThisFrame || pad.leftStick.down.wasPressedThisFrame;
 
-        // Detect ANY directional input once
         bool anyMoveThisFrame = left || right || up || down;
 
         if (anyMoveThisFrame)
@@ -127,14 +133,13 @@ public class UIMenuManager : MonoBehaviour
         }
         else if (!usingController)
         {
-            // original logic unchanged
             backButton.RemoveFromClassList("LevelButtonsFocus");
             singleButton.RemoveFromClassList("SingleMultiFocus");
             multiButton.RemoveFromClassList("SingleMultiFocus");
             root.Focus();
         }
 
-        // Submit
+        // Button pressed (button used is "A"
         if (usingController && pad.buttonSouth.wasPressedThisFrame)
         {
             ActivateFocusedButton();
