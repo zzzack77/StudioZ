@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class UIMenuManager : MonoBehaviour
+public class UIModeSelector : MonoBehaviour
 {
     [SerializeField] GameObject SinglePlayerUIGameobject;
     [SerializeField] GameObject MainMenuUIGameObject;

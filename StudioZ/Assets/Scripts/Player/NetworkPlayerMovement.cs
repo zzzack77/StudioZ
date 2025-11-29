@@ -206,7 +206,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyRB.linearVelocity = bodyRB.linearVelocity.normalized * maxVelocity;
 
         }
-        Debug.Log(bodyRB.linearVelocity.magnitude);   
+        //Debug.Log(bodyRB.linearVelocity.magnitude);   
     }
     private void InitializeGamepad()
     {

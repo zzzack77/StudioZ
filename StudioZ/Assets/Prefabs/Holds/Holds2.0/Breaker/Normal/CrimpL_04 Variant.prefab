@@ -13,12 +13,16 @@ PrefabInstance:
       value: CrimpL_04 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7466095333070468889, guid: c548fd9308073e149af8fdb78d0106be, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 8689659494946980726, guid: 0daf64ed70f073e4ca6caa2aa02a6a3c, type: 3}
+    - target: {fileID: 7466095333070468889, guid: c548fd9308073e149af8fdb78d0106be, type: 3}
       propertyPath: m_Color.b
-      value: 0.5518868
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7466095333070468889, guid: c548fd9308073e149af8fdb78d0106be, type: 3}
       propertyPath: m_Color.g
-      value: 0.5518868
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7466095333070468889, guid: c548fd9308073e149af8fdb78d0106be, type: 3}
       propertyPath: m_Color.r

@@ -19,7 +19,7 @@
                         <ui:Label name="1Level" class="LevelText" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:Label name="1Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="1BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="1BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="1Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -29,7 +29,7 @@
                         <ui:Label name="2Level" class="LevelText" />
                         <ui:Label name="2Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="2BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="2BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="2Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -39,7 +39,7 @@
                         <ui:Label name="3Level" class="LevelText" />
                         <ui:Label name="3Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="3BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="3BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="3Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -49,7 +49,7 @@
                         <ui:Label name="4Level" class="LevelText" />
                         <ui:Label name="4Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="4BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="4BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="4Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -61,7 +61,7 @@
                         <ui:Label name="5Level" class="LevelText" />
                         <ui:Label name="5Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="5BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="5BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="5Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -71,7 +71,7 @@
                         <ui:Label name="6Level" class="LevelText" />
                         <ui:Label name="6Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="6BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="6BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="6Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -81,7 +81,7 @@
                         <ui:Label name="7Level" class="LevelText" />
                         <ui:Label name="7Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="7BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="7BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="7Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -91,7 +91,7 @@
                         <ui:Label name="8Level" class="LevelText" />
                         <ui:Label name="8Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="8BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="8BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="8Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -103,7 +103,7 @@
                         <ui:Label name="9Level" class="LevelText" />
                         <ui:Label name="9Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="9BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="9BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="9Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -113,7 +113,7 @@
                         <ui:Label name="10Level" class="LevelText" />
                         <ui:Label name="10Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="10BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="10BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="10Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -123,7 +123,7 @@
                         <ui:Label name="11Level" class="LevelText" />
                         <ui:Label name="11Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="11BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="11BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="11Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>
@@ -133,7 +133,7 @@
                         <ui:Label name="12Level" class="LevelText" />
                         <ui:Label name="12Time" class="LevelBestTime" style="padding-top: 4px; padding-right: 2px; padding-bottom: 4px; padding-left: 1px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
                         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                            <ui:Label name="12BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%;" />
+                            <ui:Label name="12BTD" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; -unity-text-align: middle-center;" />
                             <ui:Label name="12Bool" class="LevelBestTime" style="padding-bottom: 3px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; justify-content: center; -unity-text-align: middle-center; font-size: 47px;" />
                         </ui:VisualElement>
                     </ui:Button>

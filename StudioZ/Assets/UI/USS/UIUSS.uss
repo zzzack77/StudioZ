@@ -147,3 +147,12 @@
     -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
     text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.51);
 }
+
+.HUD {
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
+    font-size: 40px;
+    color: rgb(255, 255, 255);
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-font-style: bold;
+}

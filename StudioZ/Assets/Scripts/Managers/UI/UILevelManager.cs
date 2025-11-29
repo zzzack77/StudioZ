@@ -6,19 +6,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class PlayerSelectorManager : MonoBehaviour
+public class UILevelManager : MonoBehaviour
 {
     [SerializeField] private GameObject MainMenuUIGameobject;
+    [SerializeField] private GameObject HUD;
     [SerializeField] private GameObject LevelUI;
     private VisualElement root;
 
     private List<Focusable> focusables = new List<Focusable>();
-    private int currentIndex = 2;
+    [SerializeField] private int currentIndex = 2;
 
     private const string BackButtonName = "BackButton";
     private const string LeaderboardButtonName = "LeaderboardButton";
 
-    [SerializeField] private float[] BTDTime;
+    [SerializeField] public float[] BTDTime;
 
     private bool controllerActive = true;
     private Vector2 lastMousePos;
@@ -225,14 +226,21 @@ public class PlayerSelectorManager : MonoBehaviour
             if (BTDLabel != null && timeTobeat != 0)
             {
                 TimeSpan time = TimeSpan.FromSeconds(timeTobeat);
-                BTDLabel.text = $"Beat the Devs : {time.Minutes:D2}:{time.Seconds:D2}.{time.Milliseconds / 10:D2}";
+                BTDLabel.text = $"BTD! - {time.Minutes:D2}:{time.Seconds:D2}";
 
                 if (boolLabel != null)
                 {
                     if (PlayerDataManager.Instance.GetSingleLevelTime(i) < timeTobeat)
+                    {
                         boolLabel.text = "✓";
+                        boolLabel.style.color = Color.green;
+                    }
+
                     else
+                    {
                         boolLabel.text = "✗";
+                        boolLabel.style.color = Color.red;
+                    }
                 }
             }
         }
@@ -242,6 +250,7 @@ public class PlayerSelectorManager : MonoBehaviour
     {
         Debug.Log($"Loading Level {levelNumber}");
         GameManager.Instance.RequestLoadLevel(levelNumber);
+        if (!GameMode.IsMultiplayer) HUD.SetActive(true);
     }
     // Navigation is used to move around the level system with a controller,
     // Nav rules are used for special coniderations for a better user experience
