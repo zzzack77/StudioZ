@@ -9,6 +9,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
 {
     [SerializeField] private CinemachineCamera cineCam;
     [SerializeField] private TimerHandeler timerHandeler;
+    [SerializeField] private GameObject HUD;
+
 
     [Header("Rigidbodys")]
     [SerializeField] private Rigidbody bodyRB;
@@ -202,8 +204,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         InitializeGamepad(); // Read gamepad inputs
         ControllerMovement(); // Move hands based on joystick input
         GrippingLogic(); // Handle gripping logic
-
-        if (Input.GetKeyDown(KeyCode.Escape)) GameManager.Instance.SetUI(true);
+        if (Input.GetKeyDown(KeyCode.Escape)) OpenMenu();
     }
     private void FixedUpdate()
     {
@@ -246,8 +247,13 @@ public class NetworkPlayerMovement : NetworkBehaviour
              currentCheckpoint = Vector2.zero;
              SpawnPlayer();
         }
-        if (gamepad.buttonSouth.wasPressedThisFrame && hasFinished) GameManager.Instance.SetUI(true);
-        if (gamepad.startButton.wasPressedThisFrame) GameManager.Instance.SetUI(true);
+        if (gamepad.buttonSouth.wasPressedThisFrame && hasFinished) OpenMenu();
+        if (gamepad.startButton.wasPressedThisFrame) OpenMenu();
+    }
+    private void OpenMenu()
+    {
+        GameManager.Instance.SetUI(true); 
+        HUD.SetActive(false);
     }
     private void LGrippedHandMovement()
     {
