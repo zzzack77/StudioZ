@@ -25,10 +25,10 @@ public class HoldBreaker : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         selfCollider = GetComponent<Collider>();
         originalOpacity = spriteRenderer.color.a;
-        Animator = GetComponent<Animator>();
+        Animator = GetComponentInChildren<Animator>();
 
     }
 

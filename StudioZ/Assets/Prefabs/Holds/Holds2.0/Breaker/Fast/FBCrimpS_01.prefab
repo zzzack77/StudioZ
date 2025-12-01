@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2567894727973715918}
+  - component: {fileID: 1598336172873884439}
+  - component: {fileID: 5855874687092414884}
   m_Layer: 0
   m_Name: FBCrimpS_01
-  m_TagString: Untagged
+  m_TagString: Crimp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +34,44 @@ Transform:
   - {fileID: 6885543480062455263}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1598336172873884439
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507440468505849263}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.37654927
+  m_Height: 1.2207174
+  m_Direction: 0
+  m_Center: {x: -0.004618168, y: 0.13059524, z: 0}
+--- !u!114 &5855874687092414884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507440468505849263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45162654e903b7c4bb4b7ae825159ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gripTime: 0.75
+  disableDuration: 1
+  fadedOpacity: 0.4
 --- !u!1001 &2903739642379930893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84,7 +124,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6262814162014638426, guid: 1984a3ebf38238e438d3e75d36ab0571, type: 3}
+    - {fileID: 934214535018358783, guid: 1984a3ebf38238e438d3e75d36ab0571, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

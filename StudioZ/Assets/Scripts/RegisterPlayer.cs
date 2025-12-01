@@ -51,7 +51,7 @@ public class RegisterPlayer : NetworkBehaviour
         {
             GameManager.Instance.RegisterPlayer(NetworkObject.OwnerClientId, this.gameObject);
         }
-        if (targetGroup == null) Debug.LogError("Target group ref is null!");
+        if (targetGroup == null && GameMode.IsMultiplayer) Debug.LogError("Target group ref is null!");
         if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
         {
             targetGroup.AddMember(transform, 3f, 0.2f);
