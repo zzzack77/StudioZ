@@ -10,6 +10,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private CinemachineCamera cineCam;
     [SerializeField] private TimerHandeler timerHandeler;
     [SerializeField] private GameObject HUD;
+    private HUDManager hudManager;
 
 
     [Header("Rigidbodys")]
@@ -149,6 +150,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     {
         isRespawning = true;
         ResetGrips();
+        hudManager = HUD.GetComponent<HUDManager>();
+        hudManager.ResetHUD();
         bodyRB.linearVelocity = Vector3.zero;
         bodyRB.constraints = RigidbodyConstraints.FreezeAll;
         if (currentCheckpoint == Vector2.zero)
@@ -480,11 +483,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
         {
             hasFinished = true;
             timerHandeler.isTimerRunning = false;
-            Debug.Log("Best Time: " + GameManager.Instance.GetCurrentLevelBestTime());
             float timeDif = timerHandeler.timeElapsed - GameManager.Instance.GetCurrentLevelBestTime();
+            hudManager = HUD.GetComponent<HUDManager>();
+            hudManager.OnFinish(timeDif, GameManager.Instance.GetCurrentLevelBestTime());
+
+
+            Debug.Log("Best Time: " + GameManager.Instance.GetCurrentLevelBestTime());
             GameManager.Instance.setCurrentLevelTime(timerHandeler.timeElapsed);
             Debug.Log("Time: " + timerHandeler.timeElapsed + ((timeDif > 0) ? " Time difference from best: +": " Time difference from best: ") + timeDif); 
-
         }
     }
     private void SetCheckPoint()
