@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4176200808885920227}
+  - component: {fileID: 4413310561287911528}
+  - component: {fileID: 7204567200153439992}
   m_Layer: 0
   m_Name: NBCrimpL_01
-  m_TagString: Untagged
+  m_TagString: Crimp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +34,44 @@ Transform:
   - {fileID: 799951075035233854}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &4413310561287911528
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2255652815351806025}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.7195589
+  m_Height: 3.36
+  m_Direction: 0
+  m_Center: {x: 0, y: 0.016616642, z: 0}
+--- !u!114 &7204567200153439992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2255652815351806025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45162654e903b7c4bb4b7ae825159ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gripTime: 2
+  disableDuration: 5
+  fadedOpacity: 0.4
 --- !u!1001 &2661048846583218135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84,7 +124,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrimpL_01 Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6676867017714728764, guid: 85eebb8b39e04b448b1c74481ef92fb3, type: 3}
+    - {fileID: 1280835805869350104, guid: 85eebb8b39e04b448b1c74481ef92fb3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

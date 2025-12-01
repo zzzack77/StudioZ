@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 499308551555483104}
+  - component: {fileID: 553163710703462723}
+  - component: {fileID: 6672754488002969159}
   m_Layer: 0
   m_Name: FBCrimpS_00
-  m_TagString: Untagged
+  m_TagString: Crimp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +34,44 @@ Transform:
   - {fileID: 7350115190357324863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &553163710703462723
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854560830876655226}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.45662147
+  m_Height: 1.1746445
+  m_Direction: 0
+  m_Center: {x: 0.0037765503, y: 0.0662114, z: 0}
+--- !u!114 &6672754488002969159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854560830876655226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45162654e903b7c4bb4b7ae825159ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gripTime: 0.75
+  disableDuration: 1
+  fadedOpacity: 0.4
 --- !u!1001 &9182139416246840308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84,7 +124,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrimpS_00 Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7699152956881010470, guid: 6b75bbcb8baa1644e89f065aa6035a69, type: 3}
+    - {fileID: 7723479707156883906, guid: 6b75bbcb8baa1644e89f065aa6035a69, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

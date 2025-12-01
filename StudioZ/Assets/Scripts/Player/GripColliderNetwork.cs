@@ -26,6 +26,7 @@ public class GripColliderNetwork : NetworkBehaviour
 
             else
             {
+                Debug.Log("Hold Breaker is null!");
                 if (isLeft) holdBreaker.EndLGrip();
                 else holdBreaker.EndRGrip();
             }
