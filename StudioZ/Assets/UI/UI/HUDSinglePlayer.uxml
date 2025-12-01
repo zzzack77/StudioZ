@@ -10,9 +10,12 @@
                 <ui:Label text="Best Time 00:00.00" name="BestTime" class="HUD" style="-unity-text-align: middle-right;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; height: 70%;" />
-        <ui:VisualElement style="flex-grow: 1; height: 10%; justify-content: center; padding-left: 774px;">
+        <ui:VisualElement style="flex-grow: 1; height: 70%; padding-top: 57px; padding-right: 57px; padding-bottom: 57px; padding-left: 57px;">
+            <ui:Label name="Continue" class="HUD" style="-unity-text-align: upper-center;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 10%; justify-content: flex-start; padding-left: 824px; flex-direction: row;">
             <ui:Label text="00:00.00" name="Time" class="HUD" style="-unity-text-align: upper-left;" />
+            <ui:Label name="TimeDifference" class="HUD" style="padding-left: 36px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
