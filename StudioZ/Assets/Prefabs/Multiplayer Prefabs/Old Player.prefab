@@ -374,7 +374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2282090171218311971
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1342,7 +1342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1531420698
+  GlobalObjectIdHash: 864741945
   InScenePlacedSourceGlobalObjectIdHash: 1531420698
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1370,6 +1370,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   cineCam: {fileID: 9205927917658421153}
   timerHandeler: {fileID: 6781876260613860221}
+  HUD: {fileID: 0}
   bodyRB: {fileID: 3080690037391331093}
   L_handRB: {fileID: 766306367707682103}
   R_handRB: {fileID: 5375496430398545004}
@@ -1384,6 +1385,8 @@ MonoBehaviour:
   projectionAngle: 5
   invertGrippingInput: 1
   hasFinished: 0
+  maxVelocity: 25
+  maxLinearDampening: 1
   vibrationEnabled: 1
   vibrationDuration: 0.05
   vibrationStrengthLowFrequency: 0.05
