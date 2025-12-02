@@ -135,10 +135,10 @@ public class SimpleMatchmaking : MonoBehaviour
         }
     }
 
-    public void JoinPrivateLobbyFromInput(TMP_InputField input)
-    {
-        JoinPrivateLobbyWithCode(input.text);
-    }
+    //public void JoinPrivateLobbyFromInput(TMP_InputField input)
+    //{
+    //    JoinPrivateLobbyWithCode(input.text);
+    //}
 
 
     private async Task Authenticate()

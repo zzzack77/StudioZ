@@ -76,6 +76,7 @@ public class HUDManager : MonoBehaviour
 
     public void ResetHUD()
     {
+        if (root == null) return;
         level = root.Q<Label>("Level");
         level.text = "Level #" + GameManager.Instance.GetCurrentLevel();
 

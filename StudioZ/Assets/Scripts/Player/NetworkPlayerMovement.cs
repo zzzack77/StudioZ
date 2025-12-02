@@ -36,7 +36,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     [Header("Player Settings")]
     [SerializeField] private bool invertGrippingInput = true;
-    [SerializeField] private bool hasFinished;
+    [SerializeField] private bool hasFinished = false;
     [SerializeField] private float maxVelocity = 25f;
     [SerializeField] private float maxLinearDampening = 1;
     private bool shouldRestartTimer = false;
@@ -78,7 +78,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
             }
         }
     }
-    public Vector2 currentCheckpoint { get; set; }
+    public Vector2 currentCheckpoint;
 
     // Player on player griping
     public GameObject L_playerGrippedGameObject {  get; set; }
@@ -154,6 +154,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         hudManager.ResetHUD();
         bodyRB.linearVelocity = Vector3.zero;
         bodyRB.constraints = RigidbodyConstraints.FreezeAll;
+        hasFinished = false;
         if (currentCheckpoint == Vector2.zero)
         {
             bodyRB.transform.position = new Vector2(spawnPoint.x, spawnPoint.y - armLength);
@@ -166,7 +167,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
             timerHandeler.timeElapsed = 0;
             timerHandeler.isTimerRunning = false;
             shouldRestartTimer = true;
-            hasFinished = false;
+            
         }
         else
         {
