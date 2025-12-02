@@ -10,7 +10,7 @@ public class UILevelManager : MonoBehaviour
 {
     [SerializeField] private GameObject MainMenuUIGameobject;
     [SerializeField] private GameObject HUD;
-    [SerializeField] private GameObject LevelUI;
+    private GameObject LevelUI;
     private VisualElement root;
 
     private List<Focusable> focusables = new List<Focusable>();
@@ -87,6 +87,8 @@ public class UILevelManager : MonoBehaviour
 
         if (gamepad.buttonSouth.wasPressedThisFrame)
             ActivateCurrent();
+        if (gamepad.buttonEast.wasPressedThisFrame)
+            OnBackPressed();
     }
     // First button thats focused if controller is active
     private void FocusInitial()

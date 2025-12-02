@@ -250,11 +250,18 @@ public class NetworkPlayerMovement : NetworkBehaviour
              currentCheckpoint = Vector2.zero;
              SpawnPlayer();
         }
-        if (gamepad.buttonSouth.wasPressedThisFrame && hasFinished) OpenMenu();
+        if (gamepad.buttonSouth.wasPressedThisFrame && hasFinished)
+        {
+            currentCheckpoint = Vector2.zero;
+            hasFinished = false;
+            OpenMenu();
+        }
         if (gamepad.startButton.wasPressedThisFrame) OpenMenu();
     }
     private void OpenMenu()
     {
+        currentCheckpoint = Vector2.zero;
+        SpawnPlayer();
         GameManager.Instance.SetUI(true); 
         HUD.SetActive(false);
     }

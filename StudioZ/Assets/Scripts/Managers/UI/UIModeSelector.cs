@@ -144,6 +144,10 @@ public class UIModeSelector : MonoBehaviour
         {
             ActivateFocusedButton();
         }
+        if (usingController && pad.buttonEast.wasPressedThisFrame)
+        {
+            OnBackButtonPress();
+        }
 
         // Mouse movement switches out of controller mode
         if (Mouse.current.delta.ReadValue().sqrMagnitude > 0.1f)

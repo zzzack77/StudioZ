@@ -13,10 +13,10 @@
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1; width: 25%; padding-right: 41px;">
                 <ui:VisualElement style="flex-grow: 1; height: 50%;">
-                    <ui:Button text="Settings" name="2" class="MenuButtons" style="-unity-text-align: middle-right; background-color: rgba(0, 0, 0, 0); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);" />
+                    <ui:Button text="Settings" name="2" class="MenuButtons" style="-unity-text-align: middle-right; background-color: rgba(0, 0, 0, 0); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); font-size: 60px;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 1; height: 50%;">
-                    <ui:Button text="How to Play" name="3" class="MenuButtons" style="-unity-text-align: middle-right; background-color: rgba(0, 0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);" />
+                    <ui:Button text="Coming soon..." name="3" class="MenuButtons" style="-unity-text-align: middle-right; background-color: rgba(0, 0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); font-size: 48px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
