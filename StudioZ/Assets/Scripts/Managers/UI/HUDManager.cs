@@ -64,7 +64,6 @@ public class HUDManager : MonoBehaviour
         {
             timeDifference.style.color = Color.red;
         }
-
         if (time.TotalMinutes >= 1)
         {
             timeDifference.text = $"{(isNegative ? "-" : "+")}{time.Minutes:D2}:{time.Seconds:D2}.{time.Milliseconds / 10:D2}";
