@@ -40,13 +40,17 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float maxVelocity = 25f;
     [SerializeField] private float maxLinearDampening = 1;
     private bool shouldRestartTimer = false;
-
-    // Vibration
-    private Coroutine GripVibrationCoroutine;
+    [SerializeField] private float minShoulderPoint;
+    [SerializeField] private float maxShoulderPoint;
+    [SerializeField] private float L_shoulderRotation;
+    [SerializeField] private float R_shoulderRotation;
+ 
+    [Header("Vibration")]
     [SerializeField] private bool vibrationEnabled = true;
     [SerializeField] private float vibrationDuration = 0.05f;
     [SerializeField] private float vibrationStrengthLowFrequency = 0.05f;
     [SerializeField] private float vibrationStrengthHighFrequency = 0.1f;
+    private Coroutine GripVibrationCoroutine;
 
 
 
@@ -209,6 +213,19 @@ public class NetworkPlayerMovement : NetworkBehaviour
         ControllerMovement(); // Move hands based on joystick input
         GrippingLogic(); // Handle gripping logic
         if (Input.GetKeyDown(KeyCode.Escape)) OpenMenu();
+
+        if (L_handRB.transform.position.x > L_shoulderPoint.transform.position.x + 0.1f)
+        {
+            Debug.Log("increase");
+            L_shoulderRotation = Mathf.Min(L_shoulderRotation + 1.5f * Time.deltaTime, 1);
+        }
+        else
+        {
+            L_shoulderRotation = Mathf.Max(L_shoulderRotation - 1.5f * Time.deltaTime, 0);
+        }
+
+            L_shoulderPoint.localPosition = new Vector3(Mathf.Lerp(minShoulderPoint, maxShoulderPoint, L_shoulderRotation), L_shoulderPoint.localPosition.y, 0);
+        R_shoulderPoint.localPosition = new Vector3(Mathf.Lerp(maxShoulderPoint, minShoulderPoint, L_shoulderRotation), R_shoulderPoint.localPosition.y, 0);
     }
     private void FixedUpdate()
     {
