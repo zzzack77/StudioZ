@@ -29,6 +29,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float armLength = 4.2f;
     [SerializeField] private float handMoveSpeed = 100;
     [SerializeField] private float jointBreakingSensitivity = 0.99f;
+    [SerializeField] private bool springEnabled = false;
     [SerializeField] private float jointSpring = 500f;
     [SerializeField] private float jointDamper = 80f;
     [SerializeField] private float projectionDistance = 0.1f;
@@ -284,6 +285,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         // If stick is pushed downward
         if ((invertGrippingInput && joyStick.y < downThreshold) || (!invertGrippingInput && joyStick.y > -downThreshold))
         {
+            Debug.Log(joyStick.y);
             // apply bias for double handed or single handed grip types
             if (R_isGripping && L_isGripping) joyStick.y *= doubleHandedUpwardBoost;
             else joyStick.y *= singleHandUpwardBoost; 
@@ -578,11 +580,13 @@ public class NetworkPlayerMovement : NetworkBehaviour
         L_currentJoint.zMotion = ConfigurableJointMotion.Limited;
 
         // Spring to arm to reduce jitering when swinging
-
-        //SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
-        //linearSpring.spring = jointSpring;
-        //linearSpring.damper = jointDamper;
-        //L_currentJoint.linearLimitSpring = linearSpring;
+        if (springEnabled)
+        {
+            SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
+            linearSpring.spring = jointSpring;
+            linearSpring.damper = jointDamper;
+            L_currentJoint.linearLimitSpring = linearSpring;
+        }
 
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
@@ -603,11 +607,15 @@ public class NetworkPlayerMovement : NetworkBehaviour
         R_currentJoint.yMotion = ConfigurableJointMotion.Limited;
         R_currentJoint.zMotion = ConfigurableJointMotion.Limited;
 
-        // Spring to arm to reduce jitering when swinging
-        //SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
-        //linearSpring.spring = jointSpring;
-        //linearSpring.damper = jointDamper;
-        //R_currentJoint.linearLimitSpring = linearSpring;
+        if (springEnabled)
+        {
+            // Spring to arm to reduce jitering when swinging
+            SoftJointLimitSpring linearSpring = new SoftJointLimitSpring();
+            linearSpring.spring = jointSpring;
+            linearSpring.damper = jointDamper;
+            R_currentJoint.linearLimitSpring = linearSpring;
+        }
+        
 
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
