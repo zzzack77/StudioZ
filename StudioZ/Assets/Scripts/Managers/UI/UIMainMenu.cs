@@ -19,6 +19,8 @@ public class UIMainMenu : MonoBehaviour
 
     private bool controllerJustConnected = false;
 
+    public AudioSource clickSound;
+
     private void OnEnable()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -134,6 +136,8 @@ public class UIMainMenu : MonoBehaviour
             return;
 
         Focus(next);
+
+
     }
 
     private void Focus(int index)
@@ -156,11 +160,13 @@ public class UIMainMenu : MonoBehaviour
 
     private void Quit()
     {
+        
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #else
         Application.Quit();
         #endif
+
     }
 
     private void StartGame()
@@ -168,6 +174,7 @@ public class UIMainMenu : MonoBehaviour
         controllerJustConnected = false;
         playerSelector.SetActive(true);
         this.gameObject.SetActive(false);
+       
     }
 
     private void OpenSettings()
