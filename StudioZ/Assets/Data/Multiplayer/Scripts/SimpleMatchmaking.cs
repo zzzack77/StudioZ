@@ -36,6 +36,7 @@ public class SimpleMatchmaking : MonoBehaviour
     // Key used to store the Relay Join Code within the Lobby data.
     private const string JoinCodeKey = "j"; 
     private string playerId; // Unique ID for the current player (used for Auth, Lobby, and Host check)
+    public string playerName;  // player controlled name with default
     
     // Track the heartbeat coroutine so we can stop/restart it (critical for Host Migration)
     private Coroutine heartbeatCoroutine;
@@ -54,6 +55,7 @@ public class SimpleMatchmaking : MonoBehaviour
         Instance = this;
         // Get the UTP transport component attached in the scene
         transport = FindFirstObjectByType<UnityTransport>();
+        playerName = "Player" + UnityEngine.Random.Range(0, 999999);
     }
 
     // --- Primary Lobby/Game Setup Methods ---
@@ -133,6 +135,11 @@ public class SimpleMatchmaking : MonoBehaviour
 
         try
         {
+            var options = new JoinLobbyByCodeOptions
+            {
+                Player = GetPlayer() 
+            };
+            
             // 1. Join the lobby using the code
             var lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(joinCode);
             // 2. Get the Relay join code from the lobby data
@@ -185,6 +192,11 @@ public class SimpleMatchmaking : MonoBehaviour
     {
         try
         {
+            
+            var options = new QuickJoinLobbyOptions
+            {
+                Player = GetPlayer() 
+            };
             var lobby = await LobbyService.Instance.QuickJoinLobbyAsync();
             var allocation = await RelayService.Instance.JoinAllocationAsync(lobby.Data[JoinCodeKey].Value);
 
@@ -218,6 +230,7 @@ public class SimpleMatchmaking : MonoBehaviour
             // 2. Setup Lobby options (public visibility)
             var options = new CreateLobbyOptions()
             {
+                Player = GetPlayer(),
                 Data = new Dictionary<string, DataObject>
                     // Use VisibilityOptions.Public for quick-joinable lobbies
                     { { JoinCodeKey, new DataObject(DataObject.VisibilityOptions.Public, joinCode) } }
@@ -251,6 +264,19 @@ public class SimpleMatchmaking : MonoBehaviour
     private void SetTransportAsClient(JoinAllocation a)
     {
         transport.SetClientRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData, a.HostConnectionData);
+    }
+    /// <summary>
+    /// Helper function to create Player Data object
+    /// </summary>
+    private Player GetPlayer()
+    {
+        return new Player
+        {
+            Data = new Dictionary<string, PlayerDataObject>
+            {
+                { "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName) }
+            }
+        };
     }
 
     // -------------------------------------------------------------------------
@@ -450,6 +476,7 @@ public class SimpleMatchmaking : MonoBehaviour
 
             if (connectedLobby != null)
             {
+                
                 // Host Migration Cleanup Logic:
                 if (connectedLobby.HostId == playerId)
                 {
