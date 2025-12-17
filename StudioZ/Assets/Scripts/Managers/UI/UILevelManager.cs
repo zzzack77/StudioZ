@@ -10,6 +10,9 @@ public class UILevelManager : MonoBehaviour
 {
     [SerializeField] private GameObject MainMenuUIGameobject;
     [SerializeField] private GameObject HUD;
+
+    public AudioSource clickSound;
+
     private GameObject LevelUI;
     private VisualElement root;
 
@@ -108,6 +111,7 @@ public class UILevelManager : MonoBehaviour
     // On back button press
     private void OnBackPressed()
     {
+        SoundFXManager.Instance.PlaySoundFXClip(clickSound.clip, this.transform, 0.25f);
         MainMenuUIGameobject.SetActive(true);
         this.gameObject.SetActive(false);
     }
@@ -179,6 +183,7 @@ public class UILevelManager : MonoBehaviour
             Button levelButton = root.Q<Button>(buttonName);
             if (levelButton != null)
             {
+                SoundFXManager.Instance.PlaySoundFXClip(clickSound.clip, this.transform, 0.1f);
                 int capturedNumber = i;
                 levelButton.clicked += () => LoadLevel(capturedNumber);
             }

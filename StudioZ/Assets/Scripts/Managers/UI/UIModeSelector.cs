@@ -7,6 +7,8 @@ public class UIModeSelector : MonoBehaviour
     [SerializeField] GameObject SinglePlayerUIGameobject;
     [SerializeField] GameObject MainMenuUIGameObject;
 
+    public AudioSource clickSound;
+
     private VisualElement root;
 
     private Button backButton;
@@ -172,12 +174,14 @@ public class UIModeSelector : MonoBehaviour
 
     private void OnBackButtonPress()
     {
+        SoundFXManager.Instance.PlaySoundFXClip(clickSound.clip, this.transform, 0.1f);
         MainMenuUIGameObject.SetActive(true);
         this.gameObject.SetActive(false);
     }
 
     private void OnSinglePlayerButtonPress()
     {
+        SoundFXManager.Instance.PlaySoundFXClip(clickSound.clip, this.transform, 0.1f);
         GameMode.IsMultiplayer = false;
         SinglePlayerUIGameobject.SetActive(true);
         this.gameObject.SetActive(false);
@@ -185,6 +189,7 @@ public class UIModeSelector : MonoBehaviour
 
     private void OnMultiPlayerButtonPress()
     {
+        
         GameMode.IsMultiplayer = true;
         Debug.Log("Multiplayer pressed");
     }

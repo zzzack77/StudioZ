@@ -160,7 +160,7 @@ public class UIMainMenu : MonoBehaviour
 
     private void Quit()
     {
-        
+        SoundFXManager.Instance.PlaySoundFXClip(clickSound.clip, this.transform, 0.1f);
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #else
@@ -174,7 +174,7 @@ public class UIMainMenu : MonoBehaviour
         controllerJustConnected = false;
         playerSelector.SetActive(true);
         this.gameObject.SetActive(false);
-       
+       SoundFXManager.Instance.PlaySoundFXClip(clickSound.clip, this.transform, 0.1f);
     }
 
     private void OpenSettings()

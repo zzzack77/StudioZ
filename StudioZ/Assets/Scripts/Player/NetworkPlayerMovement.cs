@@ -48,7 +48,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float vibrationStrengthLowFrequency = 0.05f;
     [SerializeField] private float vibrationStrengthHighFrequency = 0.1f;
 
+    //SoundFX
+    public AudioClip[] GripSFXs;
+    public AudioClip[] ClimbingSFXs;
 
+    private bool CanMakeSound = true;
 
     // Spawning and checkpoints
     private bool isRespawning;
@@ -209,6 +213,22 @@ public class NetworkPlayerMovement : NetworkBehaviour
         ControllerMovement(); // Move hands based on joystick input
         GrippingLogic(); // Handle gripping logic
         if (Input.GetKeyDown(KeyCode.Escape)) OpenMenu();
+        forceCheck();
+    }
+    public void forceCheck()
+    {
+        if(CanMakeSound && bodyRB.linearVelocity.magnitude > 14f)
+        {
+            SoundFXManager.Instance.PlayRandomSoundFXClip(ClimbingSFXs, transform, 0.5f);
+            CanMakeSound = false;
+            StartCoroutine(stopSoundFX());
+        }
+        
+    }
+    IEnumerator stopSoundFX()
+    {
+        yield return new WaitForSeconds(1.5f);
+        CanMakeSound = true;
     }
     private void FixedUpdate()
     {
@@ -380,6 +400,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     private void OnLGrip()
     {
+       
         if (isRespawning)
         {
             isRespawning = false;
@@ -401,6 +422,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
         L_isGripping = true;
         L_handRB.constraints = RigidbodyConstraints.FreezeAll;
+       
+
     }
     private void OnLGripRelease()
     {
@@ -435,6 +458,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private IEnumerator DoGripVibration()
     {
+        SoundFXManager.Instance.PlayRandomSoundFXClip(GripSFXs, transform, 1f);
         Gamepad.current.SetMotorSpeeds(vibrationStrengthLowFrequency, vibrationStrengthHighFrequency);
         yield return new WaitForSeconds(vibrationDuration);
         Gamepad.current.SetMotorSpeeds(0, 0);
@@ -454,6 +478,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 L_distanceFromHandToGrippedObject = L_handRB.transform.position - L_playerGrippedGameObject.transform.position;
                 L_isGrippingPlayer = true;
             }
+            
             L_isGripping = true;
             L_handRB.constraints = RigidbodyConstraints.FreezeAll;
             L_handRB.transform.position = L_playerGrippedGameObject.transform.position + L_distanceFromHandToGrippedObject;
@@ -468,6 +493,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 R_distanceFromHandToGrippedObject = R_handRB.transform.position - R_playerGrippedGameObject.transform.position;
                 R_isGrippingPlayer = true;
             }
+            
             R_isGripping = true;
             R_handRB.constraints = RigidbodyConstraints.FreezeAll;
             R_handRB.transform.position = R_playerGrippedGameObject.transform.position + R_distanceFromHandToGrippedObject;
