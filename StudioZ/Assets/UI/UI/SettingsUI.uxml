@@ -1,0 +1,37 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3#UIUSS" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(234, 233, 238);">
+        <ui:VisualElement style="flex-grow: 1; height: 15%; background-color: rgba(0, 0, 0, 0.26); flex-direction: row;">
+            <ui:VisualElement style="flex-grow: 1; width: 10%;">
+                <ui:Button text="Back" name="BackButton" class="MenuButtons" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; background-color: rgba(0, 0, 0, 0); padding-bottom: 0; -unity-text-align: middle-left; font-size: 48px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 80%; flex-direction: row;">
+                <ui:VisualElement style="flex-grow: 1; width: 10%; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px;">
+                    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/Icons/icons8-xbox-lb-50.png?fileID=2800000&amp;guid=d12745c101d5e524caa2ac9d36ae5eeb&amp;type=3#icons8-xbox-lb-50&quot;);" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; width: 80%; flex-direction: row;">
+                    <ui:VisualElement style="flex-grow: 1; width: 20%;">
+                        <ui:Label text="General" class="MenuButtons" style="-unity-text-align: middle-center; -unity-font-style: normal; font-size: 41px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 1; width: 20%;">
+                        <ui:Label text="Controls" class="MenuButtons" style="-unity-text-align: middle-center; -unity-font-style: normal; font-size: 41px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 1; width: 20%;">
+                        <ui:Label text="video" class="MenuButtons" style="-unity-text-align: middle-center; -unity-font-style: normal; font-size: 41px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 1; width: 20%;">
+                        <ui:Label text="Accessability" class="MenuButtons" style="-unity-text-align: middle-center; -unity-font-style: normal; font-size: 41px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-grow: 1; width: 20%;">
+                        <ui:Label text="Audio" class="MenuButtons" style="-unity-text-align: middle-center; -unity-font-style: normal; font-size: 41px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; width: 10%; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px;">
+                    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/Icons/icons8-xbox-rb-50.png?fileID=2800000&amp;guid=02ce4bf06a73dd5479edb0b3c454d866&amp;type=3#icons8-xbox-rb-50&quot;);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 10%;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 85%;" />
+    </ui:VisualElement>
+</ui:UXML>
