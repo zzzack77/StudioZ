@@ -496,4 +496,13 @@ public class SimpleMatchmaking : MonoBehaviour
             Debug.LogError($"Error shutting down lobby: {e}");
         }
     }
+
+    public void ChangePlayerName(string newName)
+    {
+        if (newName.Length > 1)
+        {
+            playerName = newName;
+        }
+        
+    }
 }
