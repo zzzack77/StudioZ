@@ -11,7 +11,7 @@ public class UserNameDisplay : NetworkBehaviour
    
     [SerializeField] private TextMeshProUGUI userNameText;
     
-    
+    public Color[] playerColors;
 
     public override void OnNetworkSpawn()
     {
@@ -28,6 +28,25 @@ public class UserNameDisplay : NetworkBehaviour
             // We must ask the server to do it.
             SetPlayerNameServerRpc(SimpleMatchmaking.Instance.playerName);
         }
+        
+        // --- 2. HANDLE COLOR SETTING ---
+        SetPlayerColor();
+        
+    }
+
+
+    private void SetPlayerColor()
+    {
+        if (playerColors.Length == 0) return;
+        
+        ulong ownerId = OwnerClientId;
+        if ((int)ownerId < playerColors.Length)
+        {
+            Color assignedColor = playerColors[ownerId];
+
+            userNameText.color = assignedColor;
+        }
+       
     }
 
     // This function runs on the SERVER

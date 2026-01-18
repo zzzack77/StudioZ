@@ -38,10 +38,15 @@ public class SimpleMatchmaking : MonoBehaviour
     private string playerId; // Unique ID for the current player (used for Auth, Lobby, and Host check)
     public string playerName;  // player controlled name with default
     
+   
+    
     // Track the heartbeat coroutine so we can stop/restart it (critical for Host Migration)
     private Coroutine heartbeatCoroutine;
     // We need to keep a reference to lobby events to unsubscribe later or handle migration
     private LobbyEventCallbacks lobbyEventCallbacks;
+
+
+    
 
     void Awake()
     {
