@@ -47,6 +47,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ZC/Prototyping2/ZC-Demo2.0.unity
     guid: f115075a34dd35f45b2b81ce0b129f28
+  - enabled: 1
+    path: Assets/Data/Multiplayer/EasyLobbyWithCamera.unity
+    guid: 4a6132cbdb6ff46418fe2b06743d0ffc
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

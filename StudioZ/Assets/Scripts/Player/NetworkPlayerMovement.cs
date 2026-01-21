@@ -150,8 +150,15 @@ public class NetworkPlayerMovement : NetworkBehaviour
     {
         isRespawning = true;
         ResetGrips();
-        hudManager = HUD.GetComponent<HUDManager>();
-        hudManager.ResetHUD();
+        
+        
+        if (HUD)
+        {
+            hudManager = HUD.GetComponent<HUDManager>();
+            hudManager.ResetHUD();
+        }
+        
+        
         bodyRB.linearVelocity = Vector3.zero;
         bodyRB.constraints = RigidbodyConstraints.FreezeAll;
         hasFinished = false;

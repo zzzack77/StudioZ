@@ -471,8 +471,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  playerData: {fileID: 4527063916185495194}
+  networkName:
+    m_InternalValue:
+      utf8LengthInBytes: 0
+      bytes:
+        offset0000:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        byte0016: 0
+        byte0017: 0
+        byte0018: 0
+        byte0019: 0
+        byte0020: 0
+        byte0021: 0
+        byte0022: 0
+        byte0023: 0
+        byte0024: 0
+        byte0025: 0
+        byte0026: 0
+        byte0027: 0
+        byte0028: 0
+        byte0029: 0
   userNameText: {fileID: 3558859151127253531}
+  playerColors:
+  - {r: 0.9622642, g: 0.24964403, b: 0.24964403, a: 1}
+  - {r: 0.2691349, g: 0.76484764, b: 0.9056604, a: 1}
+  - {r: 0.40838462, g: 0.8962264, b: 0.37624598, a: 1}
+  - {r: 0.8396226, g: 0.76800966, b: 0.2732734, a: 1}
 --- !u!1 &647810756912893867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,6 +1409,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   cineCam: {fileID: 9205927917658421153}
   timerHandeler: {fileID: 6781876260613860221}
+  HUD: {fileID: 0}
   bodyRB: {fileID: 3080690037391331093}
   L_handRB: {fileID: 766306367707682103}
   R_handRB: {fileID: 5375496430398545004}
@@ -1384,10 +1424,13 @@ MonoBehaviour:
   projectionAngle: 5
   invertGrippingInput: 1
   hasFinished: 0
+  maxVelocity: 25
+  maxLinearDampening: 1
   vibrationEnabled: 1
   vibrationDuration: 0.05
   vibrationStrengthLowFrequency: 0.05
   vibrationStrengthHighFrequency: 0.1
+  currentCheckpoint: {x: 0, y: 0}
   L_isGripping: 0
   R_isGripping: 0
   forceMultiplier: 15
