@@ -58548,6 +58548,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7829300676977573825, guid: c57af5247b319ca4bb9086ea5b705d71, type: 3}
+      propertyPath: cineCam
+      value: 
+      objectReference: {fileID: 1292872216}
+    - target: {fileID: 7829300676977573825, guid: c57af5247b319ca4bb9086ea5b705d71, type: 3}
+      propertyPath: targetGroup
+      value: 
+      objectReference: {fileID: 1452471163}
     - target: {fileID: 8930613077632618759, guid: c57af5247b319ca4bb9086ea5b705d71, type: 3}
       propertyPath: m_Name
       value: CameraManager
@@ -255088,6 +255096,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0df5020259f185d4c864ee914213a662, type: 3}
+--- !u!114 &1292872216 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7816737385634025043, guid: 0df5020259f185d4c864ee914213a662, type: 3}
+  m_PrefabInstance: {fileID: 1292872215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1437411488
 GameObject:
   m_ObjectHideFlags: 0
@@ -255182,6 +255201,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c45e0ac81f2452479b311885c2abc99, type: 3}
+--- !u!114 &1452471163 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7167649575842854896, guid: 5c45e0ac81f2452479b311885c2abc99, type: 3}
+  m_PrefabInstance: {fileID: 1452471162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5eb80d8e62d9d145bb50fb783c0f731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1462008714
 GameObject:
   m_ObjectHideFlags: 0
