@@ -28,7 +28,9 @@ public class SimpleMatchmaking : MonoBehaviour
     [SerializeField] private GameObject buttons; // UI elements to hide after joining/creating a lobby
 
     public static SimpleMatchmaking Instance; // Singleton instance
-
+    
+    public event Action<List<Player>> OnLobbyPlayersUpdated;
+    public Lobby ConnectedLobby => connectedLobby;
     // --- Private Fields ---
 
     private Lobby connectedLobby;
@@ -161,6 +163,8 @@ public class SimpleMatchmaking : MonoBehaviour
             
             // 6. Start listening for migration events
             await SubscribeToLobbyEvents();
+            
+            OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
         }
         catch (Exception e)
         {
@@ -176,10 +180,18 @@ public class SimpleMatchmaking : MonoBehaviour
     private async Task Authenticate()
     {
         var options = new InitializationOptions();
+
+        // This creates a unique profile name based on the process so Editor and Build don't clash.
 #if UNITY_EDITOR
-        // Use ParrelSync argument to distinguish editor clones
-        options.SetProfile(ClonesManager.IsClone() ? ClonesManager.GetArgument() : "Primary");
-#endif        
+        // If using ParrelSync, use the clone argument. Otherwise use "Editor".
+        string profile = ClonesManager.IsClone() ? ClonesManager.GetArgument() : "EditorProfile";
+        options.SetProfile(profile);
+#else
+    // If running a Build, assume it's a Client and give it a generic "Build" profile
+    // OR better yet, use a random one for testing so you can run multiple builds.
+    options.SetProfile("BuildProfile_" + UnityEngine.Random.Range(0, 1000));
+#endif
+           
         await UnityServices.InitializeAsync(options);
         
         if (!AuthenticationService.Instance.IsSignedIn)
@@ -202,7 +214,7 @@ public class SimpleMatchmaking : MonoBehaviour
             {
                 Player = GetPlayer() 
             };
-            var lobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+            var lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
             var allocation = await RelayService.Instance.JoinAllocationAsync(lobby.Data[JoinCodeKey].Value);
 
             SetTransportAsClient(allocation);
@@ -210,11 +222,14 @@ public class SimpleMatchmaking : MonoBehaviour
             
             connectedLobby = lobby;
             await SubscribeToLobbyEvents(); // Listen for migration
-
+            
+            OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
+            
             return lobby;
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Debug.LogWarning($"Quick Join Failed at step: {e.Message}");
             // No lobbies available to quick join
             return null;
         }
@@ -248,6 +263,8 @@ public class SimpleMatchmaking : MonoBehaviour
             await SubscribeToLobbyEvents(); // IMPORTANT: Hook up events for migration
             StartHeartbeat();
 
+            OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
+            
             // 4. Configure NGO Transport for hosting
             transport.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
 
@@ -313,6 +330,17 @@ public class SimpleMatchmaking : MonoBehaviour
     /// </summary>
     private void OnLobbyChanged(ILobbyChanges changes)
     {
+        // 1. Apply changes to the local lobby object
+        changes.ApplyToLobby(connectedLobby);
+
+        // 2. Fire the event so the UI knows to redraw
+        if (changes.PlayerJoined.Changed || changes.PlayerLeft.Changed)
+        {
+            OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
+        }
+        
+        
+        
         // 1. Check if the Host has changed
         if (changes.HostId.Changed)
         {
