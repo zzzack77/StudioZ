@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons: {fileID: 1719876934}
+  playerName: 
 --- !u!1 &353423150
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,7 +343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2773339301862861356, guid: 0df5020259f185d4c864ee914213a662, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 894566597
+      value: 674365213
       objectReference: {fileID: 0}
     - target: {fileID: 7816737385634025043, guid: 0df5020259f185d4c864ee914213a662, type: 3}
       propertyPath: Target.TrackingTarget
@@ -1573,7 +1574,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainMenuUIGameobject: {fileID: 0}
   HUD: {fileID: 0}
-  LevelUI: {fileID: 0}
   currentIndex: 2
   BTDTime:
   - 0

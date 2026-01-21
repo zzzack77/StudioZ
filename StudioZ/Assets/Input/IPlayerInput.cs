@@ -10,7 +10,7 @@ public interface IPlayerInput
 
     float GripDeadZone { get; }
 
-    // Triggers or click
+    // Triggers
     bool GripLPressed();
 
     bool GripRPressed();
@@ -28,4 +28,21 @@ public interface IPlayerInput
     bool ButtonNorthPressed();
 
     bool ButtonWestPressed();
+
+    // Menu Buttons
+    bool ButtonStartPressed();
+    bool ButtonBackPressed();
+
+    // Stick Presses
+    bool StickLPressed();
+    bool StickRPressed();
+
+    // DPad
+    bool DPadUpPressed();
+    bool DPadDownPressed();
+    bool DPadLeftPressed();
+    bool DPadRightPressed();
+
+
+
 }
