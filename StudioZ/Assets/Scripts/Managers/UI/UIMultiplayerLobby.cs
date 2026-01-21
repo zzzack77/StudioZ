@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using Unity.Services.Lobbies.Models;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
-public class UIMultiplayerLobby : MonoBehaviour
+
+public class UIMultiplayerLobby : NetworkBehaviour
 {
+    [SerializeField] private SimpleMatchmaking simpleMatchmaking;
+    [SerializeField] private GameObject lobbyUIRoot;
     [Header("UI References")] 
     [SerializeField] private TextMeshProUGUI Player1Text;
     [SerializeField] private TextMeshProUGUI Player2Text;
@@ -16,6 +19,8 @@ public class UIMultiplayerLobby : MonoBehaviour
     [SerializeField] private GameObject Player2;
     [SerializeField] private GameObject Player3;
     [SerializeField] private GameObject Player4;
+    
+    [SerializeField] private GameObject hostOnlyButton;
    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,11 +45,7 @@ public class UIMultiplayerLobby : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 
     private void UpdatePlayerList(List<Player> players)
     {
@@ -85,12 +86,46 @@ public class UIMultiplayerLobby : MonoBehaviour
         Player2.SetActive(false);
         Player3.SetActive(false);
         Player4.SetActive(false);
+
+
+        UpdateHostUI();
     }
 
     
 
     public void StartMatch()
     {
-        gameObject.SetActive(false);
+        if (simpleMatchmaking&&simpleMatchmaking.IsHost)
+        {
+            HideLobbyUIServerRpc();
+        }
     } 
+    
+    
+    private void UpdateHostUI()
+    {
+        if (!hostOnlyButton  || !simpleMatchmaking) return;
+        
+        hostOnlyButton.SetActive(simpleMatchmaking.IsHost);
+    }
+    
+    
+    [ClientRpc]
+    private void HideLobbyUIClientRpc()
+    {
+        HideLobbyUI();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void HideLobbyUIServerRpc()
+    {
+        HideLobbyUIClientRpc();
+    }
+    
+    public void HideLobbyUI()
+    {
+        lobbyUIRoot.SetActive(false);
+    }
+    
+   
 }

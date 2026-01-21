@@ -255718,6 +255718,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1814485345}
+  - component: {fileID: 1814485347}
   - component: {fileID: 1814485346}
   m_Layer: 5
   m_Name: LobbyUI
@@ -255758,6 +255759,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5591593d2bec66640b82765c728ee23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  simpleMatchmaking: {fileID: 269805213}
+  lobbyUIRoot: {fileID: 1719876934}
   Player1Text: {fileID: 142498352}
   Player2Text: {fileID: 950256029}
   Player3Text: {fileID: 1035041297}
@@ -255766,6 +255770,32 @@ MonoBehaviour:
   Player2: {fileID: 920911817}
   Player3: {fileID: 944657582}
   Player4: {fileID: 917771707}
+  hostOnlyButton: {fileID: 2081370881}
+--- !u!114 &1814485347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814485344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1617432440
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1974455653
 GameObject:
   m_ObjectHideFlags: 0
@@ -255920,7 +255950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2081370882
 RectTransform:
   m_ObjectHideFlags: 0

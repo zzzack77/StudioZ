@@ -538,4 +538,7 @@ public class SimpleMatchmaking : MonoBehaviour
         }
         
     }
+    
+    public bool IsHost =>
+        connectedLobby != null && connectedLobby.HostId == playerId;
 }
