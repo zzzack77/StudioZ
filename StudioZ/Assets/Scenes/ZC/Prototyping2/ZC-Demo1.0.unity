@@ -20615,7 +20615,7 @@ MonoBehaviour:
   armLength: 5
   handMoveSpeed: 70
   jointBreakingSensitivity: 0.99
-  springEnabled: 0
+  springEnabled: 1
   jointSpring: 500
   jointDamper: 80
   projectionDistance: 0.1
