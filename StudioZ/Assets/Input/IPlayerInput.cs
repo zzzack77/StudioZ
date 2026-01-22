@@ -45,6 +45,8 @@ public interface IPlayerInput
     bool DPadRightPressed();
 
     // Controller Vibration
-    IEnumerator ActivateVibration();
+    IEnumerator ActivateVibrationCoroutine();
+
+    void ActivateVibration();
     void StopVibration();
 }

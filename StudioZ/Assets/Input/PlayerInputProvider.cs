@@ -218,9 +218,9 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     }
 
     // Vibration Functions
-    public IEnumerator ActivateVibration()
+    public IEnumerator ActivateVibrationCoroutine()
     {
-        if (Gamepad.current != null)
+        if (Gamepad.current == null)
             yield break; // Exits the Coroutine if no controller is connected 
 
         if (vibrationEnabled)
@@ -233,12 +233,17 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 
     public void StopVibration()
     {
-        if (Gamepad.current != null)
+        if (Gamepad.current == null)
             return; // Exits if no controller is connected 
 
         if (vibrationEnabled)
         {
             Gamepad.current.SetMotorSpeeds(0, 0);
         }
+    }
+
+    public void ActivateVibration()
+    {
+        StartCoroutine(ActivateVibrationCoroutine());
     }
 }

@@ -38,6 +38,6 @@ public class PlayerInputTesting : MonoBehaviour
         if (input.DPadRightPressed()) Debug.Log("Dpad right Pressed");
 
         // Vibration
-        if (input.ButtonSouthPressed()) StartCoroutine(input.ActivateVibration());
+        if (input.ButtonSouthPressed()) input.ActivateVibration();
     }
 }
