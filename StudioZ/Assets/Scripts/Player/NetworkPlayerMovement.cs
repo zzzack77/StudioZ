@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public class NetworkPlayerMovement : NetworkBehaviour
 {
+    private IPlayerInput input;
     [SerializeField] private CinemachineCamera cineCam;
     [SerializeField] private TimerHandeler timerHandeler;
     [SerializeField] private GameObject HUD;
@@ -250,11 +251,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
         leftShoulder = gamepad.leftShoulder.ReadValue();
         rightShoulder = gamepad.rightShoulder.ReadValue();
 
-        if (gamepad.buttonNorth.wasPressedThisFrame)
+        if (input.ButtonNorthPressed())
         {
             SpawnPlayer();
         }
-        if (gamepad.buttonEast.wasPressedThisFrame)
+        if (input.ButtonEastPressed())
         {
              currentCheckpoint = Vector2.zero;
              SpawnPlayer();
