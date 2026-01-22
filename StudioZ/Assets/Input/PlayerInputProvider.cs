@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +27,11 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 
     // Input action asset (drag this in from controls folder)
     [SerializeField] private InputActionAsset inputActions;
+
+    [SerializeField] private bool vibrationEnabled = true;
+    [SerializeField] private float vibrationDuration = 0.05f;
+    [SerializeField] private float vibrationStrengthLowFrequency = 0.05f;
+    [SerializeField] private float vibrationStrengthHighFrequency = 0.1f;
 
     // Seting up the Input Actions 
     // Moving left and right arms
@@ -123,6 +129,7 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
         GripRValue = gripRAction.ReadValue<float>();
     }
 
+    // Functions for reading input 
     // Triggers
     public bool GripLPressed()
     {
@@ -208,5 +215,30 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     public bool DPadRightPressed()
     {
         return dPadRightAction.ReadValue<float>() == 1;
+    }
+
+    // Vibration Functions
+    public IEnumerator ActivateVibration()
+    {
+        if (Gamepad.current != null)
+            yield break; // Exits the Coroutine if no controller is connected 
+
+        if (vibrationEnabled)
+        {
+            Gamepad.current.SetMotorSpeeds(vibrationStrengthLowFrequency, vibrationStrengthHighFrequency);
+            yield return new WaitForSeconds(vibrationDuration);
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
+    }
+
+    public void StopVibration()
+    {
+        if (Gamepad.current != null)
+            return; // Exits if no controller is connected 
+
+        if (vibrationEnabled)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
     }
 }

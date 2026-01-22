@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public interface IPlayerInput
@@ -43,6 +44,7 @@ public interface IPlayerInput
     bool DPadLeftPressed();
     bool DPadRightPressed();
 
-
-
+    // Controller Vibration
+    IEnumerator ActivateVibration();
+    void StopVibration();
 }

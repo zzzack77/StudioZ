@@ -169,7 +169,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ButttonBack",
+                    "name": "ButtonBack",
                     "type": "Button",
                     "id": "df9e7edc-b86a-48a5-8a57-1e8742eb0ac7",
                     "expectedControlType": "",
@@ -196,7 +196,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DPadUP",
+                    "name": "DPadUp",
                     "type": "Button",
                     "id": "1ed16338-677b-4ad4-ac16-7cea32c90b69",
                     "expectedControlType": "",
@@ -801,7 +801,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "ButttonBack",
+                    "action": "ButtonBack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -834,7 +834,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "DPadUP",
+                    "action": "DPadUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
