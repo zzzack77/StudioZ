@@ -91,4 +91,14 @@ public class PlayerDataManager : MonoBehaviour
         cachedData.BestLevelTimes[level] = time;
         Save();
     }
+    public void DeleteData()
+    {
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            Debug.Log("Deleted PlayerData file.");
+        }
+        cachedData = new PlayerData();
+        Save();
+    }
 }
