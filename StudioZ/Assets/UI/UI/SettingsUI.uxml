@@ -1,39 +1,74 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3#UIUSS" />
-    <ui:VisualElement style="flex-grow: 1; background-color: rgb(234, 233, 238);">
-        <ui:VisualElement style="flex-grow: 1; height: 15%; flex-direction: row; position: absolute; width: 1852px;">
-            <ui:VisualElement style="flex-grow: 1; width: 10%;">
-                <ui:Button text="Back" name="BackButton" class="MenuButtons" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; background-color: rgba(0, 0, 0, 0); padding-bottom: 0;" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(234, 233, 238); flex-direction: row;">
+        <ui:VisualElement style="flex-grow: 1; height: 100%; flex-direction: row; position: relative; width: 25%;">
+            <ui:VisualElement style="flex-grow: 1; width: 10%; height: 10%; max-height: 10%; padding-right: 340px;">
+                <ui:Button text="Back" name="BackButton" class="MenuButtons" style="position: relative; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 100%; padding-top: 0; padding-right: 600px; padding-bottom: 35px; padding-left: 600px;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 100%; padding-top: 0; padding-right: 0; padding-bottom: 35px; padding-left: 0; width: 45%;">
             <ui:VisualElement style="flex-grow: 1;">
-                <ui:Label text="General" name="Label" class="HeadingText" />
-                <ui:VisualElement name="ControllerVibrationVE" style="flex-grow: 1; flex-direction: row;">
-                    <ui:Toggle value="true" name="ControllerVibrationToggle" class="CheckBox" />
-                    <ui:Label text="Controller Vibration" name="ControllerVibrationLable" class="GeneralText" style="-unity-text-align: middle-left;" />
+                <ui:VisualElement name="GeneralVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Spacer" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Label text="General" name="GeneralLabel" class="HeadingText" />
                 </ui:VisualElement>
                 <ui:VisualElement name="ControllerVibrationVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Index1" class="SettingsBlank" style="flex-grow: 1;" />
                     <ui:Toggle value="true" name="ControllerVibrationToggle" class="CheckBox" />
-                    <ui:Label text="Invert Controlls" name="ControllerVibrationLable" class="GeneralText" style="-unity-text-align: middle-left;" />
+                    <ui:Label text="Controller Vibrations" name="ControllerVibrationLabel" class="GeneralText" style="-unity-text-align: middle-left;" />
                 </ui:VisualElement>
-                <ui:Label text="Video" name="Label" class="HeadingText" style="-unity-font-style: bold;" />
-                <ui:VisualElement name="ControllerVibrationVE" style="flex-grow: 1; flex-direction: row;">
-                    <ui:Toggle value="true" name="ControllerVibrationToggle" class="CheckBox" />
-                    <ui:Label text="Fullscreen" name="ControllerVibrationLable" class="GeneralText" style="-unity-text-align: middle-left;" />
+                <ui:VisualElement name="InvertControllsVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Index2" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Toggle value="true" name="InvertControllsToggle" class="CheckBox" />
+                    <ui:Label text="Invert Controlls" name="InvertControllsLabel" class="GeneralText" style="-unity-text-align: middle-left;" />
                 </ui:VisualElement>
-                <ui:Label text="Audio" class="HeadingText" style="-unity-font-style: bold;" />
-                <ui:Label text="Master" class="GeneralText" />
-                <ui:VisualElement style="flex-grow: 1; justify-content: center;">
+                <ui:VisualElement name="VideoVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Spacer" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Label text="Video" name="VideoLabel" class="HeadingText" style="-unity-font-style: bold;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="FullscreenVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Index3" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Toggle value="true" name="FullscreenToggle" class="CheckBox" />
+                    <ui:Label text="Fullscreen" name="FullscreenLabel" class="GeneralText" style="-unity-text-align: middle-left;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="AudioVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Spacer" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Label text="Audio" name="AudioLabel" class="HeadingText" style="-unity-font-style: bold;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="MasterLabelVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Spacer" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Label text="Master" name="MasterLabel" class="GeneralText" />
+                </ui:VisualElement>
+                <ui:VisualElement name="MasterVolumeVE" style="flex-grow: 1; justify-content: center; flex-direction: row;">
+                    <ui:VisualElement name="Index4" class="SettingsBlank" style="flex-grow: 1;" />
                     <ui:Slider value="50" high-value="100" fill="true" name="VolumeSlider" inverted="false" class="VolumeSlider" />
                 </ui:VisualElement>
-                <ui:Label text="Music" name="MusicLable" class="GeneralText" />
-                <ui:Slider value="50" high-value="100" fill="true" name="MusicSlider" class="VolumeSlider" style="display: flex;" />
-                <ui:Label text="Sound FX" name="SoundFXLabel" class="GeneralText" />
-                <ui:Slider name="FXSlider" high-value="100" value="50" fill="true" class="VolumeSlider" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
-                <ui:Label text="Danger" class="HeadingText" style="-unity-font-style: bold;" />
-                <ui:Button text="Delete Saved Data" style="background-color: rgb(65, 6, 6); -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/vinizinho.ttf?fileID=12800000&amp;guid=04ddb951892d3f5419c041e0aa566efb&amp;type=3#vinizinho&quot;); font-size: 60px; color: rgb(255, 255, 255); border-top-left-radius: 26px; border-top-right-radius: 26px; border-bottom-right-radius: 26px; border-bottom-left-radius: 26px;" />
+                <ui:VisualElement name="MusicLabelVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Spacer" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Label text="Music" name="MusicLable" class="GeneralText" />
+                </ui:VisualElement>
+                <ui:VisualElement name="MusicVolumeVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Index5" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Slider value="50" high-value="100" fill="true" name="MusicSlider" class="VolumeSlider" />
+                </ui:VisualElement>
+                <ui:VisualElement name="SoundFXLabelVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Spacer" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Label text="Sound FX" name="SoundFXLabel" class="GeneralText" />
+                </ui:VisualElement>
+                <ui:VisualElement name="SoundFXVolumeVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Index6" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Slider name="SoundFXSlider" high-value="100" value="50" fill="true" class="VolumeSlider" />
+                </ui:VisualElement>
+                <ui:VisualElement name="DangerVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Spacer" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Label text="Danger" name="DangerLabel" class="HeadingText" style="-unity-font-style: bold;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="DeleteSavedDataVE" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Index6" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Button text="Delete Saved Data" name="DeleteSavedDataButton" style="background-color: rgb(65, 6, 6); -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/vinizinho.ttf?fileID=12800000&amp;guid=04ddb951892d3f5419c041e0aa566efb&amp;type=3#vinizinho&quot;); font-size: 60px; color: rgb(255, 255, 255); border-top-left-radius: 26px; border-top-right-radius: 26px; border-bottom-right-radius: 26px; border-bottom-left-radius: 26px;" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; width: 30%;" />
     </ui:VisualElement>
 </ui:UXML>
