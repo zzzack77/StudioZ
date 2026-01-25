@@ -4,47 +4,51 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 {
-    public Vector2 MoveL { get; private set; }
-    public Vector2 MoveR { get; private set; }
+    public Vector2 StickL { get; private set; }
+    public Vector2 StickR { get; private set; }
 
-    public float GripLValue { get; private set; }
-    public float GripRValue { get; private set; }
+    public float TriggerLValue { get; private set; }
+    public float TriggerRValue { get; private set; }
 
-    public float CrimpLValue { get; private set; }
-    public float CrimpRValue { get; private set; }
-
-    [SerializeField] private float gripDeadZone = 0.01f;
-    public float GripDeadZone
+    [SerializeField] private float triggerDeadZone = 0.01f;
+    public float TriggerDeadZone
     {
-        get => gripDeadZone;
+        get => triggerDeadZone;
         set
         {
             // The amount the player has to press the triggers before it detects input
             // Clamped at 0.01f to 0.99f to ensure this value cant be broken
-            gripDeadZone = Mathf.Clamp(value, 0.01f, 0.99f);
+            triggerDeadZone = Mathf.Clamp(value, 0.01f, 0.99f);
         }
     }
 
-    // Input action asset (drag this in from controls folder)
-    [SerializeField] private InputActionAsset inputActions;
+    public bool VibrationEnabled
+    {
+        get => vibrationEnabled;
+        set => vibrationEnabled = value;
+    }
 
     [SerializeField] private bool vibrationEnabled = true;
     [SerializeField] private float vibrationDuration = 0.05f;
     [SerializeField] private float vibrationStrengthLowFrequency = 0.05f;
     [SerializeField] private float vibrationStrengthHighFrequency = 0.1f;
 
+
+    // Input action asset (drag this in from controls folder)
+    [SerializeField] private InputActionAsset inputActions;
+
     // Seting up the Input Actions 
     // Moving left and right arms
-    private InputAction moveLAction;
-    private InputAction moveRAction;
+    private InputAction stickLAction;
+    private InputAction stickRAction;
 
     // Gripping
-    private InputAction gripLAction;
-    private InputAction gripRAction;
+    private InputAction triggerLAction;
+    private InputAction triggerRAction;
 
     // Crimp grip
-    private InputAction crimpLAction;
-    private InputAction crimpRAction;
+    private InputAction bumperLAction;
+    private InputAction bumperRAction;
 
     // Action buttons
     private InputAction buttonSouthAction;
@@ -65,8 +69,7 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     private InputAction dPadDownAction;
     private InputAction dPadLeftAction;
     private InputAction dPadRightAction;
-    
-
+    private bool vibrationEnabled1;
 
     private void OnEnable()
     {
@@ -85,16 +88,16 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 
         // Set the input actions from the PlayerControls action map
         // Moving Sticks
-        moveLAction = InputSystem.actions.FindAction("MoveL");
-        moveRAction = InputSystem.actions.FindAction("MoveR");
+        stickLAction = InputSystem.actions.FindAction("StickL");
+        stickRAction = InputSystem.actions.FindAction("StickR");
 
         // Gripping
-        gripLAction = InputSystem.actions.FindAction("GripL");
-        gripRAction = InputSystem.actions.FindAction("GripR");
+        triggerLAction = InputSystem.actions.FindAction("TriggerL");
+        triggerRAction = InputSystem.actions.FindAction("TriggerR");
 
         // Crimp Input
-        crimpLAction = InputSystem.actions.FindAction("CrimpL");
-        crimpRAction = InputSystem.actions.FindAction("CrimpR");
+        bumperLAction = InputSystem.actions.FindAction("BumperL");
+        bumperRAction = InputSystem.actions.FindAction("BumperR");
 
         // Action Buttons
         buttonSouthAction = InputSystem.actions.FindAction("ButtonSouth");
@@ -121,36 +124,32 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     private void Update()
     {
         // Reading the value from input (either PC or controller)
-        MoveL = moveLAction.ReadValue<Vector2>();
-        MoveR = moveRAction.ReadValue<Vector2>();
-
-        // The mouse buttons work as floats (not pressed - 0, pressed - 1)
-        GripLValue = gripLAction.ReadValue<float>();
-        GripRValue = gripRAction.ReadValue<float>();
+        StickL = stickLAction.ReadValue<Vector2>();
+        StickR = stickRAction.ReadValue<Vector2>();
     }
 
     // Functions for reading input 
     // Triggers
-    public bool GripLPressed()
+    public bool TriggerLPressed()
     {
         // Checks if the amount of grip input on the mouse click or trigger is above the deadzone
-        return GripLValue > gripDeadZone;
+        return triggerLAction.ReadValue<float>() > triggerDeadZone;
     }
 
-    public bool GripRPressed()
+    public bool TriggerRPressed()
     {
-        return GripRValue > gripDeadZone;
+        return triggerRAction.ReadValue<float>() > triggerDeadZone;
     }
 
     // Shoulder Buttons
-    public bool CrimpLPressed()
+    public bool BumperLPressed()
     {
-        return crimpLAction.ReadValue<float>() == 1;
+        return bumperLAction.ReadValue<float>() == 1;
     }
 
-    public bool CrimpRPressed()
+    public bool BumperRPressed()
     {
-        return crimpRAction.ReadValue<float>() == 1;
+        return bumperRAction.ReadValue<float>() == 1;
     }
 
     // Action Buttons

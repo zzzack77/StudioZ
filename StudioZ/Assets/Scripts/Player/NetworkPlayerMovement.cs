@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class NetworkPlayerMovement : NetworkBehaviour
 {
-    private IPlayerInput input;
+    private IPlayerInput input; // Get the IPlayerInput to be able to use inputs
     [SerializeField] private CinemachineCamera cineCam;
     [SerializeField] private TimerHandeler timerHandeler;
     [SerializeField] private GameObject HUD;
@@ -42,14 +42,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float maxVelocity = 25f;
     [SerializeField] private float maxLinearDampening = 1;
     private bool shouldRestartTimer = false;
-
-    // Vibration
-    private Coroutine GripVibrationCoroutine;
-    [SerializeField] private bool vibrationEnabled = true;
-    [SerializeField] private float vibrationDuration = 0.05f;
-    [SerializeField] private float vibrationStrengthLowFrequency = 0.05f;
-    [SerializeField] private float vibrationStrengthHighFrequency = 0.1f;
-
 
 
     // Spawning and checkpoints
@@ -115,18 +107,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     // ---- Gamepad Input Values ----
 
-    // Trigger values
-    private float leftTrigger;
-    private float rightTrigger;
-    // Shoulder values
-    private float leftShoulder;
-    private float rightShoulder;
-    // Joystick values
-    private Vector2 leftStick;
-    private Vector2 rightStick;
-    // Dead zones
-    private float triggerDeadZone = 0.1f;
-    private float joystickDeadZone = 0.2f;
+    
     // Vibration handelers
     private bool L_hasVibrated;
     private bool R_hasVibrated;
@@ -143,6 +124,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsOwner) enabled = false;
         SpawnPlayer();
+    }
+
+    private void Awake()
+    {
+        // Get the input interface from the PlayerInputProvider script on this game object
+        input = GetComponent<IPlayerInput>();
     }
     private void Start()
     {
@@ -233,24 +220,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void InitializeGamepad()
     {
-        // Get the current gamepad
-        var gamepad = Gamepad.current;
-        if (gamepad == null)
-        {
-            Debug.Log("No controller connected.");
-            return;
-        }
-
-        // Read joystick values
-        leftStick = gamepad.leftStick.ReadValue();
-        rightStick = gamepad.rightStick.ReadValue();
-
-        leftTrigger = gamepad.leftTrigger.ReadValue();
-        rightTrigger = gamepad.rightTrigger.ReadValue();
-
-        leftShoulder = gamepad.leftShoulder.ReadValue();
-        rightShoulder = gamepad.rightShoulder.ReadValue();
-
         if (input.ButtonNorthPressed())
         {
             SpawnPlayer();
@@ -260,13 +229,13 @@ public class NetworkPlayerMovement : NetworkBehaviour
              currentCheckpoint = Vector2.zero;
              SpawnPlayer();
         }
-        if (gamepad.buttonSouth.wasPressedThisFrame && hasFinished)
+        if (input.ButtonSouthPressed() && hasFinished)
         {
             currentCheckpoint = Vector2.zero;
             hasFinished = false;
             OpenMenu();
         }
-        if (gamepad.startButton.wasPressedThisFrame) OpenMenu();
+        if (input.ButtonStartPressed()) OpenMenu();
     }
     private void OpenMenu()
     {
@@ -279,14 +248,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
     {
         if (!L_isGripping) return;
 
-        GrippedBodyMovement(leftStick);
+        GrippedBodyMovement(input.StickL);
     }
 
     private void RGrippedHandMovement()
     {
         if (!R_isGripping) return;
 
-        GrippedBodyMovement(rightStick);
+        GrippedBodyMovement(input.StickR);
     }
     private void GrippedBodyMovement(Vector2 joyStick)
     {
@@ -316,8 +285,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (!L_isGripping)
         {
             Vector3 L_WorldOffset = new Vector3(
-                Mathf.Clamp(leftStick.x, -1, 1) * armLength,
-                Mathf.Clamp(leftStick.y, -1, 1) * armLength,
+                Mathf.Clamp(input.StickL.x, -1, 1) * armLength,
+                Mathf.Clamp(input.StickL.y, -1, 1) * armLength,
                 0f);
 
             Vector3 targetPos = L_WorldOffset + L_shoulderPoint.transform.position;
@@ -327,8 +296,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (!R_isGripping)
         {
             Vector3 R_WorldOffset = new Vector3(
-                Mathf.Clamp(rightStick.x, -1, 1) * armLength,
-                Mathf.Clamp(rightStick.y, -1, 1) * armLength,
+                Mathf.Clamp(input.StickR.x, -1, 1) * armLength,
+                Mathf.Clamp(input.StickR.y, -1, 1) * armLength,
                 0f);
 
             Vector3 targetPos = R_WorldOffset + R_shoulderPoint.transform.position;
@@ -337,26 +306,21 @@ public class NetworkPlayerMovement : NetworkBehaviour
     }
     private void GrippingLogic()
     {
-        bool leftTriggerPressed = leftTrigger >= triggerDeadZone;
-        bool leftShoulderPressed = leftShoulder >= triggerDeadZone;
-        bool rightTriggerPressed = rightTrigger >= triggerDeadZone;
-        bool rightShoulderPressed = rightShoulder >= triggerDeadZone;
-
         // Left Hand Grip Logic
-        if (leftTriggerPressed)
+        if (input.TriggerLPressed()) // left trigger
         {
             if (L_canGripFinish) { OnLGrip(); Finish(); }
             else if (L_canGripCheckpoint) { OnLGrip(); SetCheckPoint(); }
             else if (L_canGripPlayer) { OnLPlayerGrip(); }
-            else if (L_canGripJug && !leftShoulderPressed) OnLGrip();
-            else if (L_canGripPocket && leftShoulderPressed) OnLGrip();
+            else if (L_canGripJug && !input.BumperLPressed()) OnLGrip();
+            else if (L_canGripPocket && input.BumperLPressed()) OnLGrip();
             else if (!isRespawning) { OnLGripRelease(); }
         }
-        else if (leftShoulderPressed)
+        else if (input.BumperLPressed()) // Bumper
         {
             if (L_canGripFinish) { OnLGrip(); Finish(); }
             else if (L_canGripCheckpoint) { OnLGrip(); SetCheckPoint(); }
-            else if (L_canGripCrimp && !leftTriggerPressed) OnLGrip();
+            else if (L_canGripCrimp && !input.TriggerLPressed()) OnLGrip();
             else if (!isRespawning) { OnLGripRelease(); }
         }
         else if (!isRespawning)
@@ -365,20 +329,20 @@ public class NetworkPlayerMovement : NetworkBehaviour
             OnLGripRelease();
         }
         // Right Hand Grip Logic
-        if (rightTriggerPressed)
+        if (input.TriggerRPressed()) // Right trigger
         {
             if (R_canGripFinish) { OnRGrip(); Finish(); }
             else if (R_canGripCheckpoint) { OnRGrip(); SetCheckPoint(); }
             else if (R_canGripPlayer) { OnRPlayerGrip(); }
-            else if (R_canGripJug && !rightShoulderPressed) OnRGrip();
-            else if (R_canGripPocket && rightShoulderPressed) OnRGrip();
+            else if (R_canGripJug && !input.BumperRPressed()) OnRGrip(); // !right shoulder
+            else if (R_canGripPocket && input.BumperRPressed()) OnRGrip(); // right shoulder
             else if (!isRespawning) { OnRGripRelease(); }
         }
-        else if (rightShoulderPressed)
+        else if (input.BumperRPressed()) // right shoulder
         {
             if (R_canGripFinish) { OnRGrip(); Finish(); }
             else if (R_canGripCheckpoint) { OnRGrip(); SetCheckPoint(); }
-            else if (R_canGripCrimp && !rightTriggerPressed) OnRGrip();
+            else if (R_canGripCrimp && !input.TriggerRPressed()) OnRGrip(); // ! right trigger
             else if (!isRespawning) { OnRGripRelease(); }
         }
         else if(!isRespawning)
@@ -403,11 +367,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
             bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
         }
-        if (!L_hasVibrated && vibrationEnabled)
+        if (!L_hasVibrated && input.VibrationEnabled)
         {
             L_hasVibrated = true;
-            if (GripVibrationCoroutine != null) StopCoroutine(GripVibrationCoroutine);
-            GripVibrationCoroutine = StartCoroutine(DoGripVibration());
+            input.ActivateVibration();
         }
         L_isGripping = true;
         L_handRB.constraints = RigidbodyConstraints.FreezeAll;
@@ -433,22 +396,16 @@ public class NetworkPlayerMovement : NetworkBehaviour
             bodyRB.constraints = RigidbodyConstraints.FreezePositionZ;
             bodyRB.constraints = RigidbodyConstraints.FreezeRotation;
         }
-        if (!R_hasVibrated && vibrationEnabled)
+        if (!R_hasVibrated && input.VibrationEnabled)
         {
             R_hasVibrated = true;
-            if (GripVibrationCoroutine != null) StopCoroutine(GripVibrationCoroutine);
-            GripVibrationCoroutine = StartCoroutine(DoGripVibration());
+            input.ActivateVibration();
         }
         
         R_isGripping = true;
         R_handRB.constraints = RigidbodyConstraints.FreezeAll;
     }
-    private IEnumerator DoGripVibration()
-    {
-        Gamepad.current.SetMotorSpeeds(vibrationStrengthLowFrequency, vibrationStrengthHighFrequency);
-        yield return new WaitForSeconds(vibrationDuration);
-        Gamepad.current.SetMotorSpeeds(0, 0);
-    }
+    
     private void OnRGripRelease()
     {
         R_hasVibrated = false;
