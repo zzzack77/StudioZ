@@ -253268,6 +253268,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3778230568
       objectReference: {fileID: 0}
+    - target: {fileID: 7816737385634025043, guid: 0df5020259f185d4c864ee914213a662, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 1842522967}
     - target: {fileID: 7823984807473809471, guid: 0df5020259f185d4c864ee914213a662, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -253580,6 +253584,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1842522967 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1883564029215017517, guid: 5c45e0ac81f2452479b311885c2abc99, type: 3}
+  m_PrefabInstance: {fileID: 1452471162}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2292087497632881793
 PrefabInstance:
   m_ObjectHideFlags: 0

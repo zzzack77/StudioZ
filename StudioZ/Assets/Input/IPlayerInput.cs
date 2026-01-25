@@ -3,23 +3,25 @@ using UnityEngine;
 
 public interface IPlayerInput
 {
-    Vector2 MoveL { get; }
-    Vector2 MoveR { get; }
+    Vector2 StickL { get; }
+    Vector2 StickR { get; }
 
-    float GripLValue { get; }
-    float GripRValue { get; }
+    float TriggerLValue { get; }
+    float TriggerRValue { get; }
 
-    float GripDeadZone { get; }
+    float TriggerDeadZone { get; }
+
+    bool VibrationEnabled { get; }
 
     // Triggers
-    bool GripLPressed();
+    bool TriggerLPressed();
 
-    bool GripRPressed();
+    bool TriggerRPressed();
 
     // Shoulder buttons
-    bool CrimpLPressed();
+    bool BumperLPressed();
 
-    bool CrimpRPressed();
+    bool BumperRPressed();
 
     // A, B, Y, X
     bool ButtonSouthPressed();
