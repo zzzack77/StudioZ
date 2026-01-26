@@ -8,6 +8,7 @@ public class PlayerData
     public string PlayerName;
     public int PlayerScore;
     public float[] BestLevelTimes = new float[13];
+    public bool IsVibrationEnabled;
 }
 
 // Manager to handle saving and loading player data
@@ -91,6 +92,8 @@ public class PlayerDataManager : MonoBehaviour
         cachedData.BestLevelTimes[level] = time;
         Save();
     }
+    public bool GetVibrationSetting() => cachedData.IsVibrationEnabled;
+
     public void DeleteData()
     {
         if (File.Exists(filePath))
