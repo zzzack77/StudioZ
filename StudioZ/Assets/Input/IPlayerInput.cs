@@ -9,7 +9,13 @@ public interface IPlayerInput
     float GripLValue { get; }
     float GripRValue { get; }
 
+<<<<<<< Updated upstream
     float GripDeadZone { get; }
+=======
+    float TriggerDeadZone { get; }
+
+    bool VibrationEnabled { get; set; }
+>>>>>>> Stashed changes
 
     // Triggers
     bool GripLPressed();

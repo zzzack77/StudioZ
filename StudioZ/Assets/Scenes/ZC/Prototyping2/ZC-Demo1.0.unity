@@ -4870,8 +4870,8 @@ MonoBehaviour:
   LevelUI: {fileID: 1926396741}
   trackedTargets: []
   isMultiplayer: 0
-  setLevel: 0
-  level: 8
+  setLevel: 1
+  level: 1
 --- !u!114 &530605416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4898,7 +4898,7 @@ MonoBehaviour:
   - {fileID: 8074550329020265682, guid: f406c035827887548a183ff457781d04, type: 3}
   - {fileID: 0}
   - {fileID: 4980969268925933668, guid: e499f7600e21b964aaff830758ebbf7a, type: 3}
-  - {fileID: 5109155756157961953, guid: 7bfa95bf838800f4e94c9bc88240bd10, type: 3}
+  - {fileID: 4980969268925933668, guid: e499f7600e21b964aaff830758ebbf7a, type: 3}
   isBreakerLevel: 
 --- !u!114 &530605417
 MonoBehaviour:
@@ -9221,7 +9221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1006116119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9269,6 +9269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSelector: {fileID: 1121206262}
+  settingsMenu: {fileID: 1076840203}
 --- !u!4 &1008956268 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6541855432587714384, guid: 754f198c964b3b84ab38a5218e94e342, type: 3}
@@ -9984,7 +9985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1076840204
 Transform:
   m_ObjectHideFlags: 0
@@ -10012,6 +10013,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29b5876454c08d24b9f9dd0fc2f5d5a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenu: {fileID: 1006116118}
+  playeRef: {fileID: 6149205211552944389}
+  currentFocusing: 1
 --- !u!114 &1076840206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20689,10 +20693,6 @@ MonoBehaviour:
   hasFinished: 0
   maxVelocity: 40
   maxLinearDampening: 1
-  vibrationEnabled: 1
-  vibrationDuration: 0.05
-  vibrationStrengthLowFrequency: 0.05
-  vibrationStrengthHighFrequency: 0.1
   currentCheckpoint: {x: 0, y: 0}
   L_isGripping: 0
   R_isGripping: 0
@@ -21813,6 +21813,7 @@ GameObject:
   - component: {fileID: 935712455882811204}
   - component: {fileID: 8275999450007725754}
   - component: {fileID: 7548356080059357507}
+  - component: {fileID: 8784231749124668281}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -22563,6 +22564,24 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &8784231749124668281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6149205211552944389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf9f97177e20d754b99ec795015ce72b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerDeadZone: 0.01
+  vibrationEnabled: 1
+  vibrationDuration: 0.05
+  vibrationStrengthLowFrequency: 0.05
+  vibrationStrengthHighFrequency: 0.1
+  inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!4 &8784255396226419318
 Transform:
   m_ObjectHideFlags: 0
