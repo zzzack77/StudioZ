@@ -9,10 +9,10 @@ public interface IPlayerInput
     float TriggerLValue { get; }
     float TriggerRValue { get; }
 
+    float GripDeadZone { get; }
     float TriggerDeadZone { get; }
 
-    bool VibrationEnabled { get; }
-
+    bool VibrationEnabled { get; set; }
     // Triggers
     bool TriggerLPressed();
 

@@ -13,7 +13,7 @@
                     <ui:Label text="General" name="GeneralLabel" class="HeadingText" />
                 </ui:VisualElement>
                 <ui:VisualElement name="ControllerVibrationVE" style="flex-grow: 1; flex-direction: row;">
-                    <ui:VisualElement name="Index1" class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:VisualElement name="Index1" class="SettingsBlank SettingsFocused" style="flex-grow: 1;" />
                     <ui:Toggle value="true" name="ControllerVibrationToggle" focusable="false" class="CheckBox" />
                     <ui:Label text="Controller Vibrations" name="ControllerVibrationLabel" class="GeneralText" style="-unity-text-align: middle-left;" />
                 </ui:VisualElement>
