@@ -73,7 +73,7 @@ public class RegisterPlayer : NetworkBehaviour
                 {
                     targetGroup.RemoveMember(body.transform);
                     GameManager.Instance.trackedTargets.Remove(body);
-                    playerCameraHandler.ActivateCamera();
+                    playerCameraHandler.ActivatePersonalCamera();
 
                 }
 
@@ -82,7 +82,7 @@ public class RegisterPlayer : NetworkBehaviour
             {
                 targetGroup.AddMember(body.transform, 3f, 0.2f);
                 GameManager.Instance.trackedTargets.Add(body);
-                playerCameraHandler.DeactivateCamera();
+                playerCameraHandler.DeactivatePersonalCamera();
             }
 
             float largestDistance = 0;

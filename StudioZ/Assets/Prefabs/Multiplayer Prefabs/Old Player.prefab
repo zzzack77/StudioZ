@@ -1345,6 +1345,7 @@ GameObject:
   - component: {fileID: 4527063916185495194}
   - component: {fileID: 5587991145531763615}
   - component: {fileID: 1287777766176657818}
+  - component: {fileID: 1594202318432652479}
   m_Layer: 0
   m_Name: Old Player
   m_TagString: Untagged
@@ -1469,6 +1470,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerCamera: {fileID: 328340074587291134}
   cineCam: {fileID: 9205927917658421153}
+  targetGroup: {fileID: 0}
+  body: {fileID: 7501277548032060922}
 --- !u!114 &4527063916185495194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1518,6 +1521,19 @@ MonoBehaviour:
   maxDistance: 10
   playerCameraHandler: {fileID: 8735202720966013346}
   body: {fileID: 7501277548032060922}
+--- !u!114 &1594202318432652479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334838283628257679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e673737c4f919a546b4e2ba766986429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aliveState: 0
 --- !u!1 &6011741683816748286
 GameObject:
   m_ObjectHideFlags: 0

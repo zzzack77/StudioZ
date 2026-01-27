@@ -1,24 +1,36 @@
-using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
+using System.Collections;
 using UnityEngine;
 
 
 public abstract class GameModeBase : MonoBehaviour
 {
-    private Dictionary<ulong, GameObject> playersInGame = new Dictionary<ulong, GameObject>(); 
+    protected float gracePeriodDuration = 2;
+    protected float startCountDownDuration = 3;
+    protected int levelIndex = 0;
+    public bool MatchInProgress {  get; protected set; }
 
+    protected void SetMatchInProgress(bool value)
+    {
+        MatchInProgress = value;
+    }
     protected virtual void Start()
     {
         InitialiseGame();
+        StartMatch();
     }
     protected virtual void InitialiseGame()
     {
-        // Get the dictionary of players from the game manager
-        InitialisePlayerDictionary();
+        // Game Setup
+        SetMatchInProgress(false);
+        SetPlayersAlive();
+        //ClearLevel(); // Cant clear level yet as the first index of level prefabs is empty but needs to be filled
+        SpawnLevel();
+        FreezePlayerMovement(); 
     }
     public void StartMatch()
     {
         // Base start match functionality
+        StartCoroutine(MatchStartCountdown());
     }
 
     public virtual void OnStartMatch()
@@ -29,6 +41,7 @@ public abstract class GameModeBase : MonoBehaviour
     public void EndMatch()
     {
         // Base end match functionality
+        SetMatchInProgress(false);
     }
 
     public virtual void OnEndMatch()
@@ -42,9 +55,49 @@ public abstract class GameModeBase : MonoBehaviour
         // Remove them from the alive players list
     }
 
-    protected void InitialisePlayerDictionary()
+    private IEnumerator MatchStartCountdown()
     {
-        playersInGame.Clear();
-        playersInGame = GameManager.Instance.playerGameObjects;
+        yield return new WaitForSeconds(gracePeriodDuration);
+        // Show Timer countdown UI
+        yield return new WaitForSeconds(startCountDownDuration);
+        Debug.Log("Match Start!");
+        UnFreezePlayerMovement();
+        SetMatchInProgress(true);
+
+    }
+
+    protected virtual void SpawnLevel()
+    {
+        GameManager.Instance.RequestLoadLevel(levelIndex);
+    }
+
+    protected virtual void ClearLevel()
+    {
+        GameManager.Instance.RequestLoadLevel(0);
+    }
+
+    protected virtual void FreezePlayerMovement()
+    {
+        // Send an event that locks player movement
+    }
+
+    protected virtual void UnFreezePlayerMovement()
+    {
+        // Send an event that unlocks player movement
+    }
+
+    protected void SetLevelIndex(int index)
+    {
+        levelIndex = index;
+    }
+
+    protected void SetPlayersAlive()
+    {
+        PlayerAliveState.OnSetAllAlive?.Invoke();
+    }
+
+    protected virtual void CheckWinCondition()
+    {
+
     }
 }
