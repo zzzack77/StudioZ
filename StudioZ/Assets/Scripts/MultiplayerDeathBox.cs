@@ -10,7 +10,19 @@ public class MultiplayerDeathBox : NetworkBehaviour
 
         if (player != null)
         {
-            PlayerAliveState.OnPlayerDead?.Invoke(player);
+            ServerKillPlayer(player);
         }
+    }
+
+    [ClientRpc]
+    private void ClientKillPlayer(GameObject player)
+    {
+        PlayerAliveState.OnPlayerDead?.Invoke(player);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ServerKillPlayer(GameObject player)
+    {
+        ClientKillPlayer(player);
     }
 }
