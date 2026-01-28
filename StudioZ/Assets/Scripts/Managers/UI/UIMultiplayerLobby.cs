@@ -98,6 +98,7 @@ public class UIMultiplayerLobby : NetworkBehaviour
         if (simpleMatchmaking&&simpleMatchmaking.IsHost)
         {
             HideLobbyUIServerRpc();
+            simpleMatchmaking.LockLobby();
         }
     } 
     

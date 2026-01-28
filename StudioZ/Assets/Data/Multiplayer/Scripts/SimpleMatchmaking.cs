@@ -32,7 +32,8 @@ public class SimpleMatchmaking : MonoBehaviour
     public event Action<List<Player>> OnLobbyPlayersUpdated;
     public Lobby ConnectedLobby => connectedLobby;
     // --- Private Fields ---
-
+    
+    private bool isGameInProgress = false;
     private Lobby connectedLobby;
     private UnityTransport transport;
     // Key used to store the Relay Join Code within the Lobby data.
@@ -63,6 +64,14 @@ public class SimpleMatchmaking : MonoBehaviour
         // Get the UTP transport component attached in the scene
         transport = FindFirstObjectByType<UnityTransport>();
         playerName = "Player" + UnityEngine.Random.Range(0, 999999);
+        
+        
+        
+    }
+
+    void Start()
+    {
+        NetworkManager.Singleton.ConnectionApprovalCallback = ApprovalCheck;
     }
 
     // --- Primary Lobby/Game Setup Methods ---
@@ -299,6 +308,63 @@ public class SimpleMatchmaking : MonoBehaviour
                 { "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName) }
             }
         };
+    }
+    
+    
+    /// <summary>
+    /// Locks the lobby to prevent new players from joining and marks the game as started.
+    /// </summary>
+    public async void LockLobby()
+    {
+        if (!IsHost) return;
+
+        isGameInProgress = true;
+
+        try
+        {
+            // 1. Lock the Lobby so it doesn't appear in QuickJoins or Queries
+            var updateOptions = new UpdateLobbyOptions
+            {
+                IsLocked = true
+            };
+
+            await LobbyService.Instance.UpdateLobbyAsync(connectedLobby.Id, updateOptions);
+            Debug.Log("Game Started. Lobby is now Locked.");
+
+            
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to lock lobby: {e}");
+        }
+    }
+    
+    
+    private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+    {
+        // 1. Default approval settings
+        response.Approved = true;
+        response.CreatePlayerObject = true;
+        response.PlayerPrefabHash = null; 
+
+        // 2. If the game has started, reject them
+        if (isGameInProgress)
+        {
+            response.Approved = false;
+            response.Reason = "Game has already started.";
+            Debug.Log("Connection denied: Game in progress.");
+            return;
+        }
+    
+        // 3. Optional: Cap player count strictly using NetworkManager (Backup to Lobby)
+        if (NetworkManager.Singleton.ConnectedClientsIds.Count >= 4) // Hard cap example
+        {
+            response.Approved = false;
+            response.Reason = "Lobby is full.";
+        }
+
+        // 4. Pending Approval Logic (Optional)
+        // If you need to validate specific data from the client, you can check request.Payload here
     }
 
     // -------------------------------------------------------------------------
