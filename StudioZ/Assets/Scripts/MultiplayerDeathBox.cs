@@ -3,26 +3,27 @@ using UnityEngine;
 
 public class MultiplayerDeathBox : NetworkBehaviour
 {
+    GameObject playerGO;
     private void OnTriggerEnter(Collider collision)
     {
         if (!IsServer) return;
-        GameObject player = collision.gameObject.transform.parent.gameObject;
+        playerGO = collision.gameObject.transform.parent.gameObject;
 
-        if (player != null)
+        if (playerGO != null)
         {
-            ServerKillPlayer(player);
+            KillPlayerServerRpc();
         }
     }
 
     [ClientRpc]
-    private void ClientKillPlayer(GameObject player)
+    private void KillPlayerClientRpc()
     {
-        PlayerAliveState.OnPlayerDead?.Invoke(player);
+        PlayerAliveState.OnPlayerDead?.Invoke(playerGO);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void ServerKillPlayer(GameObject player)
+    public void KillPlayerServerRpc()
     {
-        ClientKillPlayer(player);
+        KillPlayerClientRpc();
     }
 }
