@@ -18,12 +18,17 @@ public class MultiplayerDeathBox : NetworkBehaviour
     [ClientRpc]
     private void KillPlayerClientRpc()
     {
-        PlayerAliveState.OnPlayerDead?.Invoke(playerGO);
+        KillPlayer();
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void KillPlayerServerRpc()
     {
         KillPlayerClientRpc();
+    }
+
+    private void KillPlayer()
+    {
+        PlayerAliveState.OnPlayerDead?.Invoke(playerGO);
     }
 }
