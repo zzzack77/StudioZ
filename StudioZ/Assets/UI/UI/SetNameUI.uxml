@@ -1,0 +1,20 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(234, 233, 238);">
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 15%;">
+            <ui:VisualElement style="flex-grow: 1; width: 20%; padding-left: 20px; padding-top: 10px;">
+                <ui:Button text="Back" name="BackButton" class="MenuButtons" style="background-color: rgba(88, 50, 113, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; width: 185px; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/vinizinho%20SDF.asset?fileID=11400000&amp;guid=6f395a25d4f645847b2f3838528a1944&amp;type=2#vinizinho SDF&quot;);" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 80%;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 85%; flex-direction: column; padding-right: 30%; padding-left: 30%;">
+            <ui:VisualElement style="flex-grow: 1; height: 10%;">
+                <ui:Label text="Your Name" name="YourName" class="HeadingText" style="-unity-text-align: upper-center;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; height: 90%; padding-top: 30px; flex-direction: row; padding-bottom: 710px;">
+                <ui:TextField label="Enter Name:" placeholder-text="John Smith" name="TextInput" class="GeneralText" style="width: 80%; padding-right: 12px;" />
+                <ui:Button text="Enter" name="EnterButton" class="MenuButtons" style="width: 20%; -unity-font-style: normal; font-size: 59px; -unity-text-align: middle-center; background-color: rgb(202, 202, 202); border-top-left-radius: 16px; border-top-right-radius: 16px; border-bottom-right-radius: 16px; border-bottom-left-radius: 16px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
