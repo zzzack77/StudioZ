@@ -4,14 +4,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-    
->>>>>>> Stashed changes
-=======
-    
->>>>>>> Stashed changes
     public Vector2 StickL { get; private set; }
     public Vector2 StickR { get; private set; }
 
