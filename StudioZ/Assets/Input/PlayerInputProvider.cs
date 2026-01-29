@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 {
-    public float GripDeadZone { get; }
     public Vector2 StickL { get; private set; }
     public Vector2 StickR { get; private set; }
 
