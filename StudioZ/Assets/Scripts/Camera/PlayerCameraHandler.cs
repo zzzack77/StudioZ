@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Cinemachine;
 using Unity.Netcode;
@@ -15,6 +16,10 @@ public class PlayerCameraHandler : NetworkBehaviour
     [SerializeField] private CinemachineTargetGroup targetGroup;
 
     public GameObject body;
+
+    private GameObject currentSpectatedPlayer;
+
+    private bool isSpectating = false;
     private void Awake()
     {
         input = GetComponent<IPlayerInput>();
@@ -63,47 +68,64 @@ public class PlayerCameraHandler : NetworkBehaviour
     {
         if (playerAliveState != null && playerAliveState.aliveState == AliveState.Dead)
         {
-            ActivatePersonalCamera();
+            if (!isSpectating)
+            {
+                ActivatePersonalCamera();
+                isSpectating = true;
+            } 
+                
             // Creates a list of alive players
-            var players = GameManager.Instance.playerGameObjects.Values.Where(p => p.GetComponent<PlayerAliveState>().aliveState == AliveState.Alive).ToList();
+            List<GameObject> players = GameManager.Instance.playerGameObjects.Values
+            .Where(p => p.GetComponent<PlayerAliveState>().aliveState == AliveState.Alive)
+            .OrderBy(p => p.GetComponent<NetworkObject>().OwnerClientId) // stable order
+            .ToList();
 
-            Debug.Log("There are " +  players.Count + " players alive!");
+           
+
             if (players.Count == 0)
+            {
                 Debug.Log("there are no alive players!");
+                return;
+            }
+                
             // Cycle through each alive player
+            
+            if (currentSpectatedPlayer == null || !players.Contains(currentSpectatedPlayer))
+            {
+                currentSpectatedPlayer = players[0];
+                playerIndex = 0;
+            }
             else
             {
-                if (input.BumperLPressed())
-                {
-                    Debug.Log("BumperLPressed");
-                    
-                    if (playerIndex < 0)
-                    {
-                        playerIndex = players.Count - 1;
-
-                    }
-                    else playerIndex--;
-                }
-                else if (input.BumperRPressed())
-                {
-                    Debug.Log("BumperRPressed");
-                    
-                    if (playerIndex >= players.Count)
-                    {
-                        playerIndex = 0;
-                    }
-                    else playerIndex++;
-
-                }
-
-                GameObject playerToSpectate = players[playerIndex];
-                
-                PlayerCameraHandler playerCamera = playerToSpectate.GetComponent<PlayerCameraHandler>();
-                cineCam.Follow = playerCamera.body.transform;
+                playerIndex = players.IndexOf(currentSpectatedPlayer);
             }
-            
+
+            if (input.BumperLPressed())
+            {
+                playerIndex = (playerIndex - 1 + players.Count) % players.Count;
+                currentSpectatedPlayer = players[playerIndex];
+            }
+            else if (input.BumperRPressed())
+            {
+                playerIndex = (playerIndex + 1) % players.Count;
+                currentSpectatedPlayer = players[playerIndex];
+
+            }
+
+            PlayerCameraHandler cam = currentSpectatedPlayer.GetComponent<PlayerCameraHandler>();
+            if (cineCam.Follow != cam.body.transform)
+            {
+                cineCam.Follow = cam.body.transform;
+            }
+
+
         }
-        else if (playerAliveState.aliveState == AliveState.Alive) cineCam.Follow = body.transform; // Follow yourself
+        else if (playerAliveState.aliveState == AliveState.Alive)
+        {
+            isSpectating = false;
+            currentSpectatedPlayer = null;
+            cineCam.Follow = body.transform;
+        }
     }
 
     private void RemovePlayerFromMultiCamera(GameObject player)
