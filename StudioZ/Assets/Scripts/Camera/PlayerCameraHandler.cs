@@ -72,6 +72,7 @@ public class PlayerCameraHandler : NetworkBehaviour
             {
                 ActivatePersonalCamera();
                 isSpectating = true;
+                playerIndex = 0;
             } 
                 
             // Creates a list of alive players
@@ -87,35 +88,49 @@ public class PlayerCameraHandler : NetworkBehaviour
                 Debug.Log("there are no alive players!");
                 return;
             }
-                
-            // Cycle through each alive player
-            
-            if (currentSpectatedPlayer == null || !players.Contains(currentSpectatedPlayer))
+
+            if (playerIndex < 0 || playerIndex >= players.Count)
             {
-                currentSpectatedPlayer = players[0];
                 playerIndex = 0;
             }
-            else
-            {
-                playerIndex = players.IndexOf(currentSpectatedPlayer);
-            }
+
+            // Cycle through each alive player
+
+            //if (currentSpectatedPlayer == null || !players.Contains(currentSpectatedPlayer))
+            //{
+            //    currentSpectatedPlayer = players[0];
+            //    playerIndex = 0;
+            //}
+            //else
+            //{
+            //    playerIndex = players.IndexOf(currentSpectatedPlayer);
+            //}
 
             if (input.BumperLPressedThisFrame())
             {
-                playerIndex = (playerIndex - 1 + players.Count) % players.Count;
-                currentSpectatedPlayer = players[playerIndex];
+                playerIndex--; 
+                if (playerIndex < 0) 
+                { 
+                    playerIndex = players.Count - 1; 
+                }
             }
             else if (input.BumperRPressedThisFrame())
             {
-                playerIndex = (playerIndex + 1) % players.Count;
-                currentSpectatedPlayer = players[playerIndex];
+                playerIndex++; 
+                if (playerIndex >= players.Count) 
+                { 
+                    playerIndex = 0; 
+                }
 
             }
 
-            PlayerCameraHandler cam = currentSpectatedPlayer.GetComponent<PlayerCameraHandler>();
-            if (cineCam.Follow != cam.body.transform)
+            GameObject playerToSpectate = players[playerIndex];
+
+            PlayerCameraHandler playerCameraHandler = playerToSpectate.GetComponent<PlayerCameraHandler>();
+
+            if (cineCam.Follow != playerCameraHandler.body.transform)
             {
-                cineCam.Follow = cam.body.transform;
+                cineCam.Follow = playerCameraHandler.body.transform;
             }
 
 
@@ -123,7 +138,7 @@ public class PlayerCameraHandler : NetworkBehaviour
         else if (playerAliveState.aliveState == AliveState.Alive)
         {
             isSpectating = false;
-            currentSpectatedPlayer = null;
+            //currentSpectatedPlayer = null;
             cineCam.Follow = body.transform;
         }
     }
