@@ -62,19 +62,6 @@ public class PlayerCameraHandler : NetworkBehaviour
     private void Update()
     {
         Spectate();
-
-        if (input.BumperLPressedThisFrame())
-        {
-            Debug.Log("BumperL pressed this frame");
-        }
-        if (input.TriggerLPressedThisFrame())
-        {
-            Debug.Log("Trigger L was pressed this frame");
-        }
-        if (input.TriggerRPressedThisFrame())
-        {
-            Debug.Log("Trigger R was pressed this frame");
-        }
     }
 
     private void Spectate()
@@ -115,7 +102,6 @@ public class PlayerCameraHandler : NetworkBehaviour
 
             if (input.BumperLPressedThisFrame())
             {
-                Debug.Log("BumperL was pressed this frame");
                 playerIndex = (playerIndex - 1 + players.Count) % players.Count;
                 currentSpectatedPlayer = players[playerIndex];
             }
