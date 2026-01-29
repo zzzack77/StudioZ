@@ -9,26 +9,25 @@ public class MultiplayerDeathBox : NetworkBehaviour
         if (!IsServer) return;
         playerGO = collision.gameObject.transform.parent.gameObject;
 
-        if (playerGO != null)
+        if (collision.gameObject.transform.parent.gameObject.TryGetComponent<NetworkObject>(out NetworkObject player))
         {
-            KillPlayerServerRpc();
+            KillPlayerClientRpc(player);
         }
     }
 
     [ClientRpc]
-    private void KillPlayerClientRpc()
+    private void KillPlayerClientRpc(NetworkObjectReference playerRef)
     {
-        KillPlayer();
+        if (playerRef.TryGet(out NetworkObject playerNetObject))
+        {
+            KillPlayer(playerNetObject.gameObject);
+        }
+        
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void KillPlayerServerRpc()
+   
+    private void KillPlayer(GameObject playerGORef)
     {
-        KillPlayerClientRpc();
-    }
-
-    private void KillPlayer()
-    {
-        PlayerAliveState.OnPlayerDead?.Invoke(playerGO);
+        PlayerAliveState.OnPlayerDead?.Invoke(playerGORef);
     }
 }
