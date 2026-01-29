@@ -6,13 +6,14 @@ public class MultiplayerDeathBox : NetworkBehaviour
     GameObject playerGO;
     private void OnTriggerEnter(Collider collision)
     {
+        Debug.Log("Initial Collision");
         if (!IsServer) return;
         playerGO = collision.gameObject.transform.parent.gameObject;
-
+        Debug.Log("Is server");
         if (playerGO.TryGetComponent<NetworkObject>(out NetworkObject player))
         {
             KillPlayerClientRpc(player);
-            Debug.Log("Has collided with: " +  player);
+            Debug.Log("Has collided with: " +  player.gameObject);
         }
     }
 
