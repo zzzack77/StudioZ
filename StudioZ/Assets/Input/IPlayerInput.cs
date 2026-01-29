@@ -18,10 +18,18 @@ public interface IPlayerInput
 
     bool TriggerRPressed();
 
+    bool TriggerLPressedThisFrame();
+
+    bool TriggerRPressedThisFrame();
+
     // Shoulder buttons
     bool BumperLPressed();
 
     bool BumperRPressed();
+
+    bool BumperLPressedThisFrame();
+
+    bool BumperRPressedThisFrame();
 
     // A, B, Y, X
     bool ButtonSouthPressed();
@@ -32,19 +40,38 @@ public interface IPlayerInput
 
     bool ButtonWestPressed();
 
+    bool ButtonSouthPressedThisFrame();
+
+    bool ButtonEastPressedThisFrame();
+
+    bool ButtonNorthPressedThisFrame();
+
+    bool ButtonWestPressedThisFrame();
+
     // Menu Buttons
     bool ButtonStartPressed();
     bool ButtonBackPressed();
 
+    bool ButtonStartPressedThisFrame();
+    bool ButtonBackPressedThisFrame();
+
     // Stick Presses
     bool StickLPressed();
     bool StickRPressed();
+
+    bool StickLPressedThisFrame();
+    bool StickRPressedThisFrame();
 
     // DPad
     bool DPadUpPressed();
     bool DPadDownPressed();
     bool DPadLeftPressed();
     bool DPadRightPressed();
+
+    bool DPadUpPressedThisFrame();
+    bool DPadDownPressedThisFrame();
+    bool DPadLeftPressedThisFrame();
+    bool DPadRightPressedThisFrame();
 
     // Controller Vibration
     IEnumerator ActivateVibrationCoroutine();
