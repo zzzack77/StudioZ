@@ -2,8 +2,8 @@
     <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3#UIUSS" />
     <ui:VisualElement style="flex-grow: 1; background-color: rgb(234, 233, 238); flex-direction: row;">
         <ui:VisualElement style="flex-grow: 1; height: 100%; flex-direction: row; position: relative; width: 25%;">
-            <ui:VisualElement style="flex-grow: 1; width: 10%; height: 10%; max-height: 10%; padding-right: 243px; padding-top: 17px;">
-                <ui:Button text="Back" name="BackButton" focusable="false" class="MenuButtons" style="background-color: rgba(0, 0, 0, 0);" />
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; width: 10%; height: 10%; max-height: 10%; padding-right: 243px; padding-top: 10px; padding-left: 20px;">
+                <ui:Button text="Back" name="BackButton" focusable="false" class="MenuButtons" style="background-color: rgba(0, 0, 0, 0); width: 185px;" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 100%; padding-top: 0; padding-right: 0; padding-bottom: 35px; padding-left: 0; width: 45%;">
@@ -11,6 +11,10 @@
                 <ui:VisualElement name="GeneralVE" style="flex-grow: 1; flex-direction: row;">
                     <ui:VisualElement name="Spacer" class="SettingsBlank" style="flex-grow: 1;" />
                     <ui:Label text="General" name="GeneralLabel" class="HeadingText" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; padding-bottom: 8px; align-self: stretch; align-items: auto;">
+                    <ui:VisualElement class="SettingsBlank" style="flex-grow: 1;" />
+                    <ui:Button text="Change name" class="MenuButtons" style="background-color: rgb(159, 159, 159); border-top-left-radius: 22px; border-top-right-radius: 22px; border-bottom-right-radius: 22px; border-bottom-left-radius: 22px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; width: 90%; height: 80%; -unity-text-align: middle-center; font-size: 63px; -unity-font-style: normal;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="ControllerVibrationVE" style="flex-grow: 1; flex-direction: row;">
                     <ui:VisualElement name="Index1" class="SettingsBlank SettingsFocused" style="flex-grow: 1;" />

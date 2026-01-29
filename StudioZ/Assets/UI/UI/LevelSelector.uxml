@@ -2,8 +2,8 @@
     <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3#UIUSS" />
     <ui:VisualElement name="Background" style="flex-grow: 1; width: 100%; height: 100%; background-color: rgb(234, 233, 238);">
         <ui:VisualElement name="Header" style="flex-grow: 1; height: 15%; flex-direction: row;">
-            <ui:VisualElement name="BackButtonVE" style="flex-grow: 1; width: 25%; padding-top: 30px; padding-right: 267px; padding-bottom: 30px; padding-left: 5px;">
-                <ui:Button text="Back" name="BackButton" class="MenuButtons" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; background-color: rgba(0, 0, 0, 0); padding-bottom: 0; -unity-text-align: middle-left;" />
+            <ui:VisualElement name="BackButtonVE" style="flex-grow: 1; width: 25%; padding-top: 10px; padding-right: 267px; padding-bottom: 30px; padding-left: 20px;">
+                <ui:Button text="Back" name="BackButton" class="MenuButtons" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; background-color: rgba(0, 0, 0, 0); padding-bottom: 0; width: 185px;" />
             </ui:VisualElement>
             <ui:VisualElement name="TitleVE" style="flex-grow: 1; width: 50%;">
                 <ui:Label text="Climbers Calamity" name="Title" style="-unity-text-align: middle-center; height: 100%; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&amp;guid=098d1b32e22c13a49aa7ce762fef2292&amp;type=3#adamwarrenpro&quot;); font-size: 101px; -unity-font-style: bold; color: rgb(152, 106, 183); -unity-text-outline-width: 4px; -unity-text-outline-color: rgb(0, 0, 0);" />

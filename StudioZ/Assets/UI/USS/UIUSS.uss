@@ -68,12 +68,14 @@
     transition-duration: 0.15s;
     background-color: rgba(0, 0, 0, 0);
     font-size: 71px;
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho.ttf?fileID=12800000&guid=04ddb951892d3f5419c041e0aa566efb&type=3#vinizinho");
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho%20SDF.asset?fileID=11400000&guid=6f395a25d4f645847b2f3838528a1944&type=2#vinizinho SDF");
     -unity-font-style: bold;
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
+    -unity-text-align: upper-center;
+    width: auto;
 }
 
 .MenuButtons:hover {
@@ -85,8 +87,6 @@
 }
 
 .MenuButtons:active {
-    width: 100%;
-    height: 100%;
     transition-duration: 0.15s;
     scale: 1.01 1.01;
 }
@@ -154,14 +154,14 @@
 }
 
 .HeadingText {
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho.ttf?fileID=12800000&guid=04ddb951892d3f5419c041e0aa566efb&type=3#vinizinho");
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho%20SDF.asset?fileID=11400000&guid=6f395a25d4f645847b2f3838528a1944&type=2#vinizinho SDF");
     font-size: 89px;
     -unity-font-style: bold;
     -unity-text-align: upper-left;
 }
 
 .GeneralText {
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho.ttf?fileID=12800000&guid=04ddb951892d3f5419c041e0aa566efb&type=3#vinizinho");
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho%20SDF.asset?fileID=11400000&guid=6f395a25d4f645847b2f3838528a1944&type=2#vinizinho SDF");
     font-size: 61px;
     -unity-font-style: normal;
     margin-left: 0;
