@@ -1344,6 +1344,8 @@ GameObject:
   - component: {fileID: 8735202720966013346}
   - component: {fileID: 4527063916185495194}
   - component: {fileID: 5587991145531763615}
+  - component: {fileID: 1287777766176657818}
+  - component: {fileID: 1594202318432652479}
   m_Layer: 0
   m_Name: Old Player
   m_TagString: Untagged
@@ -1419,6 +1421,7 @@ MonoBehaviour:
   armLength: 4.2
   handMoveSpeed: 100
   jointBreakingSensitivity: 0.99
+  springEnabled: 0
   jointSpring: 500
   jointDamper: 80
   projectionDistance: 0.1
@@ -1427,10 +1430,6 @@ MonoBehaviour:
   hasFinished: 0
   maxVelocity: 25
   maxLinearDampening: 1
-  vibrationEnabled: 1
-  vibrationDuration: 0.05
-  vibrationStrengthLowFrequency: 0.05
-  vibrationStrengthHighFrequency: 0.1
   currentCheckpoint: {x: 0, y: 0}
   L_isGripping: 0
   R_isGripping: 0
@@ -1471,6 +1470,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerCamera: {fileID: 328340074587291134}
   cineCam: {fileID: 9205927917658421153}
+  targetGroup: {fileID: 0}
+  body: {fileID: 7501277548032060922}
 --- !u!114 &4527063916185495194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1497,8 +1498,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf9f97177e20d754b99ec795015ce72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gripDeadZone: 0.01
+  triggerDeadZone: 0.01
+  vibrationEnabled: 1
+  vibrationDuration: 0.05
+  vibrationStrengthLowFrequency: 0.05
+  vibrationStrengthHighFrequency: 0.1
   inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+--- !u!114 &1287777766176657818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334838283628257679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc795902c51142147b2fc5915fec0e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  targetGroup: {fileID: 0}
+  maxDistance: 10
+  playerCameraHandler: {fileID: 8735202720966013346}
+  body: {fileID: 7501277548032060922}
+--- !u!114 &1594202318432652479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334838283628257679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e673737c4f919a546b4e2ba766986429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aliveState: 0
 --- !u!1 &6011741683816748286
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,7 +1729,6 @@ GameObject:
   - component: {fileID: 7618547232454368039}
   - component: {fileID: 3080690037391331093}
   - component: {fileID: 7451065577519552536}
-  - component: {fileID: 2732741108443497448}
   - component: {fileID: 517347061133756013}
   - component: {fileID: 2823184590667828353}
   m_Layer: 0
@@ -1851,22 +1885,6 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &2732741108443497448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7501277548032060922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc795902c51142147b2fc5915fec0e87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  targetGroup: {fileID: 0}
-  maxDistance: 20
-  playerCameraHandler: {fileID: 8735202720966013346}
 --- !u!65 &517347061133756013
 BoxCollider:
   m_ObjectHideFlags: 0

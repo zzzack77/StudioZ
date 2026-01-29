@@ -58,7 +58,7 @@ public class GameManager : NetworkBehaviour
             LoadLevel(index);
         }
 
-        SetUI(false);
+        //SetUI(false);
     }
 
     // ============================================================
