@@ -50,6 +50,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Data/Multiplayer/EasyLobbyWithCamera.unity
     guid: 4a6132cbdb6ff46418fe2b06743d0ffc
+  - enabled: 1
+    path: Assets/Data/Multiplayer/MultiplayerBreaker.unity
+    guid: b7469ef69da157c449d638d1a4bbba8f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

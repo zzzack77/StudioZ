@@ -12,6 +12,8 @@ public class RegisterPlayer : NetworkBehaviour
     
     [SerializeField] PlayerCameraHandler playerCameraHandler;
 
+    [SerializeField] private GameObject body;
+
     
     
 
@@ -22,11 +24,11 @@ public class RegisterPlayer : NetworkBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.RegisterPlayer(NetworkObject.OwnerClientId, this.gameObject);
-            if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
+            if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(body))
             {
                 
-                targetGroup.AddMember(transform, 3f, 0.2f);
-                GameManager.Instance.trackedTargets.Add(this.gameObject);
+                targetGroup.AddMember(body.transform, 3f, 0.2f);
+                GameManager.Instance.trackedTargets.Add(body);
             }
         }
         targetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
@@ -37,10 +39,10 @@ public class RegisterPlayer : NetworkBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.UnregisterPlayer(NetworkObject.OwnerClientId);
-            if (targetGroup != null && GameManager.Instance.trackedTargets.Contains(this.gameObject))
+            if (targetGroup != null && GameManager.Instance.trackedTargets.Contains(body))
             {
-                targetGroup.RemoveMember(transform);
-                GameManager.Instance.trackedTargets.Remove(this.gameObject);
+                targetGroup.RemoveMember(body.transform);
+                GameManager.Instance.trackedTargets.Remove(body);
             }
         }
     }
@@ -52,10 +54,10 @@ public class RegisterPlayer : NetworkBehaviour
             GameManager.Instance.RegisterPlayer(NetworkObject.OwnerClientId, this.gameObject);
         }
         if (targetGroup == null && GameMode.IsMultiplayer) Debug.LogError("Target group ref is null!");
-        if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
+        if (targetGroup != null && !GameManager.Instance.trackedTargets.Contains(body))
         {
-            targetGroup.AddMember(transform, 3f, 0.2f);
-            GameManager.Instance.trackedTargets.Add(this.gameObject);
+            targetGroup.AddMember(body.transform, 3f, 0.2f);
+            GameManager.Instance.trackedTargets.Add(body);
         }
     }
 
@@ -63,24 +65,24 @@ public class RegisterPlayer : NetworkBehaviour
     {
         if (targetGroup != null && playerCameraHandler != null)
         {
-            float dist = Vector3.Distance(transform.position, targetGroup.Sphere.position);
+            float dist = Vector3.Distance(body.transform.position, targetGroup.Sphere.position);
 
             if (dist > maxDistance)
             {
-                if (GameManager.Instance.trackedTargets.Contains(this.gameObject))
+                if (GameManager.Instance.trackedTargets.Contains(body))
                 {
-                    targetGroup.RemoveMember(transform);
-                    GameManager.Instance.trackedTargets.Remove(this.gameObject);
-                    playerCameraHandler.ActivateCamera();
+                    targetGroup.RemoveMember(body.transform);
+                    GameManager.Instance.trackedTargets.Remove(body);
+                    playerCameraHandler.ActivatePersonalCamera();
 
                 }
 
             }
-            else if (dist < maxDistance && !GameManager.Instance.trackedTargets.Contains(this.gameObject))
+            else if (dist < maxDistance && !GameManager.Instance.trackedTargets.Contains(body))
             {
-                targetGroup.AddMember(transform, 3f, 0.2f);
-                GameManager.Instance.trackedTargets.Add(this.gameObject);
-                playerCameraHandler.DeactivateCamera();
+                targetGroup.AddMember(body.transform, 3f, 0.2f);
+                GameManager.Instance.trackedTargets.Add(body);
+                playerCameraHandler.DeactivatePersonalCamera();
             }
 
             float largestDistance = 0;
