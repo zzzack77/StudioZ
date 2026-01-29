@@ -23,11 +23,23 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
         }
     }
 
+    [SerializeField] private float gripDeadZone = 0.1f;
+    public float GripDeadZone
+    {
+        get => gripDeadZone;
+        set
+        {
+
+        }
+    }
+
     public bool VibrationEnabled
     {
         get => vibrationEnabled;
         set => vibrationEnabled = value;
     }
+
+    
 
     [SerializeField] private bool vibrationEnabled = true;
     [SerializeField] private float vibrationDuration = 0.05f;

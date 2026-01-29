@@ -76,21 +76,23 @@ public class PlayerCameraHandler : NetworkBehaviour
                 if (input.BumperLPressed())
                 {
                     Debug.Log("BumperLPressed");
-                    playerIndex--;
+                    
                     if (playerIndex < 0)
                     {
                         playerIndex = players.Count - 1;
 
                     }
+                    else playerIndex--;
                 }
                 else if (input.BumperRPressed())
                 {
                     Debug.Log("BumperRPressed");
-                    playerIndex++;
+                    
                     if (playerIndex >= players.Count)
                     {
                         playerIndex = 0;
                     }
+                    else playerIndex++;
 
                 }
 
