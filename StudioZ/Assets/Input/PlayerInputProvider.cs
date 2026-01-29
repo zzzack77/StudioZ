@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    
+>>>>>>> Stashed changes
 =======
     
 >>>>>>> Stashed changes
