@@ -38,7 +38,8 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
         set => vibrationEnabled = value;
     }
 
-    
+    private bool triggerLWasDown;
+    private bool triggerRWasDown;
 
     [SerializeField] private bool vibrationEnabled = true;
     [SerializeField] private float vibrationDuration = 0.05f;
@@ -153,6 +154,29 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
         return triggerRAction.ReadValue<float>() > triggerDeadZone;
     }
 
+    public bool TriggerLPressedThisFrame()
+    {
+        float value = triggerLAction.ReadValue<float>();
+        bool isDown = value > triggerDeadZone;
+
+        bool pressedThisFrame = isDown && !triggerLWasDown;
+
+        triggerLWasDown = isDown;
+        return pressedThisFrame;
+    }
+
+    public bool TriggerRPressedThisFrame()
+    {
+        float value = triggerRAction.ReadValue<float>();
+        bool isDown = value > triggerDeadZone;
+
+        bool pressedThisFrame = isDown && !triggerRWasDown;
+
+        triggerRWasDown = isDown;
+        return pressedThisFrame;
+    }
+
+
     // Shoulder Buttons
     public bool BumperLPressed()
     {
@@ -162,6 +186,16 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     public bool BumperRPressed()
     {
         return bumperRAction.ReadValue<float>() == 1;
+    }
+
+    public bool BumperLPressedThisFrame()
+    {
+        return bumperLAction.WasPressedThisFrame();
+    }
+
+    public bool BumperRPressedThisFrame()
+    {
+        return bumperRAction.WasPressedThisFrame();
     }
 
     // Action Buttons
@@ -185,6 +219,25 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
         return buttonWestAction.ReadValue<float>() == 1;
     }
 
+    public bool ButtonSouthPressedThisFrame()
+    {
+        return buttonSouthAction.WasPressedThisFrame();
+    }
+
+    public bool ButtonEastPressedThisFrame()
+    {
+        return buttonEastAction.WasPressedThisFrame();
+    }
+
+    public bool ButtonNorthPressedThisFrame()
+    {
+        return buttonNorthAction.WasPressedThisFrame();
+    }
+
+    public bool ButtonWestPressedThisFrame()
+    {
+        return buttonWestAction.WasPressedThisFrame();
+    }
     // Menu Buttons
     public bool ButtonStartPressed()
     {
@@ -196,6 +249,16 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
         return buttonBackAction.ReadValue<float>() == 1;
     }
 
+    public bool ButtonStartPressedThisFrame()
+    {
+        return buttonStartAction.WasPressedThisFrame();
+    }
+
+    public bool ButtonBackPressedThisFrame()
+    {
+        return buttonBackAction.WasPressedThisFrame();
+    }
+
     // Stick Presses
     public bool StickLPressed()
     {
@@ -205,6 +268,16 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     public bool StickRPressed()
     {
         return stickPressRAction.ReadValue<float>() == 1;
+    }
+
+    public bool StickLPressedThisFrame()
+    {
+        return stickPressLAction.WasPressedThisFrame();
+    }
+
+    public bool StickRPressedThisFrame()
+    {
+        return stickPressRAction.WasPressedThisFrame();
     }
 
     // DPad Presses
@@ -226,6 +299,26 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
     public bool DPadRightPressed()
     {
         return dPadRightAction.ReadValue<float>() == 1;
+    }
+
+    public bool DPadUpPressedThisFrame()
+    {
+        return dPadUpAction.WasPressedThisFrame();
+    }
+
+    public bool DPadDownPressedThisFrame()
+    {
+        return dPadDownAction.WasPressedThisFrame();
+    }
+
+    public bool DPadLeftPressedThisFrame()
+    {
+        return dPadLeftAction.WasPressedThisFrame();
+    }
+
+    public bool DPadRightPressedThisFrame()
+    {
+        return dPadRightAction.WasPressedThisFrame();
     }
 
     // Vibration Functions
