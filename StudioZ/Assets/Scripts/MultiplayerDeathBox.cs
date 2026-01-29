@@ -9,9 +9,10 @@ public class MultiplayerDeathBox : NetworkBehaviour
         if (!IsServer) return;
         playerGO = collision.gameObject.transform.parent.gameObject;
 
-        if (collision.gameObject.transform.parent.gameObject.TryGetComponent<NetworkObject>(out NetworkObject player))
+        if (playerGO.TryGetComponent<NetworkObject>(out NetworkObject player))
         {
             KillPlayerClientRpc(player);
+            Debug.Log("Has collided with: " +  player);
         }
     }
 
@@ -21,6 +22,7 @@ public class MultiplayerDeathBox : NetworkBehaviour
         if (playerRef.TryGet(out NetworkObject playerNetObject))
         {
             KillPlayer(playerNetObject.gameObject);
+            Debug.Log("Kill Player Rpc");
         }
         
     }
@@ -29,5 +31,6 @@ public class MultiplayerDeathBox : NetworkBehaviour
     private void KillPlayer(GameObject playerGORef)
     {
         PlayerAliveState.OnPlayerDead?.Invoke(playerGORef);
+        Debug.Log("Kill Player");
     }
 }
