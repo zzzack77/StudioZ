@@ -64,9 +64,8 @@ public class SimpleMatchmaking : MonoBehaviour
         // Get the UTP transport component attached in the scene
         transport = FindFirstObjectByType<UnityTransport>();
         playerName = "Player" + UnityEngine.Random.Range(0, 999999);
-        
-        
-        
+
+
     }
 
     void Start()
@@ -85,7 +84,7 @@ public class SimpleMatchmaking : MonoBehaviour
         await Authenticate();
         // Null-coalescing operator: try QuickJoin, if null, run CreateLobby
         connectedLobby = await QuickJoinLobby() ?? await CreateLobby();
-        if (connectedLobby != null) buttons.SetActive(false);
+        //if (connectedLobby != null) buttons.SetActive(false);
     }
 
     /// <summary>
