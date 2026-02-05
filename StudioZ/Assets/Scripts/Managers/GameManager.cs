@@ -44,8 +44,11 @@ public class GameManager : NetworkBehaviour
     // ============================================================
     public void RequestLoadLevel(int index)
     {
+        Debug.Log("passed 2");
         if (GameMode.IsMultiplayer)
         {
+            Debug.Log("Load multiplayer level " + index);
+
             // Multiplayer -> server handles the load
             if (IsServer)
                 LoadLevelServer(index);

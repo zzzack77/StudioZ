@@ -52,7 +52,7 @@ public class PublicLobby : MonoBehaviour
         //enterButton.clicked += EnterButtonPress;
 
 
-        ClearUI();
+        //ClearUI();
 
         // Wait until the SimpleMatchmaking singleton is ready
         if (SimpleMatchmaking.Instance != null)
@@ -76,6 +76,7 @@ public class PublicLobby : MonoBehaviour
 
     private void UpdatePlayerList(List<Player> players)
     {
+        Debug.Log("Updating Player List in UI");
         ClearUI();
 
         for (int i = 0; i < players.Count; i++)
@@ -123,20 +124,26 @@ public class PublicLobby : MonoBehaviour
 
     public void StartMatch()
     {
-        if (simpleMatchmaking && simpleMatchmaking.IsHost)
+        Debug.Log("start match button pressed");
+        Debug.Log(SimpleMatchmaking.Instance);
+        if (SimpleMatchmaking.Instance != null && SimpleMatchmaking.Instance.IsHost)
         {
+            Debug.Log("past 1");
+
             // ------- Load Level here -------
+            GameManager.Instance.RequestLoadLevel(1);
+
             HideLobbyUIServerRpc();
-            simpleMatchmaking.LockLobby();
+            SimpleMatchmaking.Instance.LockLobby();
         }
     }
 
 
     private void UpdateHostUI()
     {
-        if (startButton != null || NetworkManager.Singleton == null) return;
+        if (NetworkManager.Singleton == null) return;
 
-         startButton.visible = NetworkManager.Singleton.IsHost;
+        startButton.visible = NetworkManager.Singleton.IsHost;
     }
 
 

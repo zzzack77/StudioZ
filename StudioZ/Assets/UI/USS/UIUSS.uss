@@ -92,12 +92,12 @@
 }
 
 .LevelText {
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
-    font-size: 39px;
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho%20SDF.asset?fileID=11400000&guid=6f395a25d4f645847b2f3838528a1944&type=2#vinizinho SDF");
+    font-size: 90px;
     color: rgb(255, 255, 255);
     text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.51);
     height: 50%;
-    -unity-font-style: bold;
+    -unity-font-style: normal;
     -unity-text-align: middle-center;
 }
 
@@ -140,12 +140,12 @@
     -unity-text-outline-width: 3px;
     -unity-text-outline-color: rgba(255, 255, 255, 0.53);
     -unity-font-style: bold;
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho%20SDF.asset?fileID=11400000&guid=6f395a25d4f645847b2f3838528a1944&type=2#vinizinho SDF");
     text-shadow: 12px 12px 0 rgba(0, 0, 0, 0.51);
 }
 
 .HUD {
-    -unity-font-definition: url("project://database/Assets/Art/Fonts/adamwarrenpro.ttf?fileID=12800000&guid=098d1b32e22c13a49aa7ce762fef2292&type=3#adamwarrenpro");
+    -unity-font-definition: url("project://database/Assets/Art/Fonts/vinizinho%20SDF.asset?fileID=11400000&guid=6f395a25d4f645847b2f3838528a1944&type=2#vinizinho SDF");
     font-size: 40px;
     color: rgb(255, 255, 255);
     -unity-text-outline-width: 3px;

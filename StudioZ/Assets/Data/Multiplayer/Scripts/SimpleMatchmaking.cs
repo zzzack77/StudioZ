@@ -278,6 +278,14 @@ public class SimpleMatchmaking : MonoBehaviour
 
             // 5. Start NGO as Host
             NetworkManager.Singleton.StartHost();
+
+
+
+            // ---- Ive added this extra call so it updates the ui after setting the host.
+            // If this needs to go or is causing problems let me know
+            // - Zack Clarke
+            OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
+
             return lobby;
         }
         catch (Exception e)

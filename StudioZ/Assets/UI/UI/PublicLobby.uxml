@@ -43,7 +43,7 @@
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: stretch; align-items: center; justify-content: space-evenly; height: 35%;">
                     <ui:Button text="Exit" name="ExitButton" class="MenuButtons" style="font-size: 144px; -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0); color: rgb(204, 0, 0);" />
                     <ui:Button text="Settings" name="SettingsButton" class="MenuButtons" style="font-size: 144px; color: rgb(152, 152, 152); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0);" />
-                    <ui:Button text="Start" name="StartButton" class="MenuButtons" style="font-size: 144px; color: rgb(52, 197, 51); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0);" />
+                    <ui:Button text="Start" name="StartButton" class="MenuButtons" style="font-size: 144px; color: rgb(52, 197, 51); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0); visibility: hidden;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

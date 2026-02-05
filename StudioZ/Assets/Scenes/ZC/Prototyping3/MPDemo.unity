@@ -253648,7 +253648,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1751037311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253731,6 +253731,7 @@ GameObject:
   - component: {fileID: 1787060934}
   - component: {fileID: 1787060932}
   - component: {fileID: 1787060933}
+  - component: {fileID: 1787060935}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -253796,6 +253797,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1787060935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787060931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f73a2d4d96e6640935a6b2cacf5db8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  levelPrefabs:
+  - {fileID: 5109155756157961953, guid: 7bfa95bf838800f4e94c9bc88240bd10, type: 3}
+  isBreakerLevel: 
 --- !u!4 &1842522967 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1883564029215017517, guid: 5c45e0ac81f2452479b311885c2abc99, type: 3}
@@ -254684,7 +254701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 250591480523320337, guid: 9ddbecf5cac6841498ea518ce1ecf9f1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3122757074352743557, guid: 9ddbecf5cac6841498ea518ce1ecf9f1, type: 3}
       propertyPath: m_LocalPosition.z
