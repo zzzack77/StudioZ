@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class BreakerGameModeManager : GameModeBase
 {
-   
-    
-    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
@@ -19,9 +16,14 @@ public class BreakerGameModeManager : GameModeBase
         
     }
 
-    
+    protected override void CheckWinCondition()
+    {
+        base.CheckWinCondition();
 
-    
+        // Check to see if all players are dead
+        foreach (var player in GameManager.Instance.playerGameObjects)
+        {
 
-    
+        }
+    }
 }

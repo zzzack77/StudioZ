@@ -4,9 +4,10 @@ using UnityEngine;
 
 public abstract class GameModeBase : MonoBehaviour
 {
-    protected float gracePeriodDuration = 2;
-    protected float startCountDownDuration = 3;
+    protected float gracePeriodDuration = 10;
+    protected float startCountDownDuration = 5;
     protected int levelIndex = 0;
+    protected int playersAlive;
     public bool MatchInProgress {  get; protected set; }
 
     protected void SetMatchInProgress(bool value)
@@ -25,7 +26,8 @@ public abstract class GameModeBase : MonoBehaviour
         SetPlayersAlive();
         //ClearLevel(); // Cant clear level yet as the first index of level prefabs is empty but needs to be filled
         SpawnLevel();
-        FreezePlayerMovement(); 
+        //FreezePlayerMovement(); 
+        playersAlive = GameManager.Instance.playerGameObjects.Count;
     }
     public void StartMatch()
     {
@@ -59,6 +61,7 @@ public abstract class GameModeBase : MonoBehaviour
     {
         yield return new WaitForSeconds(gracePeriodDuration);
         // Show Timer countdown UI
+        Debug.Log("Grace Period Over");
         yield return new WaitForSeconds(startCountDownDuration);
         Debug.Log("Match Start!");
         UnFreezePlayerMovement();
@@ -78,12 +81,12 @@ public abstract class GameModeBase : MonoBehaviour
 
     protected virtual void FreezePlayerMovement()
     {
-        // Send an event that locks player movement
+        NetworkPlayerMovement.OnSetCanMove?.Invoke(false);
     }
 
     protected virtual void UnFreezePlayerMovement()
     {
-        // Send an event that unlocks player movement
+        NetworkPlayerMovement.OnSetCanMove?.Invoke(true);
     }
 
     protected void SetLevelIndex(int index)
@@ -98,6 +101,6 @@ public abstract class GameModeBase : MonoBehaviour
 
     protected virtual void CheckWinCondition()
     {
-
+        
     }
 }
