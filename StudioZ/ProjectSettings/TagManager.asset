@@ -9,6 +9,7 @@ TagManager:
   - Crimp
   - Pocket
   - Checkpoint
+  - Throwable
   layers:
   - Default
   - TransparentFX

@@ -68,6 +68,12 @@ public class GripColliderNetwork : NetworkBehaviour
                     networkPlayerMovement.L_canGripPocket = true;
                     IsBreaker(collider, true, true);
                 }
+                if (collider.gameObject.CompareTag("Throwable"))
+                {
+                    networkPlayerMovement.L_canGripThrowable = true;
+                    networkPlayerMovement.L_playerGrippedGameObject = collider.gameObject;
+                   
+                }
             }
             if (this.name == "R Joystick Pos")
             {
@@ -99,6 +105,12 @@ public class GripColliderNetwork : NetworkBehaviour
                 {
                     networkPlayerMovement.R_canGripPocket = true;
                     IsBreaker(collider, false, true);
+                }
+                if (collider.gameObject.CompareTag("Throwable"))
+                {
+                    networkPlayerMovement.R_canGripThrowable = true;
+                    networkPlayerMovement.R_playerGrippedGameObject = collider.gameObject;
+                    
                 }
             }
         }
@@ -140,6 +152,11 @@ public class GripColliderNetwork : NetworkBehaviour
                     IsBreaker(collider, true, false);
                     networkPlayerMovement.L_canGripPocket = false;
                 }
+                if (collider.gameObject.CompareTag("Throwable"))
+                {
+                    networkPlayerMovement.L_canGripThrowable = false;
+                    networkPlayerMovement.L_playerGrippedGameObject = null;
+                }
             }
             if (this.name == "R Joystick Pos")
             {
@@ -170,6 +187,11 @@ public class GripColliderNetwork : NetworkBehaviour
                 {
                     networkPlayerMovement.R_canGripPocket = false;
                     IsBreaker(collider, false, false);
+                }
+                if (collider.gameObject.CompareTag("Throwable"))
+                {
+                    networkPlayerMovement.R_canGripThrowable = false;
+                    networkPlayerMovement.R_playerGrippedGameObject = null;
                 }
             }
         }

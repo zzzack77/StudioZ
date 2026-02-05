@@ -81,6 +81,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private Vector3 R_distanceFromHandToGrippedObject;
     private bool L_isGrippingPlayer;
     private bool R_isGrippingPlayer;
+    private bool L_isGrippingThrowable;
+    private bool R_isGrippingThrowable;
     // Breaker holds 
 
 
@@ -92,6 +94,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool L_canGripCrimp { get; set; }
     public bool L_canGripPocket { get; set; }
     public bool L_canGripBreaker { get; set; }
+    public bool L_canGripThrowable { get; set; }
 
     // Right Grips
     public bool R_canGripFinish     { get; set; }
@@ -100,6 +103,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool R_canGripJug        { get; set; }
     public bool R_canGripCrimp  { get; set; }
     public bool R_canGripPocket     { get; set; }
+    public bool R_canGripThrowable { get; set; }
 
     [Header("Grip Settings")]
     public bool L_isGripping = false;
@@ -185,6 +189,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         L_canGripJug = false;
         L_canGripCrimp = false;
         L_canGripPocket = false;
+        L_canGripThrowable = false;
 
         R_isGripping = false;
         R_isGrippingPlayer = false;
@@ -195,6 +200,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         R_canGripJug = false;
         R_canGripCrimp = false;
         R_canGripPocket = false;
+        R_canGripThrowable = false;
     }
 
     // Update is called once per frame
@@ -309,11 +315,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
         // Left Hand Grip Logic
         if (input.TriggerLPressed()) // left trigger
         {
-            if (L_canGripFinish) { OnLGrip(); Finish(); }
-            else if (L_canGripCheckpoint) { OnLGrip(); SetCheckPoint(); }
-            else if (L_canGripPlayer) { OnLPlayerGrip(); }
-            else if (L_canGripJug && !input.BumperLPressed()) OnLGrip();
-            else if (L_canGripPocket && input.BumperLPressed()) OnLGrip();
+            if (L_canGripFinish && !L_isGrippingThrowable) { OnLGrip(); Finish(); }
+            else if (L_canGripCheckpoint && !L_isGrippingThrowable) { OnLGrip(); SetCheckPoint(); }
+            else if (L_canGripPlayer && !L_isGrippingThrowable) { OnLPlayerGrip(); }
+            else if (L_canGripJug && !L_isGrippingThrowable && !input.BumperLPressed()) OnLGrip();
+            else if (L_canGripPocket && !L_isGrippingThrowable && input.BumperLPressed()) OnLGrip();
+            else if (L_canGripThrowable) { OnLGripThrowable(); }
             else if (!isRespawning) { OnLGripRelease(); }
         }
         else if (input.BumperLPressed()) // Bumper
@@ -326,6 +333,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         else if (!isRespawning)
         {
             OnLPlayerLetGo();
+            OnThrowableRelease();
             OnLGripRelease();
         }
         // Right Hand Grip Logic
@@ -440,6 +448,34 @@ public class NetworkPlayerMovement : NetworkBehaviour
             R_handRB.transform.position = R_playerGrippedGameObject.transform.position + R_distanceFromHandToGrippedObject;
         }
     }
+
+    private void OnLGripThrowable()
+    {
+        if(!isRespawning)
+        {
+            if (!L_isGrippingThrowable)
+            {
+                //L_distanceFromHandToGrippedObject = L_handRB.transform.position - L_playerGrippedGameObject.transform.position;
+                L_isGrippingThrowable = true;
+                Rigidbody rb = L_playerGrippedGameObject.GetComponent<Rigidbody>();
+                rb.useGravity = true;
+
+            }
+            L_playerGrippedGameObject.transform.position = L_handRB.transform.position;
+        }
+    }
+
+    private void OnThrowableRelease()
+    {
+        if (L_isGrippingThrowable)
+        {
+            Rigidbody rb = L_playerGrippedGameObject.GetComponent<Rigidbody>();
+            rb.AddForce(rb.linearVelocity,ForceMode.Impulse); //no worky 
+        }        
+        L_isGrippingThrowable = false;
+    }
+
+
     private void OnLPlayerLetGo()
     {
         L_isGrippingPlayer = false;
