@@ -124,44 +124,42 @@ public class PublicLobby : MonoBehaviour
 
     public void StartMatch()
     {
-        Debug.Log("start match button pressed");
-        Debug.Log(SimpleMatchmaking.Instance);
-        if (SimpleMatchmaking.Instance != null && SimpleMatchmaking.Instance.IsHost)
-        {
-            Debug.Log("past 1");
-
-            // ------- Load Level here -------
-            GameManager.Instance.RequestLoadLevel(1);
-
-            HideLobbyUIServerRpc();
-            SimpleMatchmaking.Instance.LockLobby();
-        }
+        GameManager.Instance.StartPublicMatch();
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    private void StartMatchServerRpc()
+    {
+        StartMatchInternal();
+    }
+
+    private void StartMatchInternal()
+    {
+        // This runs on server only
+        Debug.Log("Server starting match");
+
+        HideLobbyUIClientRpc();
+    }
+
+    [ClientRpc]
+    private void HideLobbyUIClientRpc()
+    {
+        Debug.Log($"Hiding Lobby UI | ClientId: {NetworkManager.Singleton.LocalClientId}");
+
+        HideLobbyUI();
+    }
+
+    private void HideLobbyUI()
+    {
+        Debug.Log("Hiding Lobby UI (Local)");
+        // gameObject.SetActive(false);
+    }
 
     private void UpdateHostUI()
     {
         if (NetworkManager.Singleton == null) return;
 
         startButton.visible = NetworkManager.Singleton.IsHost;
-    }
-
-
-    [ClientRpc]
-    private void HideLobbyUIClientRpc()
-    {
-        HideLobbyUI();
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void HideLobbyUIServerRpc()
-    {
-        HideLobbyUIClientRpc();
-    }
-
-    public void HideLobbyUI()
-    {
-        this.gameObject.SetActive(false);
     }
 
 }

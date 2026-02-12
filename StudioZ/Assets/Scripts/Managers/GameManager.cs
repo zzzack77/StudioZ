@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 public class GameManager : NetworkBehaviour
@@ -153,5 +154,17 @@ public class GameManager : NetworkBehaviour
     {
         if (playerGameObjects.ContainsKey(playerID))
             playerGameObjects.Remove(playerID);
+    }
+
+    public void StartPublicMatch()
+    {
+        if(!IsServer) return;
+        HideLobbyUIClientRpc();
+    }
+    [ClientRpc]
+    private void HideLobbyUIClientRpc()
+    {
+        Debug.Log($"Hiding Lobby UI | ClientId: {NetworkManager.Singleton.LocalClientId}");
+        //lobbyUI.HideLobbyUI();
     }
 }

@@ -125,6 +125,7 @@ public class UIMultiplayerLobby : NetworkBehaviour
     
     public void HideLobbyUI()
     {
+        Debug.Log("hiding geez");
         lobbyUIRoot.SetActive(false);
     }
     

@@ -25,7 +25,7 @@ public class SimpleMatchmaking : MonoBehaviour
 {
     // --- Editor Configuration & Static Instance ---
     
-    [SerializeField] private GameObject buttons; // UI elements to hide after joining/creating a lobby
+    //[SerializeField] private GameObject buttons; // UI elements to hide after joining/creating a lobby
 
     public static SimpleMatchmaking Instance; // Singleton instance
     
