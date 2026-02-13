@@ -155,16 +155,18 @@ public class GameManager : NetworkBehaviour
         if (playerGameObjects.ContainsKey(playerID))
             playerGameObjects.Remove(playerID);
     }
-
-    public void StartPublicMatch()
+    public void StartMatch()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
+
         HideLobbyUIClientRpc();
     }
+
     [ClientRpc]
     private void HideLobbyUIClientRpc()
     {
         Debug.Log($"Hiding Lobby UI | ClientId: {NetworkManager.Singleton.LocalClientId}");
         //lobbyUI.HideLobbyUI();
     }
+
 }

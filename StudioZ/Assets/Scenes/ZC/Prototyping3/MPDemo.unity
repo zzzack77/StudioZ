@@ -253705,6 +253705,7 @@ GameObject:
   - component: {fileID: 1787060932}
   - component: {fileID: 1787060933}
   - component: {fileID: 1787060935}
+  - component: {fileID: 1787060936}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -253785,8 +253786,22 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   levelPrefabs:
   - {fileID: 5109155756157961953, guid: 7bfa95bf838800f4e94c9bc88240bd10, type: 3}
-  - {fileID: 3959140879668070945, guid: aee983ed50803c74db9da079d5755057, type: 3}
+  - {fileID: 3826538832940214895, guid: f760cddb13b6d9f438a0a0b49575f4aa, type: 3}
   isBreakerLevel: 
+--- !u!114 &1787060936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787060931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649baeee969b30d439a2a6f31568e6fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  lobbyUI: {fileID: 1751037310}
 --- !u!4 &1842522967 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1883564029215017517, guid: 5c45e0ac81f2452479b311885c2abc99, type: 3}

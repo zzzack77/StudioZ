@@ -124,7 +124,10 @@ public class PublicLobby : MonoBehaviour
 
     public void StartMatch()
     {
-        GameManager.Instance.StartPublicMatch();
+        //GameManager.Instance.StartMatch();
+        
+        GameManager.Instance.RequestLoadLevel(1);
+        MPLobbyManager.Instance.StartPublicMatch();
     }
 
     [ServerRpc(RequireOwnership = false)]
