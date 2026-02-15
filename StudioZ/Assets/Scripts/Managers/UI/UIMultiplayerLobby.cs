@@ -1,13 +1,15 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Services.Lobbies.Models;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
-public class UIMultiplayerLobby : NetworkBehaviour
+public class UIMultiplayerLobby : MonoBehaviour
 {
-    [SerializeField] private SimpleMatchmaking simpleMatchmaking;
+   
     [SerializeField] private GameObject lobbyUIRoot;
     [Header("UI References")] 
     [SerializeField] private TextMeshProUGUI Player1Text;
@@ -21,15 +23,38 @@ public class UIMultiplayerLobby : NetworkBehaviour
     [SerializeField] private GameObject Player4;
     
     [SerializeField] private GameObject hostOnlyButton;
+    
    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Wait until the SimpleMatchmaking singleton is ready
+       
+        
+        
+        if (NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsClient)
+        {
+            SimpleMatchmaking.Instance.ForceLobbyRefresh();
+        }
+         
+        
+        
         if (SimpleMatchmaking.Instance != null)
         {
             // Subscribe to the event
             SimpleMatchmaking.Instance.OnLobbyPlayersUpdated += UpdatePlayerList;
+        }
+        
+        if (SimpleMatchmaking.Instance != null)
+        {
+            // Listen for the join event
+            SimpleMatchmaking.Instance.OnLobbyJoined += HandleLobbyJoined;
+        
+            // Check if we are ALREADY in a lobby (returning from game)
+            if (SimpleMatchmaking.Instance.ConnectedLobby != null)
+            {
+                HandleLobbyJoined();
+            }
+           
         }
         ClearUI();
         
@@ -44,12 +69,26 @@ public class UIMultiplayerLobby : NetworkBehaviour
             SimpleMatchmaking.Instance.OnLobbyPlayersUpdated -= UpdatePlayerList;
         }
     }
+    public void ChangePlayerName(string newName)
+    {
+        SimpleMatchmaking.Instance.ChangePlayerName(newName);
+    }
+    public void QuickJoinGame()
+    {
+        
+        SimpleMatchmaking.Instance.CreateOrJoinLobby();
+    }
 
    
 
     private void UpdatePlayerList(List<Player> players)
     {
         ClearUI();
+        
+        foreach (var joinedPlayer in players)
+        {
+            
+        }
 
         for (int i = 0; i < players.Count; i++)
         {
@@ -95,38 +134,43 @@ public class UIMultiplayerLobby : NetworkBehaviour
 
     public void StartMatch()
     {
-        if (simpleMatchmaking&&simpleMatchmaking.IsHost)
+        if (SimpleMatchmaking.Instance != null && SimpleMatchmaking.Instance.IsHost)
         {
-            HideLobbyUIServerRpc();
-            simpleMatchmaking.LockLobby();
+            
+            SimpleMatchmaking.Instance.LockLobby();
+            NetworkManager.Singleton.SceneManager.LoadScene("MultiplayerGame", LoadSceneMode.Single);
         }
     } 
     
     
     private void UpdateHostUI()
     {
-        if (!hostOnlyButton  || !simpleMatchmaking) return;
-        
-        hostOnlyButton.SetActive(simpleMatchmaking.IsHost);
-    }
-    
-    
-    [ClientRpc]
-    private void HideLobbyUIClientRpc()
-    {
-        HideLobbyUI();
-    }
+        if (!hostOnlyButton || NetworkManager.Singleton == null) return;
 
-    [ServerRpc(RequireOwnership = false)]
-    public void HideLobbyUIServerRpc()
-    {
-        HideLobbyUIClientRpc();
+        hostOnlyButton.SetActive(NetworkManager.Singleton.IsHost);
+        
     }
+    
+    private void HandleLobbyJoined()
+    {
+        StartCoroutine(WaitForNetworkStart());
+    }
+    
+    
     
     public void HideLobbyUI()
     {
         lobbyUIRoot.SetActive(false);
     }
     
-   
+    private IEnumerator WaitForNetworkStart()
+    {
+        yield return new WaitUntil(() =>
+            NetworkManager.Singleton != null &&
+            (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsHost));
+
+        
+        lobbyUIRoot.SetActive(true);
+        SimpleMatchmaking.Instance.ForceLobbyRefresh();
+    }
 }

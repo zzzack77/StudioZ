@@ -29,10 +29,45 @@ public class UIGameMenu : MonoBehaviour
 
     public void LeaveMultiplayerGame()
     {
-        if (NetworkManager.Singleton == null) return;
+        if (SimpleMatchmaking.Instance != null)
+        {
+            LeaveLobbyAndLoadScene();
+        }
+        else 
+        {
+            if (NetworkManager.Singleton != null) NetworkManager.Singleton.Shutdown();
+        }
+    }
+    
+    public async void LeaveLobbyAndLoadScene()
+    {
+        await SimpleMatchmaking.Instance.LeaveGame();
+
+        
+        
        
-        NetworkManager.Singleton.Shutdown();
-        //change scene to main menu 
-        SceneManager.LoadScene("EasyLobbyScene");
+    }
+
+    public void HostReturnToLobby()
+    {
+        if (NetworkManager.Singleton == null) return;
+        // change scene to final multiplayer lobby scene
+        NetworkManager.Singleton.SceneManager.LoadScene("EasyLobbyScene", LoadSceneMode.Single);
+        SimpleMatchmaking.Instance.UnlockLobby();
+        
+        
+    }
+
+    public void Resume()
+    {
+        if (UI)
+        {
+            UI.SetActive(false);
+        }
+    }
+
+    public void Settings()
+    {
+        //settings code
     }
 }

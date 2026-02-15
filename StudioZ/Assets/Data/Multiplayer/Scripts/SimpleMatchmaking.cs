@@ -15,21 +15,29 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles all integration with Unity Services (Authentication, Lobby, Relay)
 /// and manages the core logic for Netcode for GameObjects (NGO) start/stop,
 /// including Host Migration.
 /// </summary>
+///
+ 
+
 public class SimpleMatchmaking : MonoBehaviour
 {
+    
+    
     // --- Editor Configuration & Static Instance ---
     
-    [SerializeField] private GameObject buttons; // UI elements to hide after joining/creating a lobby
+   
 
     public static SimpleMatchmaking Instance; // Singleton instance
     
     public event Action<List<Player>> OnLobbyPlayersUpdated;
+    
+    public event Action OnLobbyJoined;
     public Lobby ConnectedLobby => connectedLobby;
     // --- Private Fields ---
     
@@ -37,7 +45,7 @@ public class SimpleMatchmaking : MonoBehaviour
     private Lobby connectedLobby;
     private UnityTransport transport;
     // Key used to store the Relay Join Code within the Lobby data.
-    private const string JoinCodeKey = "j"; 
+    [SerializeField] private  string JoinCodeKey = "j"; 
     private string playerId; // Unique ID for the current player (used for Auth, Lobby, and Host check)
     public string playerName;  // player controlled name with default
     
@@ -53,7 +61,7 @@ public class SimpleMatchmaking : MonoBehaviour
 
     void Awake()
     {
-        // Singleton setup
+        // 1. Singleton Logic
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -61,10 +69,19 @@ public class SimpleMatchmaking : MonoBehaviour
         }
 
         Instance = this;
-        // Get the UTP transport component attached in the scene
-        transport = FindFirstObjectByType<UnityTransport>();
-        playerName = "Player" + UnityEngine.Random.Range(0, 999999);
+    
         
+        // Keep this object alive when loading the Game Scene or returning to Lobby
+        DontDestroyOnLoad(gameObject);
+
+        // 3. Init Transport
+        transport = FindFirstObjectByType<UnityTransport>();
+    
+        // 4. Set a name if one isn't set 
+        if (string.IsNullOrEmpty(playerName))
+        {
+            playerName = "Player" + UnityEngine.Random.Range(0, 999999);
+        }
         
         
     }
@@ -80,12 +97,12 @@ public class SimpleMatchmaking : MonoBehaviour
     /// Authenticates the player, then attempts to Quick Join a lobby. 
     /// If Quick Join fails, it creates a new public lobby.
     /// </summary>
-    public async void CreateOrJoinLobby()
+    public async Task CreateOrJoinLobby()
     {
         await Authenticate();
         // Null-coalescing operator: try QuickJoin, if null, run CreateLobby
         connectedLobby = await QuickJoinLobby() ?? await CreateLobby();
-        if (connectedLobby != null) buttons.SetActive(false);
+        OnLobbyJoined?.Invoke();
     }
 
     /// <summary>
@@ -157,7 +174,7 @@ public class SimpleMatchmaking : MonoBehaviour
             };
             
             // 1. Join the lobby using the code
-            var lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(joinCode);
+            var lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(joinCode,options);
             // 2. Get the Relay join code from the lobby data
             var relayCode = lobby.Data[JoinCodeKey].Value;
             // 3. Join the Relay Allocation
@@ -196,8 +213,7 @@ public class SimpleMatchmaking : MonoBehaviour
         string profile = ClonesManager.IsClone() ? ClonesManager.GetArgument() : "EditorProfile";
         options.SetProfile(profile);
 #else
-    // If running a Build, assume it's a Client and give it a generic "Build" profile
-    // OR better yet, use a random one for testing so you can run multiple builds.
+    
     options.SetProfile("BuildProfile_" + UnityEngine.Random.Range(0, 1000));
 #endif
            
@@ -287,6 +303,77 @@ public class SimpleMatchmaking : MonoBehaviour
             return null;
         }
     }
+    
+    public async Task LeaveGame()
+    {
+         Debug.Log("RuntimeReset: Starting full teardown...");
+
+        // 1️⃣ Stop heartbeat coroutine
+        if (heartbeatCoroutine != null)
+        {
+            StopCoroutine(heartbeatCoroutine);
+            heartbeatCoroutine = null;
+        }
+
+        // 2️⃣ Unsubscribe lobby callbacks
+        if (lobbyEventCallbacks != null)
+        {
+            lobbyEventCallbacks.LobbyChanged -= OnLobbyChanged;
+            lobbyEventCallbacks = null;
+        }
+
+        // 3️⃣ Leave lobby properly (await!)
+        if (connectedLobby != null)
+        {
+            try
+            {
+                Debug.Log("RuntimeReset: Removing player from lobby...");
+                await LobbyService.Instance.RemovePlayerAsync(connectedLobby.Id, playerId);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogWarning($"RuntimeReset: Failed to remove player from lobby: {e.Message}");
+            }
+
+            connectedLobby = null;
+        }
+
+        // 4️⃣ Shutdown Netcode properly
+        if (NetworkManager.Singleton != null)
+        {
+            Debug.Log("RuntimeReset: Shutting down NetworkManager...");
+            NetworkManager.Singleton.Shutdown();
+
+            // Reset transport if present
+            var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            if (transport != null)
+            {
+                transport.DisconnectLocalClient();
+                //transport.DisconnectRemoteClient(();
+            }
+
+            Destroy(NetworkManager.Singleton.gameObject);
+        }
+
+        // 5️⃣ Reset Unity Authentication session
+        if (AuthenticationService.Instance.IsSignedIn)
+        {
+            Debug.Log("RuntimeReset: Signing out of Unity Authentication...");
+            AuthenticationService.Instance.SignOut(true); // Clears session token for fresh login
+        }
+
+        // 6️⃣ Destroy matchmaking singleton
+        Debug.Log("RuntimeReset: Destroying SimpleMatchmaking singleton...");
+        Destroy(gameObject);
+
+        // 7️⃣ Optional delay to ensure all objects are destroyed cleanly
+        await Task.Delay(200);
+
+        // 8️⃣ Reload bootstrap scene
+        Debug.Log("RuntimeReset: Loading bootstrap scene...");
+        SceneManager.LoadScene("MultiplayerBootstrap");
+    }
+    
 
     /// <summary>
     /// Configures the UTP Transport with Relay information for a client connection.
@@ -338,14 +425,37 @@ public class SimpleMatchmaking : MonoBehaviour
             Debug.LogError($"Failed to lock lobby: {e}");
         }
     }
-    
+    public async void UnlockLobby()
+    {
+        if (!IsHost) return;
+
+        isGameInProgress = true;
+
+        try
+        {
+            // 1. Lock the Lobby so it doesn't appear in QuickJoins or Queries
+            var updateOptions = new UpdateLobbyOptions
+            {
+                IsLocked = false
+            };
+
+            await LobbyService.Instance.UpdateLobbyAsync(connectedLobby.Id, updateOptions);
+            Debug.Log("Game Started. Lobby is now Unlocked.");
+
+            
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to unlock lobby: {e}");
+        }
+    }
     
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
         // 1. Default approval settings
         response.Approved = true;
         response.CreatePlayerObject = true;
-        response.PlayerPrefabHash = null; 
+        
 
         // 2. If the game has started, reject them
         if (isGameInProgress)
@@ -394,6 +504,7 @@ public class SimpleMatchmaking : MonoBehaviour
     /// Event handler triggered when the lobby state changes (e.g., Host leaves, data updates).
     /// This is the core of the Host Migration logic.
     /// </summary>
+  
     private void OnLobbyChanged(ILobbyChanges changes)
     {
         // 1. Apply changes to the local lobby object
@@ -437,6 +548,33 @@ public class SimpleMatchmaking : MonoBehaviour
                     MigrateToClient(newCode);
                 }
             }
+        }
+    }
+    
+    
+    public async void ForceLobbyRefresh()
+    {
+        if (connectedLobby == null) return;
+
+        try
+        {
+            // 1. Ask Unity Services for the absolute latest version of this Lobby
+            // This ensures we catch any players who might have left while we were loading
+            var freshLobby = await LobbyService.Instance.GetLobbyAsync(connectedLobby.Id);
+        
+            // 2. Update our local variable
+            connectedLobby = freshLobby;
+
+            // 3. Manually fire the event to update the UI
+            if (connectedLobby != null)
+            {
+                OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
+                Debug.Log("Lobby forcefully refreshed.");
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"Failed to refresh lobby: {e.Message}");
         }
     }
 
