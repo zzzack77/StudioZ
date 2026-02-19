@@ -208,6 +208,15 @@
     -unity-background-image-tint-color: rgb(0, 0, 0);
 }
 
+.RadioButton {
+}
+
+.RadioButton #unity-checkmark {
+    width: 31px;
+    height: 92px;
+    background-color: rgb(202, 22, 22);
+}
+
 .Slider {
 }
 
