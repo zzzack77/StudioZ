@@ -2,16 +2,15 @@ using UnityEngine;
 
 public class PlayerGriping : MonoBehaviour
 {
-    public GameObject LHandOpen;
-    public GameObject LHandClose;
-    public GameObject LHandPoint;
+    [Header("Left Hand")]
+    public SpriteRenderer LHandRenderer;
+    public Sprite LHandOpen;
+    public Sprite LHandClose;
 
-    public GameObject RHandOpen;
-    public GameObject RHandClose;
-    public GameObject RHandPoint;
-
-    public Transform LTogglePos;
-    public Transform RTogglePos;
+    [Header ("Right Hand")]
+    public SpriteRenderer RHandRenderer;
+    public Sprite RHandOpen;
+    public Sprite RHandClose;
 
     private bool lastLeft;
     private bool lastRight;
@@ -37,10 +36,6 @@ public class PlayerGriping : MonoBehaviour
         //GripLeftHand();
         //GripRightHand();
         GripCheck();
-
-        LeftHandRoataion();
-
-        RightHandRoataion();
     }
 
 
@@ -61,8 +56,14 @@ public class PlayerGriping : MonoBehaviour
     {
         Left = playerMovement.L_isGripping;
 
-        LHandOpen.SetActive(!Left);
-        LHandClose.SetActive(Left);
+        if (Left)
+        {
+            LHandRenderer.sprite = LHandClose;
+        } 
+        else
+        {
+            LHandRenderer.sprite = LHandOpen;
+        }
 
         lastLeft = Left;
     }
@@ -71,33 +72,18 @@ public class PlayerGriping : MonoBehaviour
     {
         Right = playerMovement.R_isGripping;
 
-        RHandOpen.SetActive(!Right);
-        RHandClose.SetActive(Right);
+        if (Right)
+        {
+            RHandRenderer.sprite = RHandClose;
+        }
+        else
+        {
+            RHandRenderer.sprite = RHandOpen;
+        }
 
         lastRight = Right;
     }
 
-    public void LeftHandRoataion()
-    {
-        if (Left) return;
-
-        Vector3 direction = LTogglePos.position - LHandPoint.transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        LHandOpen.transform.rotation = Quaternion.Euler(0, 0, angle);
-    }
-
-    public void RightHandRoataion()
-    {
-        if (Right) return;
-
-        Vector3 direction = RTogglePos.position - RHandPoint.transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        RHandOpen.transform.rotation = Quaternion.Euler(0, 0, angle);
-        //Debug.Log(angle);
-        //Debug.Log(RHandPoint.transform.rotation);
-    }
-
+   
 
 }
