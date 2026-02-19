@@ -2,22 +2,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class UIModeSelector : MonoBehaviour
+public class UIPublicPrivateSelector : MonoBehaviour
 {
-    [SerializeField] GameObject SinglePlayerUIGameobject;
-    [SerializeField] GameObject PublicPrivateSelectorGameObject;
+    [SerializeField] GameObject PublicLobbyUI;
     [SerializeField] GameObject MainMenuUIGameObject;
 
     private VisualElement root;
 
     private Button backButton;
-    private Button singleButton;
-    private Button multiButton;
+    private Button publicButton;
+    private Button privateButton;
 
     private bool usingController = false;
 
     private int currentFocusing = 1;
-
     private void OnEnable()
     {
         var uiDocument = GetComponent<UIDocument>();
@@ -25,23 +23,23 @@ public class UIModeSelector : MonoBehaviour
 
         // Assign buttons
         backButton = root.Q<Button>("0");
-        singleButton = root.Q<Button>("1");
-        multiButton = root.Q<Button>("2");
+        publicButton = root.Q<Button>("1");
+        privateButton = root.Q<Button>("2");
 
         // Remove old callbacks
         backButton.clicked -= OnBackButtonPress;
-        singleButton.clicked -= OnSinglePlayerButtonPress;
-        multiButton.clicked -= OnMultiPlayerButtonPress;
+        publicButton.clicked -= OnPublicButtonPress;
+        privateButton.clicked -= OnPrivateButtonPress;
 
         // Button click events
         backButton.clicked += OnBackButtonPress;
-        singleButton.clicked += OnSinglePlayerButtonPress;
-        multiButton.clicked += OnMultiPlayerButtonPress;
+        publicButton.clicked += OnPublicButtonPress;
+        privateButton.clicked += OnPrivateButtonPress;
 
         // Clear highlight classes (used for a bug fix where highlighting would stay after a re-enable
         backButton.RemoveFromClassList("LevelButtonsFocus");
-        singleButton.RemoveFromClassList("SingleMultiFocus");
-        multiButton.RemoveFromClassList("SingleMultiFocus");
+        publicButton.RemoveFromClassList("SingleMultiFocus");
+        privateButton.RemoveFromClassList("SingleMultiFocus");
 
         // Reset focus state
         usingController = Gamepad.current != null;
@@ -49,8 +47,8 @@ public class UIModeSelector : MonoBehaviour
         {
             currentFocusing = 1;
 
-            singleButton.Focus();
-            singleButton.AddToClassList("SingleMultiFocus");
+            publicButton.Focus();
+            publicButton.AddToClassList("SingleMultiFocus");
         }
         else
         {
@@ -84,8 +82,8 @@ public class UIModeSelector : MonoBehaviour
                 usingController = true;
                 currentFocusing = 1;
 
-                singleButton.AddToClassList("SingleMultiFocus");
-                singleButton.Focus();
+                publicButton.AddToClassList("SingleMultiFocus");
+                publicButton.Focus();
             }
 
             // LEFT
@@ -94,9 +92,9 @@ public class UIModeSelector : MonoBehaviour
                 if (currentFocusing == 2)
                 {
                     currentFocusing = 1;
-                    multiButton.RemoveFromClassList("SingleMultiFocus");
-                    singleButton.AddToClassList("SingleMultiFocus");
-                    singleButton.Focus();
+                    privateButton.RemoveFromClassList("SingleMultiFocus");
+                    publicButton.AddToClassList("SingleMultiFocus");
+                    publicButton.Focus();
                 }
             }
 
@@ -106,17 +104,17 @@ public class UIModeSelector : MonoBehaviour
                 if (currentFocusing == 1)
                 {
                     currentFocusing = 2;
-                    singleButton.RemoveFromClassList("SingleMultiFocus");
-                    multiButton.AddToClassList("SingleMultiFocus");
-                    multiButton.Focus();
+                    publicButton.RemoveFromClassList("SingleMultiFocus");
+                    privateButton.AddToClassList("SingleMultiFocus");
+                    privateButton.Focus();
                 }
             }
 
             // UP
             if (up && currentFocusing != 0)
             {
-                if (currentFocusing == 1) singleButton.RemoveFromClassList("SingleMultiFocus");
-                else if (currentFocusing == 2) multiButton.RemoveFromClassList("SingleMultiFocus");
+                if (currentFocusing == 1) publicButton.RemoveFromClassList("SingleMultiFocus");
+                else if (currentFocusing == 2) privateButton.RemoveFromClassList("SingleMultiFocus");
 
                 currentFocusing = 0;
                 backButton.AddToClassList("LevelButtonsFocus");
@@ -128,15 +126,15 @@ public class UIModeSelector : MonoBehaviour
             {
                 currentFocusing = 1;
                 backButton.RemoveFromClassList("LevelButtonsFocus");
-                singleButton.AddToClassList("SingleMultiFocus");
-                singleButton.Focus();
+                publicButton.AddToClassList("SingleMultiFocus");
+                publicButton.Focus();
             }
         }
         else if (!usingController)
         {
             backButton.RemoveFromClassList("LevelButtonsFocus");
-            singleButton.RemoveFromClassList("SingleMultiFocus");
-            multiButton.RemoveFromClassList("SingleMultiFocus");
+            publicButton.RemoveFromClassList("SingleMultiFocus");
+            privateButton.RemoveFromClassList("SingleMultiFocus");
             root.Focus();
         }
 
@@ -177,17 +175,14 @@ public class UIModeSelector : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    private void OnSinglePlayerButtonPress()
+    private void OnPublicButtonPress()
     {
-        GameMode.IsMultiplayer = false;
-        SinglePlayerUIGameobject.SetActive(true);
+        PublicLobbyUI.SetActive(true);
         this.gameObject.SetActive(false);
     }
 
-    private void OnMultiPlayerButtonPress()
+    private void OnPrivateButtonPress()
     {
-        GameMode.IsMultiplayer = true;
-        PublicPrivateSelectorGameObject.SetActive(true);
-        this.gameObject.SetActive(false);
+        Debug.Log("Multiplayer pressed");
     }
 }

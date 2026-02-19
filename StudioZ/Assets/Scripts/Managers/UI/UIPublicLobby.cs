@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using Unity.Services.Lobbies.Models;
 
 
-public class PublicLobby : MonoBehaviour
+public class UIPublicLobby : MonoBehaviour
 {
     private SimpleMatchmaking simpleMatchmaking;
     private VisualElement root;
