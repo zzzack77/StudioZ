@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/BA-TestLevel.unity
     guid: b0a7c770ac3eae64db6e6587c0825950
-  - enabled: 0
+  - enabled: 1
     path: Assets/Data/Multiplayer/EasyLobbyScene.unity
     guid: 4de1006fbefa5234d9df95157a4cfd9b
   - enabled: 0
@@ -53,6 +53,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Data/Multiplayer/MultiplayerBreaker.unity
     guid: b7469ef69da157c449d638d1a4bbba8f
+  - enabled: 1
+    path: Assets/Scenes/Multiplayer/MultiplayerBootstrap.unity
+    guid: 35b1b0cd1dfefa546bde1f78330062a1
+  - enabled: 1
+    path: Assets/Scenes/Multiplayer/MultiplayerGame.unity
+    guid: 9c0c914ebc112b04e8ae4f48105d45ad
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
