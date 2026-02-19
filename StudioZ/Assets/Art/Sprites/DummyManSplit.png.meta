@@ -1,0 +1,338 @@
+fileFormatVersion: 2
+guid: 98d1961d4a5881a44b5aec7cc97d672f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7258874711234571697
+    second: DummyManSplit_0
+  - first:
+      213: -6351211833559535527
+    second: DummyManSplit_1
+  - first:
+      213: 7281472770858093911
+    second: DummyManSplit_2
+  - first:
+      213: -8217252371105351789
+    second: DummyManSplit_3
+  - first:
+      213: -8130281100400362586
+    second: DummyManSplit_4
+  - first:
+      213: 1094254421125267702
+    second: DummyManSplit_5
+  - first:
+      213: 6347847337020985407
+    second: DummyManSplit_6
+  - first:
+      213: 890253480213964636
+    second: DummyManSplit_7
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DummyManSplit_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 634
+        width: 132
+        height: 127
+      alignment: 9
+      pivot: {x: 0.6753185, y: 0.26675633}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bde3383714bcb460800000000000000
+      internalID: 7258874711234571697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DummyManSplit_1
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 510
+        width: 222
+        height: 212
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9503d6fcc76fbd7a0800000000000000
+      internalID: -6351211833559535527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DummyManSplit_2
+      rect:
+        serializedVersion: 2
+        x: 878
+        y: 631
+        width: 134
+        height: 129
+      alignment: 9
+      pivot: {x: 0.31348157, y: 0.27037248}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75d0dacf7ecfc0560800000000000000
+      internalID: 7281472770858093911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DummyManSplit_3
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 374
+        width: 212
+        height: 229
+      alignment: 9
+      pivot: {x: 0.7929851, y: 0.20980449}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 397778e518476fd80800000000000000
+      internalID: -8217252371105351789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DummyManSplit_4
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 303
+        width: 162
+        height: 160
+      alignment: 9
+      pivot: {x: 0.7647392, y: 0.23195133}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ab709e4a607b2f80800000000000000
+      internalID: -8130281100400362586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DummyManSplit_5
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 0
+        width: 243
+        height: 404
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f0821139929f2f00800000000000000
+      internalID: 1094254421125267702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DummyManSplit_6
+      rect:
+        serializedVersion: 2
+        x: 761
+        y: 299
+        width: 162
+        height: 161
+      alignment: 9
+      pivot: {x: 0.22643591, y: 0.25581503}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f309b8b4585181850800000000000000
+      internalID: 6347847337020985407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DummyManSplit_7
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 371
+        width: 207
+        height: 232
+      alignment: 9
+      pivot: {x: 0.19230409, y: 0.2022225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c576530d2d0da5c00800000000000000
+      internalID: 890253480213964636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5f8949a407c832c429f9714938604ae9
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      DummyManSplit_0: 7258874711234571697
+      DummyManSplit_1: -6351211833559535527
+      DummyManSplit_2: 7281472770858093911
+      DummyManSplit_3: -8217252371105351789
+      DummyManSplit_4: -8130281100400362586
+      DummyManSplit_5: 1094254421125267702
+      DummyManSplit_6: 6347847337020985407
+      DummyManSplit_7: 890253480213964636
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
