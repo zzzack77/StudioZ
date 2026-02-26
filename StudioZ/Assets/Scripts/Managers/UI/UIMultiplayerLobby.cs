@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 
 public class UIMultiplayerLobby : MonoBehaviour
@@ -23,21 +24,23 @@ public class UIMultiplayerLobby : MonoBehaviour
     [SerializeField] private GameObject Player4;
     
     [SerializeField] private GameObject hostOnlyButton;
+
+    [SerializeField] private GameObject JoinCodeUI;
+    [SerializeField] private TextMeshProUGUI JoinCode;
+    
+    [Header("Scene Reference")] 
+    [SerializeField] private string gameScene;
     
    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       
-        
-        
+  
         if (NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsClient)
         {
             SimpleMatchmaking.Instance.ForceLobbyRefresh();
         }
-         
-        
-        
+        ClearUI();
         if (SimpleMatchmaking.Instance != null)
         {
             // Subscribe to the event
@@ -56,8 +59,8 @@ public class UIMultiplayerLobby : MonoBehaviour
             }
            
         }
-        ClearUI();
-        
+        JoinCodeUI.SetActive(SimpleMatchmaking.Instance.ConnectedLobby.IsPrivate);
+        JoinCode.text = SimpleMatchmaking.Instance.ConnectedLobby.LobbyCode;
         
     }
     
@@ -69,27 +72,12 @@ public class UIMultiplayerLobby : MonoBehaviour
             SimpleMatchmaking.Instance.OnLobbyPlayersUpdated -= UpdatePlayerList;
         }
     }
-    public void ChangePlayerName(string newName)
-    {
-        SimpleMatchmaking.Instance.ChangePlayerName(newName);
-    }
-    public void QuickJoinGame()
-    {
-        
-        SimpleMatchmaking.Instance.CreateOrJoinLobby();
-    }
-
-   
-
+  
     private void UpdatePlayerList(List<Player> players)
     {
         ClearUI();
         
-        foreach (var joinedPlayer in players)
-        {
-            
-        }
-
+  
         for (int i = 0; i < players.Count; i++)
         {
 
@@ -128,6 +116,7 @@ public class UIMultiplayerLobby : MonoBehaviour
 
 
         UpdateHostUI();
+        
     }
 
     
@@ -138,7 +127,7 @@ public class UIMultiplayerLobby : MonoBehaviour
         {
             
             SimpleMatchmaking.Instance.LockLobby();
-            NetworkManager.Singleton.SceneManager.LoadScene("MultiplayerGame", LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene(gameScene, LoadSceneMode.Single);
         }
     } 
     

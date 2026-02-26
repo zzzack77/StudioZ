@@ -103,7 +103,7 @@ public class SimpleMatchmaking : MonoBehaviour
     /// <summary>
     /// Creates a private lobby and sets the local player as the Host.
     /// </summary>
-    public async void CreatePrivateLobby()
+    public async Task<Lobby> CreatePrivateLobby()
     {
         await Authenticate();
         const int maxPlayers = 4;
@@ -117,6 +117,7 @@ public class SimpleMatchmaking : MonoBehaviour
             // 2. Setup Lobby options, making it private and storing the Relay code
             var options = new CreateLobbyOptions
             {
+                Player = GetPlayer(),
                 IsPrivate = true,
                 Data = new Dictionary<string, DataObject>
                 {
@@ -134,6 +135,7 @@ public class SimpleMatchmaking : MonoBehaviour
             // 5. Start the Heartbeat to keep the lobby alive on the server
             StartHeartbeat();
 
+            OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
             // 6. Configure the NGO Transport to use the Relay Allocation data for hosting
             transport.SetHostRelayData(
                 allocation.RelayServer.IpV4,
@@ -142,22 +144,28 @@ public class SimpleMatchmaking : MonoBehaviour
                 allocation.Key,
                 allocation.ConnectionData
             );
+            
+           
 
             // 7. Start NGO as Host
             NetworkManager.Singleton.StartHost();
             Debug.Log($"Private lobby created. Code: {connectedLobby.LobbyCode}");
+            return connectedLobby;
         }
         catch (Exception e)
         {
-            Debug.LogError($"Failed to create private lobby {e}");
+            Debug.LogWarning($"Failed to create private lobby {e}");
+            return null;
         }
+
+        
     }
 
     /// <summary>
     /// Joins a private lobby using a Lobby Code provided by the user.
     /// </summary>
     /// <param name="joinCode">The 6-character Lobby Code.</param>
-    public async void JoinPrivateLobbyWithCode(string joinCode)
+    public async Task<bool> JoinPrivateLobbyWithCode(string joinCode)
     {
         await Authenticate();
 
@@ -184,13 +192,14 @@ public class SimpleMatchmaking : MonoBehaviour
             
             // 6. Start listening for migration events
             await SubscribeToLobbyEvents();
-            
             OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
+            return true;
         }
         catch (Exception e)
         {
-            Debug.LogError($"Failed to join private lobby: {e}");
+            Debug.LogWarning($"Failed to join private lobby: {e}");
         }
+        return false;
     }
 
     // --- Utility Methods ---
@@ -472,6 +481,9 @@ public class SimpleMatchmaking : MonoBehaviour
         // If you need to validate specific data from the client, you can check request.Payload here
     }
 
+
+   
+
     // -------------------------------------------------------------------------
     // --- LOBBY EVENTS & HOST MIGRATION LOGIC ---
     // -------------------------------------------------------------------------
@@ -499,6 +511,8 @@ public class SimpleMatchmaking : MonoBehaviour
     /// Event handler triggered when the lobby state changes (e.g., Host leaves, data updates).
     /// This is the core of the Host Migration logic.
     /// </summary>
+    ///
+  
     private void OnLobbyChanged(ILobbyChanges changes)
     {
         // 1. Apply changes to the local lobby object
@@ -509,6 +523,8 @@ public class SimpleMatchmaking : MonoBehaviour
         {
             OnLobbyPlayersUpdated?.Invoke(connectedLobby.Players);
         }
+
+        
         
         
         
@@ -655,6 +671,21 @@ public class SimpleMatchmaking : MonoBehaviour
             Debug.LogError($"Client Migration failed: {e}");
         }
     }
+    
+    public void ChangePlayerName(string newName)
+    {
+        if (newName.Length > 1)
+        {
+            playerName = newName;
+        }
+        
+    }
+    
+    public bool IsHost =>
+        connectedLobby != null && connectedLobby.HostId == playerId;
+    
+    
+    
 
     // --- HEARTBEAT HELPERS ---
 
@@ -692,6 +723,11 @@ public class SimpleMatchmaking : MonoBehaviour
             yield return delay;
         }
     }
+    
+    
+    
+    
+   
 
     // --- CLEANUP ---
 
@@ -728,15 +764,5 @@ public class SimpleMatchmaking : MonoBehaviour
         }
     }
 
-    public void ChangePlayerName(string newName)
-    {
-        if (newName.Length > 1)
-        {
-            playerName = newName;
-        }
-        
-    }
-    
-    public bool IsHost =>
-        connectedLobby != null && connectedLobby.HostId == playerId;
+  
 }
