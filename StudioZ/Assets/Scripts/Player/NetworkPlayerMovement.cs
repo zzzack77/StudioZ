@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Cinemachine;
 using Unity.Netcode;
@@ -12,6 +13,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private TimerHandeler timerHandeler;
     [SerializeField] private GameObject HUD;
     private HUDManager hudManager;
+
+    public static Action<bool> OnSetCanMove;
+    private bool canMove = true; // To track if the player can move their arms or grab
 
 
     [Header("Rigidbodys")]
@@ -124,16 +128,36 @@ public class NetworkPlayerMovement : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsOwner) enabled = false;
         SpawnPlayer();
+        GameModeBase gm = FindFirstObjectByType<GameModeBase>(); //Gets the game mode script reference
+        if (gm != null && gm.isActiveAndEnabled) // Checks to see if the game mode script is in the game and active
+        {
+            SetCanMove(false); // Sets the player so they can,t move their arms or grab
+        }
+
     }
 
     private void Awake()
     {
         // Get the input interface from the PlayerInputProvider script on this game object
         input = GetComponent<IPlayerInput>();
+        
     }
+
+    private void OnEnable()
+    {
+        OnSetCanMove += SetCanMove;
+    }
+
+    private void OnDisable()
+    {
+        OnSetCanMove -= SetCanMove;
+    }
+
+   
     private void Start()
     {
         SpawnPlayer();
+        
     }
     public void SpawnPlayer()
     {
@@ -200,10 +224,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        JointChecking(); // Check if joints need to be created or destroyed
-        InitializeGamepad(); // Read gamepad inputs
-        ControllerMovement(); // Move hands based on joystick input
-        GrippingLogic(); // Handle gripping logic
+        if (canMove)
+        {
+            JointChecking(); // Check if joints need to be created or destroyed
+            InitializeGamepad(); // Read gamepad inputs
+            ControllerMovement(); // Move hands based on joystick input
+            GrippingLogic(); // Handle gripping logic
+        }
+        
         if (Input.GetKeyDown(KeyCode.Escape)) OpenMenu();
     }
     private void FixedUpdate()
@@ -585,5 +613,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
         SoftJointLimit linearLimit = new SoftJointLimit();
         linearLimit.limit = armLength; // arm can stretch this far
         R_currentJoint.linearLimit = linearLimit;
+    }
+
+
+    private void SetCanMove(bool setCanMove)
+    {
+        canMove = setCanMove;
     }
 }
