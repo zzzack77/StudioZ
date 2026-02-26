@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/BA-TestLevel.unity
     guid: b0a7c770ac3eae64db6e6587c0825950
   - enabled: 1
-    path: Assets/Data/Multiplayer/EasyLobbyScene.unity
+    path: Assets/Scenes/Multiplayer/EasyLobbyScene.unity
     guid: 4de1006fbefa5234d9df95157a4cfd9b
   - enabled: 0
     path: Assets/Scenes/BW/BWLobbyScene.unity
