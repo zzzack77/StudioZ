@@ -22,6 +22,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private Rigidbody bodyRB;
     [SerializeField] public Rigidbody L_handRB;
     [SerializeField] public Rigidbody R_handRB;
+    
+    
 
     [Header("Shoulder Points")]
     [SerializeField] private Transform L_shoulderPoint;
@@ -96,6 +98,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool L_canGripCrimp { get; set; }
     public bool L_canGripPocket { get; set; }
     public bool L_canGripBreaker { get; set; }
+    public bool L_canGripWeapon  { get; set; }
+    public GameObject L_GripWeaponGameObject { get; set; }
 
     // Right Grips
     public bool R_canGripFinish     { get; set; }
@@ -104,6 +108,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool R_canGripJug        { get; set; }
     public bool R_canGripCrimp  { get; set; }
     public bool R_canGripPocket     { get; set; }
+    
+    public bool R_canGripWeapon  { get; set; }
+    public GameObject R_GripWeaponGameObject { get; set; }
 
     [Header("Grip Settings")]
     public bool L_isGripping = false;
@@ -209,6 +216,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         L_canGripJug = false;
         L_canGripCrimp = false;
         L_canGripPocket = false;
+        L_canGripWeapon =  false;
 
         R_isGripping = false;
         R_isGrippingPlayer = false;
@@ -219,6 +227,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         R_canGripJug = false;
         R_canGripCrimp = false;
         R_canGripPocket = false;
+        R_canGripWeapon =  false;
     }
 
     // Update is called once per frame
@@ -231,6 +240,27 @@ public class NetworkPlayerMovement : NetworkBehaviour
             ControllerMovement(); // Move hands based on joystick input
             GrippingLogic(); // Handle gripping logic
         }
+
+        if (input.TriggerLPressedThisFrame())
+        {
+           if (L_canGripWeapon) {OnLGripWeapon();}
+        }
+        if (input.TriggerRPressedThisFrame())
+        {
+             if (R_canGripWeapon) {OnRGripWeapon();}
+        }
+
+        if (input.TriggerLReleasedThisFrame())
+        { 
+            
+            if(lWeapon != null){OnLGripWeaponRelease();Debug.Log("trigger released" );}
+        }
+        if (input.TriggerRReleasedThisFrame())
+        { 
+           
+            if(rWeapon != null){OnRGripWeaponRelease(); Debug.Log("trigger released" );}
+        }
+        
         
         if (Input.GetKeyDown(KeyCode.Escape)) OpenMenu();
     }
@@ -290,7 +320,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         // If stick is pushed downward
         if ((invertGrippingInput && joyStick.y < downThreshold) || (!invertGrippingInput && joyStick.y > -downThreshold))
         {
-            Debug.Log(joyStick.y);
+           // Debug.Log(joyStick.y);
             // apply bias for double handed or single handed grip types
             if (R_isGripping && L_isGripping) joyStick.y *= doubleHandedUpwardBoost;
             else joyStick.y *= singleHandUpwardBoost; 
@@ -342,7 +372,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
             else if (L_canGripPlayer) { OnLPlayerGrip(); }
             else if (L_canGripJug && !input.BumperLPressed()) OnLGrip();
             else if (L_canGripPocket && input.BumperLPressed()) OnLGrip();
+            
             else if (!isRespawning) { OnLGripRelease(); }
+            
         }
         else if (input.BumperLPressed()) // Bumper
         {
@@ -364,6 +396,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
             else if (R_canGripPlayer) { OnRPlayerGrip(); }
             else if (R_canGripJug && !input.BumperRPressed()) OnRGrip(); // !right shoulder
             else if (R_canGripPocket && input.BumperRPressed()) OnRGrip(); // right shoulder
+            
             else if (!isRespawning) { OnRGripRelease(); }
         }
         else if (input.BumperRPressed()) // right shoulder
@@ -408,6 +441,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         L_hasVibrated = false;
         L_isGripping = false; 
         L_handRB.constraints = RigidbodyConstraints.None;
+        
+        
     }
     private void OnRGrip()
     {
@@ -439,6 +474,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         R_hasVibrated = false;
         R_isGripping = false;
         R_handRB.constraints = RigidbodyConstraints.None;
+        
+        
     }
     private void OnLPlayerGrip()
     {
@@ -619,5 +656,56 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private void SetCanMove(bool setCanMove)
     {
         canMove = setCanMove;
+    }
+    
+    public Transform L_HoldPoint;
+    public Transform R_HoldPoint;
+    
+    Weapon rWeapon;
+    Weapon lWeapon;
+    private void OnLGripWeapon()
+    {
+        Debug.Log("Griping Weapon Left");
+        lWeapon = L_GripWeaponGameObject.GetComponent<Weapon>();
+        if (lWeapon)
+        {
+            L_isGripping = true;
+            lWeapon.AttachWeapon(L_HoldPoint);
+        }
+    }
+     
+    private void OnRGripWeapon()
+    {
+        Debug.Log("Griping Weapon Right");
+          rWeapon  = R_GripWeaponGameObject.GetComponent<Weapon>();
+        if (rWeapon)
+        {
+            R_isGripping = true;
+            rWeapon.AttachWeapon(R_HoldPoint);
+        }
+    }
+    
+    private void OnLGripWeaponRelease()
+    {
+        
+      
+        if (lWeapon)
+        {
+            lWeapon.DeattachWeapon();
+           
+            lWeapon =  null;
+        }
+    }
+    private void OnRGripWeaponRelease()
+    {
+        
+        
+        if (rWeapon)
+        {
+            rWeapon.DeattachWeapon();
+            
+            rWeapon = null;
+
+        }
     }
 }

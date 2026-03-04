@@ -108,6 +108,7 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
         triggerLAction = InputSystem.actions.FindAction("TriggerL");
         triggerRAction = InputSystem.actions.FindAction("TriggerR");
 
+        
         // Crimp Input
         bumperLAction = InputSystem.actions.FindAction("BumperL");
         bumperRAction = InputSystem.actions.FindAction("BumperR");
@@ -174,6 +175,15 @@ public class PlayerInputProvider : MonoBehaviour, IPlayerInput
 
         triggerRWasDown = isDown;
         return pressedThisFrame;
+    }
+
+    public bool TriggerLReleasedThisFrame()
+    {
+       return  triggerLAction.WasReleasedThisDynamicUpdate();
+    }
+    public bool TriggerRReleasedThisFrame()
+    {
+        return  triggerRAction.WasReleasedThisDynamicUpdate();
     }
 
 

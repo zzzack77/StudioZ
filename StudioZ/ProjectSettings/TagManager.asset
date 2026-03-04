@@ -9,6 +9,7 @@ TagManager:
   - Crimp
   - Pocket
   - Checkpoint
+  - Weapon
   layers:
   - Default
   - TransparentFX

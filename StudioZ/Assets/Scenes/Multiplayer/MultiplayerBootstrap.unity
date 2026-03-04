@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1e3bb703a5ac39439c3095c211c89f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JoinCodeKey: Branch:Lobby
+  JoinCodeKey: Branch:Combat
   playerName: 
 --- !u!1 &351797046
 GameObject:

@@ -21,6 +21,9 @@ public interface IPlayerInput
     bool TriggerLPressedThisFrame();
 
     bool TriggerRPressedThisFrame();
+    
+    bool TriggerLReleasedThisFrame();
+    bool TriggerRReleasedThisFrame();
 
     // Shoulder buttons
     bool BumperLPressed();
