@@ -25,7 +25,7 @@ public abstract class GameModeBase : MonoBehaviour
         SetMatchInProgress(false);
         SetPlayersAlive();
         //ClearLevel(); // Cant clear level yet as the first index of level prefabs is empty but needs to be filled
-        SpawnLevel();
+        //SpawnLevel();
         //FreezePlayerMovement(); 
         playersAlive = GameManager.Instance.playerGameObjects.Count;
     }
@@ -59,6 +59,7 @@ public abstract class GameModeBase : MonoBehaviour
 
     private IEnumerator MatchStartCountdown()
     {
+        FreezePlayerMovement();
         yield return new WaitForSeconds(gracePeriodDuration);
         // Show Timer countdown UI
         Debug.Log("Grace Period Over");
