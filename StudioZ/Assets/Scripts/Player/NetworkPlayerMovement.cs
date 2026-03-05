@@ -27,6 +27,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private Transform L_shoulderPoint;
     [SerializeField] private Transform R_shoulderPoint;
 
+    [Header("Hand Reset Points")]
+    [SerializeField] private Transform L_HandResetPoint;
+    [SerializeField] private Transform R_HandResetPoint;
+
 
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
@@ -317,7 +321,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 Mathf.Clamp(input.StickL.y, -1, 1) * armLength,
                 0f);
 
-            Vector3 targetPos = L_WorldOffset + L_shoulderPoint.transform.position;
+            Vector3 targetPos = L_WorldOffset + L_HandResetPoint.transform.position;
             L_handRB.transform.position = Vector3.MoveTowards(L_handRB.transform.position, targetPos, handMoveSpeed * Time.deltaTime);
         }
 
@@ -328,7 +332,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
                 Mathf.Clamp(input.StickR.y, -1, 1) * armLength,
                 0f);
 
-            Vector3 targetPos = R_WorldOffset + R_shoulderPoint.transform.position;
+            Vector3 targetPos = R_WorldOffset + R_HandResetPoint.transform.position;
             R_handRB.transform.position = Vector3.MoveTowards(R_handRB.transform.position, targetPos, handMoveSpeed * Time.deltaTime);
         }
     }
