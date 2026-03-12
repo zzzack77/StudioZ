@@ -3,72 +3,28 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class UIEnterName : MonoBehaviour
+public class UIEnterPrivateCode : MonoBehaviour
 {
     [SerializeField] private GameObject MainMenuUIGameObject;
-    [SerializeField] private GameObject PublicPrivateSelectorUIGameObject;
+    [SerializeField] private GameObject PrivateLobyGameObject;
     private VisualElement root;
     private bool controllerActive = false;
     private bool mouseActive = false;
 
-    private Label yourNameLabel;
+    
     private Button backButton;
     private TextField textInput;
     private Button enterButton;
 
     [SerializeField] private int currentFocusing = 1;
 
-    private readonly string[] bannedNames =
-    {
-        "nigger",
-        "Nigger",
-        "NIGGER",
-        "n1gger",
-
-        "Fucker",
-        "fuck",
-        "FUCK",
-        "SHIT",
-        "shit"
-    };
-
-    private readonly string[] randomNames =
-    {
-        "BigMan",
-        "OoglyBoogly",
-        "BingBong",
-        "BonkerConker",
-        "SUMB",
-        "WaffleStomper",
-        "NaughtyGeezer",
-        "Bob",
-        "Dave",
-        "Dogg",
-        "SillyGoose",
-        "CoffeeGoneCold",
-        "WetBlanket",
-        "RatBag",
-        "MrIDidntEnterAName",
-    };
+    
 
     private void OnEnable()
     {
         var uiDocument = GetComponent<UIDocument>();
         root = uiDocument.rootVisualElement;
 
-        yourNameLabel = root.Q<Label>("YourName");
-        if (PlayerDataManager.Instance != null)
-        {
-            if (PlayerDataManager.Instance.GetPlayerName() != "")
-            {
-                yourNameLabel.text = "Your Name: " + PlayerDataManager.Instance.GetPlayerName();
-            }
-            else
-            {
-                yourNameLabel.text = "Your Name";
-            }
-        }
-        
         backButton = root.Q<Button>("BackButton");
         textInput = root.Q<TextField>("TextInput");
         enterButton = root.Q<Button>("EnterButton");
@@ -166,30 +122,11 @@ public class UIEnterName : MonoBehaviour
     }
     private void EnterButtonPress()
     {
-        string inputName = textInput.value.Trim();
+        string inputCode = textInput.value.Trim();
 
-        // If empty, pick a random name
-        if (string.IsNullOrEmpty(inputName))
-        {
-            inputName = randomNames[UnityEngine.Random.Range(0, randomNames.Length)];
-        }
+        SimpleMatchmaking.Instance.JoinPrivateLobbyWithCode(inputCode);
 
-        // Check banned names (case-insensitive)
-        foreach (string banned in bannedNames)
-        {
-            if (inputName.Equals(banned, StringComparison.OrdinalIgnoreCase))
-            {
-                Debug.Log("Banned name entered, assigning random name");
-                inputName = randomNames[UnityEngine.Random.Range(0, randomNames.Length)];
-                break;
-            }
-        }
-
-        PlayerDataManager.Instance.SetPlayerName(inputName);
-        SimpleMatchmaking.Instance.playerName = inputName;
-        yourNameLabel.text = "Your Name: " + inputName;
-        Debug.Log("Enter Button Pressed with name: " + inputName);
-        PublicPrivateSelectorUIGameObject.SetActive(true);
+        PrivateLobyGameObject.SetActive(true);
         this.gameObject.SetActive(false);
     }
 }

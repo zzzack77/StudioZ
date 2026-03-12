@@ -16,7 +16,7 @@ public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance;
     private string filePath;
-    private PlayerData cachedData;
+    [SerializeField] private PlayerData cachedData;
 
     void Awake()
     {

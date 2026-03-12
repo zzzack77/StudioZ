@@ -4,7 +4,8 @@ using UnityEngine.UIElements;
 
 public class UIPublicPrivateSelector : MonoBehaviour
 {
-    [SerializeField] GameObject PublicLobbyUI;
+    [SerializeField] GameObject PublicLobbyGameObject;
+    [SerializeField] GameObject PrivateHostJoinGameObject;
     [SerializeField] GameObject MainMenuUIGameObject;
 
     private VisualElement root;
@@ -177,12 +178,13 @@ public class UIPublicPrivateSelector : MonoBehaviour
 
     private void OnPublicButtonPress()
     {
-        PublicLobbyUI.SetActive(true);
+        PublicLobbyGameObject.SetActive(true);
         this.gameObject.SetActive(false);
     }
 
     private void OnPrivateButtonPress()
     {
-        Debug.Log("Multiplayer pressed");
+        PrivateHostJoinGameObject.SetActive(true);
+        this.gameObject.SetActive(false);
     }
 }

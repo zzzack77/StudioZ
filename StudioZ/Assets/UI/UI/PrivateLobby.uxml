@@ -1,0 +1,52 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/UIUSS.uss?fileID=7433441132597879392&amp;guid=1a401e8c1c65d0847b107e1238fc60a9&amp;type=3#UIUSS" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(234, 233, 238);">
+        <ui:VisualElement style="flex-grow: 1; height: 15%; padding-left: 31px; justify-content: flex-start; flex-direction: row; align-items: center;">
+            <ui:Label text="Private Loby     " name="Heading" class="HeadingText" style="-unity-text-align: middle-left; width: 505px;" />
+            <ui:Label text="Code: 12345" name="JoinCode" class="HeadingText" style="-unity-text-align: middle-left;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; height: 85%; flex-direction: row;">
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; width: 35%; padding-top: 0; padding-right: 43px; padding-bottom: 100px; padding-left: 43px; justify-content: space-around;">
+                <ui:VisualElement name="1VE" style="flex-grow: 1; background-color: rgb(192, 192, 192); flex-direction: row; height: 15%; min-height: 15%; max-height: 15%; width: 100%; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-bottom: 19px; padding-top: 19px; padding-right: 19px; padding-left: 19px;">
+                    <ui:VisualElement name="1Colour" style="flex-grow: 1; background-color: rgb(245, 63, 63); width: 76px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px;" />
+                    <ui:VisualElement style="flex-grow: 1; justify-content: center; padding-left: 19px; width: 85%;">
+                        <ui:Label text="Player1" name="1Name" class="GeneralText" style="-unity-text-align: upper-left;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="2VE" style="flex-grow: 1; background-color: rgb(192, 192, 192); flex-direction: row; height: 15%; min-height: 15%; max-height: 15%; width: 100%; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-bottom: 19px; padding-top: 19px; padding-right: 19px; padding-left: 19px; display: flex;">
+                    <ui:VisualElement name="2Colour" style="flex-grow: 1; background-color: rgb(68, 195, 231); width: 76px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px;" />
+                    <ui:VisualElement style="flex-grow: 1; justify-content: center; padding-left: 19px; width: 85%; display: flex;">
+                        <ui:Label text="Player2" name="2Name" class="GeneralText" style="-unity-text-align: upper-left; display: flex;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="3VE" style="flex-grow: 1; background-color: rgb(192, 192, 192); flex-direction: row; height: 15%; min-height: 15%; max-height: 15%; width: 100%; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-bottom: 19px; padding-top: 19px; padding-right: 19px; padding-left: 19px; display: flex;">
+                    <ui:VisualElement name="3Colour" style="flex-grow: 1; background-color: rgb(104, 229, 97); width: 76px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px;" />
+                    <ui:VisualElement style="flex-grow: 1; justify-content: center; padding-left: 19px; width: 85%;">
+                        <ui:Label text="Player3" name="3Name" class="GeneralText" style="-unity-text-align: upper-left;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement enabled="true" name="4VE" style="flex-grow: 1; background-color: rgb(192, 192, 192); flex-direction: row; height: 15%; min-height: 15%; max-height: 15%; width: 100%; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-bottom: 19px; padding-top: 19px; padding-right: 19px; padding-left: 19px; display: flex;">
+                    <ui:VisualElement name="4Colour" style="flex-grow: 1; background-color: rgb(214, 196, 70); width: 76px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px;" />
+                    <ui:VisualElement style="flex-grow: 1; justify-content: center; padding-left: 19px; width: 85%;">
+                        <ui:Label text="Player4" name="4Name" class="GeneralText" style="-unity-text-align: upper-left;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 65%; padding-bottom: 37px;">
+                <ui:VisualElement style="flex-grow: 1; height: 65%;">
+                    <ui:VisualElement style="flex-grow: 1; flex-direction: column; justify-content: space-around;">
+                        <ui:Label text="Level Name 123" name="LevelName" class="HeadingText" style="-unity-text-align: upper-center;" />
+                        <ui:VisualElement style="flex-grow: 1; padding-top: 21px; padding-right: 140px; padding-bottom: 30px; padding-left: 140px;">
+                            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/Sprites/Holds/Holds3.0/LargeCrimps.png?fileID=2800000&amp;guid=6831451dc32217a47983ad02e7dc1fe6&amp;type=3#LargeCrimps&quot;);" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: stretch; align-items: center; justify-content: space-evenly; height: 35%;">
+                    <ui:Button text="Exit" name="ExitButton" class="MenuButtons" style="font-size: 144px; -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0); color: rgb(204, 0, 0);" />
+                    <ui:Button text="Settings" name="SettingsButton" class="MenuButtons" style="font-size: 144px; color: rgb(152, 152, 152); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0);" />
+                    <ui:Button text="Start" name="StartButton" class="MenuButtons" style="font-size: 144px; color: rgb(52, 197, 51); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0); visibility: hidden;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
