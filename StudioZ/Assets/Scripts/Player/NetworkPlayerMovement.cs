@@ -27,6 +27,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private Transform L_shoulderPoint;
     [SerializeField] private Transform R_shoulderPoint;
 
+    [Header("Hand Reset Points")]
+    [SerializeField] private Transform L_handPoints;
+    [SerializeField] private Transform R_handPoints;
+
 
     private ConfigurableJoint L_currentJoint;
     private ConfigurableJoint R_currentJoint;
@@ -310,26 +314,35 @@ public class NetworkPlayerMovement : NetworkBehaviour
     // Move hand based on joystick input and handle gripping
     private void ControllerMovement()
     {
-        if (!L_isGripping)
-        {
-            Vector3 L_WorldOffset = new Vector3(
+        Vector3 L_WorldOffset = new Vector3(
                 Mathf.Clamp(input.StickL.x, -1, 1) * armLength,
                 Mathf.Clamp(input.StickL.y, -1, 1) * armLength,
                 0f);
-
-            Vector3 targetPos = L_WorldOffset + L_shoulderPoint.transform.position;
+        if (!L_isGripping)
+        {
+            Vector3 targetPos = L_WorldOffset + L_handPoints.transform.position;
             L_handRB.transform.position = Vector3.MoveTowards(L_handRB.transform.position, targetPos, handMoveSpeed * Time.deltaTime);
         }
+        else if (Vector3.Distance(L_handRB.transform.position, L_shoulderPoint.transform.position) < 0.1f)
+        {
+            Vector3 RestTargetPos = L_WorldOffset + L_handPoints.transform.position;
+            L_handRB.transform.position = Vector3.MoveTowards(L_handRB.transform.position, RestTargetPos, handMoveSpeed * Time.deltaTime);
+        }
+
+        Vector3 R_WorldOffset = new Vector3(
+               Mathf.Clamp(input.StickR.x, -1, 1) * armLength,
+               Mathf.Clamp(input.StickR.y, -1, 1) * armLength,
+               0f);
 
         if (!R_isGripping)
         {
-            Vector3 R_WorldOffset = new Vector3(
-                Mathf.Clamp(input.StickR.x, -1, 1) * armLength,
-                Mathf.Clamp(input.StickR.y, -1, 1) * armLength,
-                0f);
-
-            Vector3 targetPos = R_WorldOffset + R_shoulderPoint.transform.position;
+            Vector3 targetPos = R_WorldOffset + R_handPoints.transform.position;
             R_handRB.transform.position = Vector3.MoveTowards(R_handRB.transform.position, targetPos, handMoveSpeed * Time.deltaTime);
+        }
+        else if (Vector3.Distance(R_handRB.transform.position, R_shoulderPoint.transform.position) < 0.1f)
+        {
+            Vector3 RestTargetPos = R_WorldOffset + R_handPoints.transform.position;
+            R_handRB.transform.position = Vector3.MoveTowards(R_handRB.transform.position, RestTargetPos, handMoveSpeed * Time.deltaTime);
         }
     }
     private void GrippingLogic()
