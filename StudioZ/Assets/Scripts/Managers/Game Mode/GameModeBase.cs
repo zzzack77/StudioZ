@@ -1,14 +1,25 @@
+using NUnit.Framework;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public abstract class GameModeBase : MonoBehaviour
 {
-    protected float gracePeriodDuration = 10;
+    public static event Action<float> OnCountdownUpdated;
+    protected float gracePeriodDuration = 1;
     protected float startCountDownDuration = 5;
     protected int levelIndex = 0;
     protected int playersAlive;
     public bool MatchInProgress {  get; protected set; }
+
+    protected List<GameObject> playerRank = new List<GameObject>();
+
+    protected float countdownRemaining;
+    protected bool countdownActive;
+
+    protected float startCountdownTime = 3f;
 
     protected void SetMatchInProgress(bool value)
     {
@@ -23,9 +34,10 @@ public abstract class GameModeBase : MonoBehaviour
     {
         // Game Setup
         SetMatchInProgress(false);
+        playerRank.Clear();
         SetPlayersAlive();
         //ClearLevel(); // Cant clear level yet as the first index of level prefabs is empty but needs to be filled
-        SpawnLevel();
+        //SpawnLevel(); // Done from a different script
         //FreezePlayerMovement(); 
         playersAlive = GameManager.Instance.playerGameObjects.Count;
     }
@@ -59,10 +71,35 @@ public abstract class GameModeBase : MonoBehaviour
 
     private IEnumerator MatchStartCountdown()
     {
+        FreezePlayerMovement();
+        SetCountdownTime(startCountdownTime);
+        countdownActive = true;
+        int lastSecond = Mathf.CeilToInt(countdownRemaining);
+
+        
+        // Grace period
         yield return new WaitForSeconds(gracePeriodDuration);
         // Show Timer countdown UI
         Debug.Log("Grace Period Over");
-        yield return new WaitForSeconds(startCountDownDuration);
+
+        OnCountdownUpdated?.Invoke(lastSecond); // Invoke with the initial value
+        while (countdownRemaining > 0f)
+        {
+            countdownRemaining -= Time.deltaTime;
+
+            int currentSecond = Mathf.CeilToInt(countdownRemaining);
+
+            if (currentSecond != lastSecond) 
+            {
+                 lastSecond = currentSecond;
+                 OnCountdownUpdated?.Invoke(currentSecond);
+            }
+            yield return null;
+        }
+
+        OnCountdownUpdated?.Invoke(0);
+
+        countdownActive = false;
         Debug.Log("Match Start!");
         UnFreezePlayerMovement();
         SetMatchInProgress(true);
@@ -99,8 +136,18 @@ public abstract class GameModeBase : MonoBehaviour
         PlayerAliveState.OnSetAllAlive?.Invoke();
     }
 
-    protected virtual void CheckWinCondition()
+    protected virtual void CheckWinCondition(GameObject player)
     {
         
+    }
+
+    protected void OnMatchCountdownUpdated(float countdownTime)
+    {
+        OnCountdownUpdated?.Invoke(countdownTime);
+    }
+
+    protected void SetCountdownTime(float countdownTime)
+    {
+        countdownRemaining = countdownTime;
     }
 }

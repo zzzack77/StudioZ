@@ -632,5 +632,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private void SetCanMove(bool setCanMove)
     {
         canMove = setCanMove;
+        Debug.Log("Can move triggered");
     }
 }

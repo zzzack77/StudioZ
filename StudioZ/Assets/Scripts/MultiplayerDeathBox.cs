@@ -9,7 +9,7 @@ public class MultiplayerDeathBox : NetworkBehaviour
         Debug.Log("Initial Collision");
         if (!IsServer) return;
         playerGO = collision.gameObject.transform.parent.gameObject;
-        Debug.Log("Is server");
+
         if (playerGO.TryGetComponent<NetworkObject>(out NetworkObject player))
         {
             KillPlayerClientRpc(player);
@@ -23,7 +23,6 @@ public class MultiplayerDeathBox : NetworkBehaviour
         if (playerRef.TryGet(out NetworkObject playerNetObject))
         {
             KillPlayer(playerNetObject.gameObject);
-            Debug.Log("Kill Player Rpc");
         }
         
     }
