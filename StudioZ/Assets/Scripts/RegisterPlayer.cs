@@ -14,8 +14,6 @@ public class RegisterPlayer : NetworkBehaviour
 
     [SerializeField] private GameObject body;
 
-    
-    
 
     public override void OnNetworkSpawn()
     {

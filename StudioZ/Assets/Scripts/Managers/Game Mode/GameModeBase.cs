@@ -8,7 +8,7 @@ using UnityEngine;
 public abstract class GameModeBase : MonoBehaviour
 {
     public static event Action<float> OnCountdownUpdated;
-    protected float gracePeriodDuration = 10;
+    protected float gracePeriodDuration = 1;
     protected float startCountDownDuration = 5;
     protected int levelIndex = 0;
     protected int playersAlive;

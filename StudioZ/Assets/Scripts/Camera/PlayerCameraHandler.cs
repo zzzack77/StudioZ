@@ -85,7 +85,6 @@ public class PlayerCameraHandler : NetworkBehaviour
 
             if (players.Count == 0)
             {
-                Debug.Log("there are no alive players!");
                 return;
             }
 

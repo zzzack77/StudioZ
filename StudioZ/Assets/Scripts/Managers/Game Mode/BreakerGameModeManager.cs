@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class BreakerGameModeManager : GameModeBase
 {
+  
     private void OnEnable()
     {
         PlayerAliveState.OnPlayerDead += CheckWinCondition;
@@ -29,11 +31,12 @@ public class BreakerGameModeManager : GameModeBase
     {
         base.CheckWinCondition(player);
 
+        // Adds the dead players to a list
+        // The first player would be the 1st to die, so rank 0 would be last place etc
         playerRank.Add(player);
-        Debug.Log(player);
+
+        ulong playerID = player.GetComponent<RegisterPlayer>().NetworkObject.OwnerClientId;
+
+        Debug.Log(playerID);
     }
-
-    
-
-
 }

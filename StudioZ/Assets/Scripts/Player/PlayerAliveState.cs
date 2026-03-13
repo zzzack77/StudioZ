@@ -11,6 +11,7 @@ public class PlayerAliveState : MonoBehaviour
 {
     public AliveState aliveState;
 
+    // Events for telling the player that they have a
     public static Action<GameObject> OnPlayerAlive;
     public static Action OnSetAllAlive;
 
@@ -19,6 +20,8 @@ public class PlayerAliveState : MonoBehaviour
 
     public static Action<GameObject> OnPlayerKnockedOut;
     public static Action OnSetAllKnockedOut;
+
+    private RegisterPlayer regPlayer;
 
     private void OnEnable()
     {
@@ -43,7 +46,11 @@ public class PlayerAliveState : MonoBehaviour
         OnPlayerKnockedOut -= SetPlayerKnockedOut;
         OnSetAllKnockedOut -= SetKnockedOut;
     }
-    
+
+    private void Awake()
+    {
+        regPlayer = GetComponent<RegisterPlayer>();
+    }
     // Sets specific player to alive
     private void SetPlayerAlive(GameObject player)
     {
